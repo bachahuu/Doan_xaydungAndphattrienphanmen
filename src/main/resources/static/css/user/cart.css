@@ -1,0 +1,192 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: sans-serif;
+  }
+  
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  /*==== GIỎ HÀNG ====*/
+  .cart {
+    padding: 100px 0 125px 0;
+  }
+  
+  .cart-content-tables {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+  
+  /* --- BÊN TRÁI --- */
+  .cart-content-left {
+    width: 60%;
+  }
+  
+  .cart-content-left form table {
+    width: 100%;
+    border-collapse: collapse;
+    box-shadow: 2px 2px 5px #aaa;
+    text-align: left;
+    table-layout: fixed;
+  }
+  
+  .cart-content-left form table th,
+  .cart-content-left form table td {
+    border: 1px solid #ddd;
+  }
+  
+  .cart-content-left form table th:nth-child(1),
+  .cart-content-left form table td:nth-child(1) {
+    width: 40%;
+  }
+  
+  .cart-content-left form table th:nth-child(2),
+  .cart-content-left form table td:nth-child(2) {
+    width: 20%;
+    text-align: center;
+  }
+  
+  .cart-content-left form table th:nth-child(3),
+  .cart-content-left form table td:nth-child(3) {
+    width: 20%;
+    text-align: center;
+  }
+  
+  .cart-content-left form table th:nth-child(4),
+  .cart-content-left form table td:nth-child(4) {
+    width: 20%;
+    text-align: center;
+  }
+  
+  .title {
+    padding: 15px;
+    text-align: center;
+    border-bottom: 2px dashed #aaa;
+  }
+  
+  .title2 {
+    padding: 10px;
+    font-size: 20px;
+    text-align: center;
+  }
+  
+  .danhmuc tr td {
+    padding: 10px;
+    text-align: left;
+    vertical-align: middle;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .danhmuc tr td input[type="number"] {
+    width: 60px;
+    text-align: center;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 5px;
+  }
+  
+  .danhmuc tr td .btn {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 4px;
+    text-decoration: none;
+    text-align: center;
+    cursor: pointer;
+  }
+  
+  .danhmuc tr td:last-child {
+    cursor: pointer;
+  }
+  
+  .danhmuc tr td img {
+    width: 75px;
+    height: auto;
+    margin-right: 10px;
+    vertical-align: middle;
+  }
+  
+  .danhmuc tr td:first-child {
+    display: table-cell;
+    vertical-align: middle;
+    padding: 10px;
+  }
+  
+  .danhmuc tr td:first-child img {
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 10px;
+  }
+  
+  .danhmuc tr td:first-child span {
+    display: inline-block;
+    vertical-align: middle;
+    font-weight: 500;
+  }
+  
+  .continue-shopping {
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+  }
+  
+  .continue-shopping a {
+    text-decoration: none;
+    color: whitesmoke;
+    font-size: 16px;
+    padding: 10px 20px;
+    border: 1px solid #000;
+    border-radius: 25px;
+    display: inline-block;
+    background-color: #007bff; /* Bootstrap primary */
+  }
+  
+  .continue-shopping a:hover {
+    background-color: #f8f8f8;
+    color: #000;
+  }
+  
+  /* --- BÊN PHẢI --- */
+  .cart-content-right {
+    width: 400px;
+    text-align: left;
+    border-collapse: collapse;
+    box-shadow: 2px 2px 5px #aaa;
+    flex-shrink: 0; /* Ngăn chặn co lại */
+  }
+  
+  .dd1 {
+    padding: 17px;
+    text-align: center;
+    border-bottom: 2px dashed #aaa;
+  }
+  
+  .cart-content-right-text {
+    padding: 15px;
+    border-style: dashed none none none;
+    text-align: center;
+    border-color: gray;
+    border-width: 2px;
+  }
+  
+  .cart-content-right-text-button {
+    text-align: center;
+  }
+  
+  .cart-content-right-text-button input {
+    margin: 10px;
+    border: none;
+    background-color: black;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    height: 50px;
+    width: 120px;
+  }
+  
+  .cart-content-right-text-button input:hover {
+    background-color: orange;
+  }
+  

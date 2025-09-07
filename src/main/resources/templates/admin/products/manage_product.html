@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="content">
+    <div class="container">
+        <h2 style="text-align:center;">Liệt Kê Sản Phẩm</h2>
+        
+        <!-- Nút thêm sản phẩm -->
+        <div style="text-align:right; margin-right:45px; margin-bottom:10px;">
+            <a th:href="@{/admin/products/add}" class="btn btn-success">Thêm Sản Phẩm</a>
+        </div>
+        
+        <table class="table table-striped">
+            <thead>
+                <tr style="text-align:center;">
+                    <th>STT</th>
+                    <th>Mã Sản Phẩm</th>
+                    <th>Tên Sản Phẩm</th>
+                    <th>Giá</th>
+                    <th>Hình Ảnh</th>
+                    <th>Tồn Kho</th>
+                    <th>Ngày Tạo</th>
+                    <th>Ngày Cập Nhật</th>
+                    <th>Đối Tác</th>
+                    <th>Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr style="text-align:center;">
+                    <td>1</td> 
+                    <td>SP001</td> 
+                    <td>Tên Sản Phẩm Mẫu</td> 
+                    <td>100000</td> 
+                    <td><img style="width: 50px;" src="/images/tao-do-8.jpg" alt="Hình ảnh"></td> 
+                    <td>50</td>
+                    <td>2025-09-01</td> 
+                    <td>2025-09-07</td> 
+                    <td>Đối Tác A</td> 
+                    <td>
+                        <div class="btn-group">
+                            <a href="#" class="btn btn-info">Sửa</a> 
+                            <a href="#" class="btn btn-danger" onclick="return confirm('Bạn có muốn xóa không?');">
+                                <i class="fas fa-trash-alt"></i>
+                            </a> 
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- JavaScript riêng cho trang sản phẩm -->
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        var trangThaiSanPham = /*[[${trangThaiSanPham}]]*/ {};
+
+        function update_trang_thai(ma_san_pham, newStatus) {
+            // Placeholder for status update logic (e.g., update UI or send to server)
+            console.log("Updating status for " + ma_san_pham + " to " + newStatus);
+        }
+
+        window.onload = function() {
+            Object.keys(trangThaiSanPham).forEach(function(ma_san_pham) {
+                // Example: Hide action buttons for certain statuses if needed
+                if (trangThaiSanPham[ma_san_pham] === 'het_hang') {
+                    var actionGroup = document.querySelector('tr td:nth-child(10) [th:href*="' + ma_san_pham + '"]');
+                    if (actionGroup) {
+                        actionGroup.parentElement.style.display = 'none';
+                    }
+                }
+            });
+        };
+        /*]]>*/
+    </script>
+</div>
+</html>

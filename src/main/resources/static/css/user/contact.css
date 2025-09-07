@@ -1,0 +1,63 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #f9f9f9;
+}
+
+h1 {
+    color: #d9534f;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+/* Container cho các cơ sở */
+.stores-container {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.store {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    flex: 1;
+    max-width: 45%;
+    min-width: 300px;
+}
+
+.store h2 {
+    color: #333;
+    margin-top: 0;
+}
+
+.store img {
+    width: 360px;
+    height: 470px;
+    object-fit: cover;
+    border-radius: 5px;
+    margin: 0 auto 15px auto;
+    display: block;
+}
+
+.store p {
+    color: #666;
+    line-height: 1.5;
+    margin: 5px 0;
+}
+
+/* Responsive cho màn hình nhỏ */
+@media (max-width: 768px) {
+    .stores-container {
+        flex-direction: column;
+    }
+    
+    .store {
+        max-width: 100%;
+    }
+}

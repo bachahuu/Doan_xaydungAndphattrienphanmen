@@ -1,0 +1,198 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="content">
+    <div class="container">
+        <h2 style="text-align:center;">Liệt Kê Đơn Hàng</h2>
+        
+        <!-- xuất excel -->
+        <form th:action="@{/admin/orders/export-excel}" method="post">
+            <div style="text-align:right; margin-right:45px;margin-bottom:10px;">
+                <button type="submit" name="btn_excel" class="btn btn-danger">xuất Excel</button>
+            </div>
+        </form>
+        
+        <table class="table table-striped">
+            <thead>
+                <tr style="text-align:center;">
+                    <th>STT</th>
+                    <th>Mã đơn hàng</th>
+                    <th>Ngày đặt</th>
+                    <th>Ngày Cập nhật</th>
+                    <th>Trạng Thái</th>
+                    <th>Quản lý</th>
+                    <th>Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr style="text-align:center;">
+                    <td>1</td>
+                    <td>DH001</td>
+                    <td>2024-01-01</td>
+                    <td>2024-01-01</td>
+                    <td id="status-DH001">cho_xu_ly</td>
+                    <td>
+                        <a class="btn btn-danger" onclick="return confirm('bạn có muốn xóa không ?')">
+                            <i class="fas fa-trash-alt"></i>
+                        </a>
+                        <!-- Nút Chi tiết đơn hàng với modal -->
+                        <button type="button" 
+                                class="btn btn-success btn-order-detail" 
+                                data-ma-don-hang="DH001"
+                                data-bs-toggle="modal" 
+                                data-bs-target="#orderDetailModal">
+                            Chi tiết đơn hàng
+                        </button>
+                    </td>
+                    <td>
+                        <div class="btn-group" id="action-group-DH001">
+                            <button type="button" class="btn btn-warning">Thao tác</button>
+                            <button type="button" class="btn btn-warning dropdown-toggle dropdown-toggle-split" 
+                                    data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="sr-only">Toggle Dropdown</span>
+                            </button>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" href="#" onclick="update_trang_thai('DH001', 'hoan_tat')">
+                                    Xác nhận đơn hàng</a>
+                                <a class="dropdown-item" href="#" onclick="update_trang_thai('DH001', 'huy_bo')">
+                                    Hủy đơn hàng</a>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Modal Chi tiết đơn hàng -->
+    <div class="modal fade" id="orderDetailModal" tabindex="-1" aria-labelledby="orderDetailModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title" id="orderDetailModalLabel" style="font-family: 'Times New Roman', Times, serif;">
+                        Chi tiết đơn hàng
+                    </h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                
+                <!-- Modal Body -->
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <!-- Thông tin chi tiết đơn hàng -->
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr style="text-align:center;">
+                                        <th>Khách hàng</th>
+                                        <th>Email khách hàng</th>
+                                        <th>SĐT khách hàng</th>
+                                        <th>Chiết Khấu</th>
+                                        <th>Tổng tiền</th>
+                                        <th>Phương thức thanh toán</th>
+                                        <th>Địa chỉ nhận hàng</th>
+                                        <th>Thao tác</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr style="text-align:center;">
+                                        <td id="modal-ten-nguoi-mua">-</td>
+                                        <td id="modal-email-nguoi-mua">-</td>
+                                        <td id="modal-sdt-nguoi-mua">-</td>
+                                        <td id="modal-ten-khuyen-mai">-</td>
+                                        <td id="modal-tong-tien">-</td>
+                                        <td id="modal-phuong-thuc">-</td>
+                                        <td id="modal-dia-chi">-</td>
+                                        <td>
+                                            <button type="button" 
+                                                    class="btn btn-success btn-edit-order" 
+                                                    data-bs-toggle="modal" 
+                                                    data-bs-target="#editOrderModal"
+                                                    style="margin-right: 10px">
+                                                <i class="fa-regular fa-pen-to-square"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Modal Footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Sửa thông tin đơn hàng -->
+    <div class="modal fade" id="editOrderModal" tabindex="-1" aria-labelledby="editOrderModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title" id="editOrderModalLabel" style="font-family: 'Times New Roman', Times, serif;">
+                        Sửa thông tin đơn hàng
+                    </h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                
+                <!-- Modal Body -->
+                <div class="modal-body">
+                    <form th:action="@{/admin/orders/update}" method="post">
+                        <input type="hidden" id="edit-ma-don-hang" name="maDonHang">
+                        
+                        <div class="mb-3">
+                            <label for="edit-ten-nguoi-mua" class="form-label">Khách Hàng</label>
+                            <input type="text" class="form-control" id="edit-ten-nguoi-mua" name="tenNguoiMua" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="edit-email-nguoi-mua" class="form-label">Email khách hàng</label>
+                            <input type="email" class="form-control" id="edit-email-nguoi-mua" name="emailNguoiMua" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="edit-sdt-nguoi-mua" class="form-label">SĐT KH</label>
+                            <input type="text" class="form-control" id="edit-sdt-nguoi-mua" name="sdtNguoiMua" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="edit-ten-khuyen-mai" class="form-label">Chiết Khấu</label>
+                            <input type="text" class="form-control" id="edit-ten-khuyen-mai" name="tenKhuyenMai">
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="edit-tong-tien" class="form-label">Tổng Tiền</label>
+                            <input type="text" class="form-control" id="edit-tong-tien" name="tongTien" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="edit-phuong-thuc" class="form-label">Phương Thức Thanh Toán</label>
+                            <input type="text" class="form-control" id="edit-phuong-thuc" name="phuongThucThanhToan" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="edit-dia-chi" class="form-label">Địa chỉ nhận hàng</label>
+                            <textarea class="form-control" id="edit-dia-chi" name="diaChiNguoiMua" rows="3" required></textarea>
+                        </div>
+                        
+                        <div class="d-flex justify-content-between">
+                            <button type="submit" class="btn btn-success">Cập nhật</button>
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Đóng</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript riêng cho trang order -->
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        // Truyền dữ liệu từ server cho JavaScript
+        window.trangThaiDonHang = /*[[${trangThaiDonHang}]]*/ {};
+        /*]]>*/
+    </script>
+</div>
+</html>

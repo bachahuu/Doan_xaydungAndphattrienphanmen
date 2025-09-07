@@ -1,0 +1,54 @@
+<!-- templates/admin/fragment/sidebar.html -->
+<div th:fragment="sidebar">
+    <aside id="sidebar">
+        <div class="d-flex">
+            <button class="toggle-btn" type="button">
+                <i class="lni lni-grid-alt"></i>
+            </button>
+            <div class="sidebar-logo">
+                <a href="#">Fresh Fruit</a>
+            </div>
+        </div>
+
+        <ul class="sidebar-nav">
+            <li class="sidebar-item">
+                <a th:href="@{/admin/order}" class="sidebar-link">
+                    <i class="lni lni-agenda"></i><span>Đơn hàng</span>
+                </a>
+            </li>
+
+            <li class="sidebar-item">
+                <a href="#" class="sidebar-link has-dropdown" >
+                    <i class="lni lni-protection"></i><span>Danh mục</span>
+                </a>
+                <ul id="auth" class="sidebar-dropdown list-unstyled " >
+                    <li class="sidebar-item"><a th:href="@{/admin/product}" class="sidebar-link">Sản phẩm</a></li>
+                    <li class="sidebar-item"><a th:href="@{/admin/discount}" class="sidebar-link">Chương trình khuyến mãi</a></li>
+                    <li class="sidebar-item"><a th:href="@{/admin/suppliers}" class="sidebar-link">Nhà cung cấp</a></li>
+                </ul>
+            </li>
+
+            <li class="sidebar-item">
+                <a th:href="@{/admin/reports}" class="sidebar-link">
+                    <i class="lni lni-layout"></i><span>Thống kê và báo cáo</span>
+                </a>
+            </li>
+            <li class="sidebar-item">
+                <a th:href="@{/admin/news}" class="sidebar-link">
+                    <i class="lni lni-popup"></i><span>Tin tức</span>
+                </a>
+            </li>
+            <li class="sidebar-item">
+                <a th:href="@{/admin/settings}" class="sidebar-link">
+                    <i class="lni lni-cog"></i><span>Cài đặt</span>
+                </a>
+            </li>
+        </ul>
+
+        <div class="sidebar-footer">
+            <a th:href="@{/login}" class="sidebar-link">
+                <i class="lni lni-exit"></i><span>Đăng xuất</span>
+            </a>
+        </div>
+    </aside>
+</div>

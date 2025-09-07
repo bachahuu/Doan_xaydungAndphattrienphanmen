@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/css/login/login.css">
+</head>
+<body>
+    <div class="container">
+        <div class="orangeBG">
+            <div class="box signin">
+                <h2>Tạo một tài khoản?</h2>
+                <button class="signinbtn">Đăng nhập</button>
+            </div>
+            <div class="box signin">
+                <h2>Bạn đã có tài khoản chưa?</h2>
+                <button class="signupbtn">Đăng ký</button>
+            </div>
+        </div>
+        <div class="form-box">
+            <div class="form signinform">
+                <form action="/login" method="post">
+                    <h3>Đăng nhập</h3>
+                    <input type="text" placeholder="Số điện thoại" name="so_dien_thoai" required>
+                    <input type="password" placeholder="Mật khẩu" name="mat_khau" required>
+                    <input type="submit" value="Đăng nhập">
+                    <a href="/forgotpassword">Quên mật khẩu?</a>
+                </form>
+            </div>
+            <div class="form signupform">
+                <form action="" method="post">
+                    <h3>Đăng ký</h3>
+                    <input type="text" placeholder="Họ và tên" name="ho_ten" required>
+                    <input type="text" placeholder="Số điện thoại" name="so_dien_thoai" required>
+                    <input type="email" placeholder="Địa chỉ Email" name="email" required>
+                    <input type="password" placeholder="Mật khẩu" name="mat_khau" required>
+                    <input type="password" placeholder="Nhập lại mật khẩu" name="nhap_lai_mat_khau" required>
+                    <input type="submit" value="Đăng ký">
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src="/js/login/login.js"></script>
+</body>
+</html>
