@@ -1,2 +1,2 @@
-run project
+run project : 
 mvn spring-boot:run
