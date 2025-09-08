@@ -44,4 +44,10 @@ public class dashboard {
         return "user/layout/main";
     }
 
+    @GetMapping("/payment")
+    public String showPayment(Model model) {
+        model.addAttribute("view", "user/products/payment");
+        return "user/layout/main";
+    }
+
 }
