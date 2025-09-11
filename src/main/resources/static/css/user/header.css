@@ -40,6 +40,16 @@ section nav ul li a{
     font-size: 17px;
     transition: 0.1s;
 }
+/* Ghi đè lại margin của ul, ol, dl */
+dl, ol, ul {
+    margin-top: 0 !important;   /* thay giá trị bạn muốn */
+    margin-bottom: 0 !important;;
+  }
+
+ol, ul {
+    padding-left: 0rem !important ;
+}
+  
 
 section nav ul li a::after{
     content: '';
@@ -60,7 +70,7 @@ section nav ul li a:hover{
 
 section nav .icon i{
     font-size: 18px;
-    color: #000;
+    color: #fff;
     margin: 0 5px;
     cursor: pointer;
     transition: 0.3s;
@@ -81,7 +91,7 @@ section nav .icon a{
 }
 
 section nav .icon a:hover{
-    color: #000;
+    color: #fff;
     background: orange;
 }
 

@@ -2,155 +2,152 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <body>
     <div th:fragment="content">
-        <!-- Nội dung chính -->
-        <section>
+        <!-- Title Section -->
+        <section class="shipping-page">
             <div class="title">
                 <div>
                     <h2>Thông tin giao hàng</h2>
                 </div>
             </div>
 
-            <!-- Form -->
-            <form action="#" method="post">
-                <input type="hidden" id="cartTotalPriceInput" name="cartTotalPrice" value="" />
-                <table class="add_KH">
-                    <tr>
-                        <td colspan="3"><label for="name">Họ và Tên</label></td>
-                    </tr>
-                    <tr>
-                        <td colspan="3">
-                            <input class="ten" type="text" id="name" name="txtname" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="3">
-                            <div class="info_row">
-                                <div>
-                                    <label for="email">Email</label>
-                                    <input class="email" type="email" id="email" name="txtemail" />
-                                </div>
-                                <div>
-                                    <label for="phone">Số điện thoại</label>
-                                    <input class="phone" type="text" id="phone" name="txtphone" />
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr id="info_an" style="display: flex">
-                        <td colspan="3"><label for="address">Địa chỉ</label></td>
-                    </tr>
-                    <tr id="info_an1" style="display: flex">
-                        <td colspan="3">
-                            <input class="address" type="text" id="address" name="txtaddress" />
-                        </td>
-                    </tr>
-                    <tr id="info_an2" style="display: flex">
-                        <td colspan="3">
-                            <select id="city" name="city">
-                                <option value="">Chọn tỉnh / thành</option>
-                            </select>
-                        </td>
-                        <td colspan="3">
-                            <select id="district" name="district">
-                                <option value="">Chọn quận / huyện</option>
-                            </select>
-                        </td>
-                        <td colspan="3">
-                            <select id="ward" name="ward">
-                                <option value="">Chọn phường / xã</option>
-                            </select>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="3" style="display: flex; text-align: right">
-                            <input type="checkbox" id="ckbstore" name="ckbstore" />
-                            <label style="margin-left: 7px" for="ckbstore">Nhận tại cửa hàng</label>
-                        </td>
-                    </tr>
-                    <tr id="storeInfomation" style="display: none">
-                        <td colspan="3">
-                            <div style="justify-content: center; text-align: center">
-                                <p>Địa chỉ: Số 16 Nguyễn Xiển - Phường Thanh Xuân Nam - Quận Thanh Xuân - Hà Nội</p>
-                                <p>Sđt: 0941234789 - 0942568456</p>
-                            </div>
-                        </td>
-                    </tr>
-                </table>
+            <div class="form-container">
+                <!-- Form -->
+                <form action="#" method="post">
+                    <input type="hidden" id="cartTotalPriceInput" name="cartTotalPrice" value="" />
+                    
+                    <!-- Left Section - Customer Information -->
+                    <div class="customer-info-section">
+                        <table class="add_KH">
+                            <tr>
+                                <td colspan="3"><label for="name">Họ và Tên</label></td>
+                            </tr>
+                            <tr>
+                                <td colspan="3">
+                                    <input class="ten" type="text" id="name" name="txtname" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="3">
+                                    <div class="info_row">
+                                        <div>
+                                            <label for="email">Email</label>
+                                            <input class="email" type="email" id="email" name="txtemail" />
+                                        </div>
+                                        <div>
+                                            <label for="phone">Số điện thoại</label>
+                                            <input class="phone" type="text" id="phone" name="txtphone" />
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr id="info_an" style="display: table-row">
+                                <td colspan="3"><label for="address">Địa chỉ</label></td>
+                            </tr>
+                            <tr id="info_an1" style="display: table-row">
+                                <td colspan="3">
+                                    <input class="address" type="text" id="address" name="txtaddress" />
+                                </td>
+                            </tr>
+                            <tr id="info_an2" style="display: table-row">
+                                <td colspan="3">
+                                    <div class="address-selects">
+                                        <select id="city" name="city">
+                                            <option value="">Chọn tỉnh / thành</option>
+                                        </select>
+                                        <select id="district" name="district">
+                                            <option value="">Chọn quận / huyện</option>
+                                        </select>
+                                        <select id="ward" name="ward">
+                                            <option value="">Chọn phường / xã</option>
+                                        </select>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="3">
+                                    <div class="checkbox-container">
+                                        <input type="checkbox" id="ckbstore" name="ckbstore" />
+                                        <label for="ckbstore">Nhận tại cửa hàng</label>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr id="storeInfomation" style="display: none">
+                                <td colspan="3">
+                                    <div style="text-align: center;">
+                                        <p>Địa chỉ: Số 16 Nguyễn Xiển - Phường Thanh Xuân Nam - Quận Thanh Xuân - Hà Nội</p>
+                                        <p>Sđt: 0941234789 - 0942568456</p>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
 
-                <!-- Bảng thanh toán -->
-                <table class="ship">
-                    <tr>
-                        <td style="display: flex">
-                            <select id="voucher" name="voucher">
-                                <option value="">Mã free Ship/Mã giảm giá</option>
-                                <option th:each="km : ${listKhuyenMai}" 
-                                        th:value="${km.maKhuyenMai}" 
-                                        th:text="${km.tenKhuyenMai}"></option>
-                            </select>
-                            <div class="button_apdung">
-                                <button type="submit" name="btnapdung_KM">Áp dụng</button>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Giảm</td>
-                        <td><div class="giam_gia"><span id="giamgia-value">0</span><sup>đ</sup></div></td>
-                    </tr>
-                    <tr>
-                        <td>Tạm tính</td>
-                        <td><div class="tamtinh"><span id="tamtinh-value">0</span><sup>đ</sup></div></td>
-                    </tr>
-                    <tr>
-                        <td>Phí vận chuyển</td>
-                        <td><div class="phivanchuyen"><span>30000</span><sup>đ</sup></div></td>
-                    </tr>
-                    <tr>
-                        <td><strong>Tổng tiền</strong></td>
-                        <td><strong class="tongtien"><span id="total-value">0</span><sup>đ</sup></strong></td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">
-                            <div class="buttun_thanhtoan">
-                                <input type="button" name="btnthanhtoan" value="Hoàn tất thanh toán" onclick="pay()" />
-                            </div>
-                        </td>
-                    </tr>
-                </table>
-            </form>
+                    <!-- Right Section - Payment Summary -->
+                    <div class="payment-summary-section">
+                        <table class="ship">
+                            <tr>
+                                <td colspan="2">
+                                    <div class="voucher-section">
+                                        <select id="voucher" name="voucher">
+                                            <option value="">Mã free Ship/Mã giảm giá</option>
+                                            <option th:each="km : ${listKhuyenMai}" 
+                                                    th:value="${km.maKhuyenMai}" 
+                                                    th:text="${km.tenKhuyenMai}"></option>
+                                        </select>
+                                        <div class="button_apdung">
+                                            <button type="submit" name="btnapdung_KM">Áp dụng</button>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <div class="price-row">
+                                        <span>Giảm</span>
+                                        <span class="price-value"><span id="giamgia-value">0</span><sup>đ</sup></span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <div class="price-row">
+                                        <span>Tạm tính</span>
+                                        <span class="price-value"><span id="tamtinh-value">0</span><sup>đ</sup></span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <div class="price-row">
+                                        <span>Phí vận chuyển</span>
+                                        <span class="price-value">30000<sup>đ</sup></span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <div class="price-row total">
+                                        <span>Tổng tiền</span>
+                                        <span class="price-value"><span id="total-value">0</span><sup>đ</sup></span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <div class="buttun_thanhtoan">
+                                        <input type="button" name="btnthanhtoan" value="Hoàn tất thanh toán" onclick="pay()" />
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </form>
+            </div>
         </section>
 
-        <!-- JS -->
-        <script>
-            function pay() {
-                window.location.href = "/payment";
-            }
-
-            document.addEventListener("DOMContentLoaded", () => {
-                function updateCartIcon() {
-                    const cartIcon = document.querySelector(".fa-cart-shopping");
-                    const productCount = localStorage.getItem("cartItemCount") || 0;
-                    if (cartIcon) cartIcon.setAttribute("number", productCount);
-                }
-                updateCartIcon();
-
-                function setCartTotalPrice() {
-                    var cartTotalPrice = localStorage.getItem("cartTotalPrice");
-                    document.getElementById("cartTotalPriceInput").value = cartTotalPrice;
-
-                    var tamTinhValue = parseInt(cartTotalPrice) || 0;
-                    var giamGiaValue = parseInt(document.getElementById("giamgia-value").innerText) || 0;
-                    var phiVanChuyenValue = parseInt(document.querySelector(".phivanchuyen span").innerText) || 0;
-
-                    var tamTinh = tamTinhValue - giamGiaValue;
-                    var tongTien = tamTinh + phiVanChuyenValue;
-
-                    document.getElementById("tamtinh-value").innerText = tamTinh;
-                    document.getElementById("total-value").innerText = tongTien;
-                }
-                setCartTotalPrice();
-            });
-        </script>
-        <script src="/js/user/location.js"></script>
+        <!-- Link CSS và JavaScript -->
+        <!-- <script th:src="@{/js/user/shipping.js}"></script> -->
+        <script th:src="@{/js/user/location.js}"></script>
     </div>
 </body>
 </html>

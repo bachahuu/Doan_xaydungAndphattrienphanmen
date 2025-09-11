@@ -1,131 +1,222 @@
-/* Reset + font */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: sans-serif;
-  }
-  
-  html { scroll-behavior: smooth; }
-  
-  /* ===== HEADER / NAV ===== */
-  article nav {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    height: 70px;
-    background: #fff;
-    box-shadow: 0 0 10px rgba(0,0,0,0.5);
-    z-index: 1000;
-  }
-  
-  .logo img { width: 70px; cursor: pointer; }
-  
-  /* nav ul { list-style: none; }
-  nav ul li { display: inline-block; margin: 0 10px; } */
-  
-  /* ICONS + CART */
-  .icon { display: flex; align-items: center; gap: 10px; }
-  .icon i { font-size: 18px; color: #000; cursor: pointer; transition: 0.3s; }
-  .icon i:hover { color: #fac031; }
-  
-  .icon a {
-    padding: 8px 20px;
-    border-radius: 8px;
-    background: #fac031;
-    color: #fff;
-    text-decoration: none;
-    transition: 0.3s;
-  }
-  .icon a:hover { background: orange; color: #000; }
-  
-  .cart-icon { position: relative; }
-  .cart-icon i { font-size: 24px; }
-  .cart-icon i::after {
-    content: attr(number);
-    position: absolute;
-    top: -12px; right: -10px;
-    background: #fac031;
-    color: #000;
-    width: 20px; height: 20px;
-    display: flex; justify-content: center; align-items: center;
-    border-radius: 50%;
-    font-size: 14px; font-weight: bold;
-  }
-  
-  /* SEARCH */
-  .search-container { display: flex; align-items: center; }
-  .search-container input,
-  .search-container button {
-    padding: 6px;
-    font-size: 14px;
-    border: none; border-radius: 4px;
-  }
-  .search-container button { cursor: pointer; }
-  .search-container button:hover { color: #fac031; }
-  
-  /* ===== BODY CONTENT ===== */
-  .title {
-    margin: 100px 0 20px 70px;
+/* ===== SHIPPING FORM SPECIFIC STYLES ===== */
+.shipping-page .title {
+    margin: 100px 0 30px 0;
+    text-align: center;
     line-height: 1.7;
-  }
-  .title .tieude a { color: #000; text-decoration: none; }
-  .title .tieude a:hover { color: #fac031; }
-  
-  /* Bảng + form */
-  form { display: flex; justify-content: space-between; margin-top: 8px; }
-  
-  .add_KH {
-    width: 60%;
-    margin-left: 60px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
-  }
-  .add_KH td { padding: 5px; }
-  
-  .ten, .address, .email, .phone, select {
+}
+.shipping-page .title .tieude a { color: #000; text-decoration: none; }
+.shipping-page .title .tieude a:hover { color: #fac031; }
+
+/* IMPROVED FORM LAYOUT */
+.shipping-page .form-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.shipping-page form {
+    display: flex;
+    gap: 40px;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+/* Left section - Customer info */
+.shipping-page .customer-info-section {
+    flex: 1;
+    max-width: 600px;
+}
+
+.shipping-page .add_KH {
     width: 100%;
-    padding: 5px;
+    background: #fff;
+    padding: 30px;
+    /* border: 1px solid #e0e0e0; */
+}
+
+.shipping-page .add_KH td { 
+    padding: 8px 0; 
+}
+
+.shipping-page .add_KH label {
+    font-weight: 500;
+    color: #333;
+    margin-bottom: 5px;
+    display: block;
+}
+
+/* Right section - Payment summary */
+.shipping-page .payment-summary-section {
+    flex: 1;
+    max-width: 600px;
+}
+
+.shipping-page .ship {
+    width: 100%;
+    background: #fff;
+    padding: 30px;
+    /* border: 1px solid #e0e0e0; */
+}
+
+.shipping-page .ship td { 
+    padding: 12px 0; 
+    border-bottom: 1px solid #f5f5f5;
+}
+
+.shipping-page .ship td:last-child {
+    border-bottom: none;
+}
+
+/* Form inputs styling */
+.shipping-page .ten, .shipping-page .address, .shipping-page .email, .shipping-page .phone, .shipping-page select {
+    width: 100%;
+    padding: 12px;
     font-size: 15px;
     margin: 5px 0;
-  }
-  .address { width: 280%; }
-  .phone { width: 100%; }
-  
-  .info_row { display: flex; gap: 10px; }
-  
-  /* Shipping + tổng tiền */
-  .ship { width: 60%; margin-left: 45px; padding-left: 50px; }
-  .ship td { padding: 10px 0; }
-  .ship select { height: 40px; text-align: center; }
-  
-  .tamtinh { margin-right: 90px; }
-  .giatien { margin-left: 190px; }
-  
-  /* Buttons */
-  button, input[type="submit"] {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    transition: border-color 0.3s;
+}
+
+.shipping-page .ten:focus, .shipping-page .address:focus, .shipping-page .email:focus, .shipping-page .phone:focus, .shipping-page select:focus {
+    border-color: #fac031;
+    outline: none;
+}
+
+.shipping-page .info_row { 
+    display: flex; 
+    gap: 15px; 
+}
+
+.shipping-page .info_row > div {
+    flex: 1;
+}
+
+/* Address section styling */
+.shipping-page .address-selects {
+    display: flex;
+    gap: 10px;
+}
+
+.shipping-page .address-selects select {
+    flex: 1;
+}
+
+/* Checkbox styling */
+.shipping-page .checkbox-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 15px 0;
+}
+
+.shipping-page .checkbox-container input[type="checkbox"] {
+    width: auto;
+}
+
+/* Store information */
+.shipping-page #storeInfomation {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 4px;
+    margin-top: 10px;
+}
+
+.shipping-page #storeInfomation p {
+    margin: 8px 0;
+    color: #666;
+}
+
+/* Payment summary styling */
+.shipping-page .voucher-section {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.shipping-page .voucher-section select {
+    flex: 1;
+    height: 45px;
+}
+
+.shipping-page .price-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 15px;
+}
+
+.shipping-page .price-row.total {
+    font-size: 18px;
+    font-weight: bold;
+    border-top: 2px solid #333;
+    padding-top: 15px;
+    margin-top: 10px;
+}
+
+.shipping-page .price-value {
+    font-weight: 500;
+}
+
+/* Buttons */
+.shipping-page button, .shipping-page input[type="submit"], .shipping-page input[type="button"] {
     border: none;
     cursor: pointer;
-    transition: 0.3s;
-  }
-  .buttun_thanhtoan input,
-  .button_apdung button {
-    background: black;
+    transition: all 0.3s;
+    font-size: 14px;
+}
+
+.shipping-page .button_apdung button {
+    background: #333;
     color: white;
-    width: 150px; height: 45px;
-    margin: 10px;
-  }
-  .buttun_thanhtoan input:hover,
-  .button_apdung button:hover {
-    background: orange; color: #000;
-  }
-  section {
-    margin-bottom: 50px; /* Adds space at the bottom of the content section */
-  }
-  
-  footer {
-    /* Assuming you have a footer, style it to stay separated */
-    padding-top: 20px;
-  }
+    padding: 12px 20px;
+    border-radius: 4px;
+    min-width: 100px;
+}
+
+.shipping-page .buttun_thanhtoan {
+    margin-top: 25px;
+}
+
+.shipping-page .buttun_thanhtoan input {
+    background: #333;
+    color: white;
+    width: 100%;
+    height: 50px;
+    border-radius: 4px;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.shipping-page .buttun_thanhtoan input:hover,
+.shipping-page .button_apdung button:hover {
+    background: #fac031; 
+    color: #000;
+}
+
+.shipping-page section {
+    margin-bottom: 50px;
+}
+
+/* Responsive design */
+@media (max-width: 968px) {
+    .shipping-page form {
+        flex-direction: column;
+        gap: 30px;
+    }
+    
+    .shipping-page .customer-info-section,
+    .shipping-page .payment-summary-section {
+        max-width: 100%;
+    }
+    
+    .shipping-page .info_row {
+        flex-direction: column;
+        gap: 0;
+    }
+    
+    .shipping-page .address-selects {
+        flex-direction: column;
+    }
+}

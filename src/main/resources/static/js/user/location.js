@@ -21,3 +21,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
   
+  function pay() {
+    window.location.href = "/payment";
+  }
