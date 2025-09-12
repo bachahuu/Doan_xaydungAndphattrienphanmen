@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+<!-- Content Fragment -->
+<div th:fragment="content" class="content-wrapper">
+    <!-- Header -->
+    <div class="content-header">
+        <div class="header-info">
+            <h4 class="page-title">Propietarios</h4>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="/admin/dashboard" class="breadcrumb-link">Harinas Elizondo</a>
+                    </li>
+                    <li class="breadcrumb-item active">Propietarios</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="content-body">
+        <!-- Controls Row -->
+        <div class="controls-section">
+            <div class="row align-items-center mb-4">
+                <div class="col-md-6">
+                    <!-- Search Box -->
+                    <div class="search-box">
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="fas fa-search"></i>
+                            </span>
+                            <input type="text" class="form-control" placeholder="Nombre, unidad, Status" id="searchInput">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 text-end">
+                    <!-- New Button -->
+                    <button type="button" class="btn btn-primary btn-new" data-bs-toggle="modal" data-bs-target="#newOwnerModal">
+                        <i class="fas fa-plus me-2"></i>Nuevo
+                    </button>
+                </div>
+            </div>
+
+            <!-- Filter Row -->
+            <div class="row mb-3">
+                <div class="col-md-6"></div>
+                <div class="col-md-6 text-end">
+                    <div class="filter-section">
+                        <span class="filter-label me-2">Filtro:</span>
+                        <div class="dropdown d-inline-block">
+                            <button class="btn btn-outline-secondary dropdown-toggle btn-sm" type="button" data-bs-toggle="dropdown">
+                                Todos
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="#">Todos</a></li>
+                                <li><a class="dropdown-item" href="#">Activos</a></li>
+                                <li><a class="dropdown-item" href="#">Inactivos</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Data Table -->
+        <div class="table-section">
+            <div class="card border-0 shadow-sm">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th scope="col" class="px-4">Nombre</th>
+                                <th scope="col">Apellido paterno</th>
+                                <th scope="col">Apellido materno</th>
+                                <th scope="col" class="text-center">Activo</th>
+                                <th scope="col" class="text-center">Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Sample Data Row 1 -->
+                            <tr>
+                                <td class="px-4">
+                                    <div class="name-cell">Hector Hugo</div>
+                                </td>
+                                <td>Corona</td>
+                                <td>Garcia</td>
+                                <td class="text-center">
+                                    <span class="badge status-active">Activo</span>
+                                </td>
+                                <td class="text-center">
+                                    <button type="button" class="btn btn-action btn-sm" title="Editar">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                </td>
+                            </tr>
+
+                            <!-- Sample Data Row 2 -->
+                            <tr>
+                                <td class="px-4">
+                                    <div class="name-cell">Fernanda</div>
+                                </td>
+                                <td>hernandez</td>
+                                <td>Vargas</td>
+                                <td class="text-center">
+                                    <span class="badge status-active">Activo</span>
+                                </td>
+                                <td class="text-center">
+                                    <button type="button" class="btn btn-action btn-sm" title="Editar">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                </td>
+                            </tr>
+
+                            <!-- Sample Data Row 3 -->
+                            <tr>
+                                <td class="px-4">
+                                    <div class="name-cell">Fransico</div>
+                                </td>
+                                <td>Coronado</td>
+                                <td>Espitia</td>
+                                <td class="text-center">
+                                    <span class="badge status-inactive">Inactivo</span>
+                                </td>
+                                <td class="text-center">
+                                    <button type="button" class="btn btn-action btn-sm" title="Editar">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                </td>
+                            </tr>
+
+                            <!-- Sample Data Row 4 -->
+                            <tr>
+                                <td class="px-4">
+                                    <div class="name-cell">Alberto</div>
+                                </td>
+                                <td>Morales</td>
+                                <td>Perez</td>
+                                <td class="text-center">
+                                    <span class="badge status-active">Activo</span>
+                                </td>
+                                <td class="text-center">
+                                    <button type="button" class="btn btn-action btn-sm" title="Editar">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                </td>
+                            </tr>
+
+                            <!-- Sample Data Row 5 -->
+                            <tr>
+                                <td class="px-4">
+                                    <div class="name-cell">Mauricio</div>
+                                </td>
+                                <td>Perez</td>
+                                <td>Correa</td>
+                                <td class="text-center">
+                                    <span class="badge status-inactive">Inactivo</span>
+                                </td>
+                                <td class="text-center">
+                                    <button type="button" class="btn btn-action btn-sm" title="Editar">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                </td>
+                            </tr>
+
+                            <!-- Sample Data Row 6 -->
+                            <tr>
+                                <td class="px-4">
+                                    <div class="name-cell">Fernando</div>
+                                </td>
+                                <td>Bautista</td>
+                                <td>Reyes</td>
+                                <td class="text-center">
+                                    <span class="badge status-active">Activo</span>
+                                </td>
+                                <td class="text-center">
+                                    <button type="button" class="btn btn-action btn-sm" title="Editar">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                </td>
+                            </tr>
+
+                            <!-- Sample Data Row 7 -->
+                            <tr>
+                                <td class="px-4">
+                                    <div class="name-cell">Juan</div>
+                                </td>
+                                <td>Mendez</td>
+                                <td>Cordova</td>
+                                <td class="text-center">
+                                    <span class="badge status-active">Activo</span>
+                                </td>
+                                <td class="text-center">
+                                    <button type="button" class="btn btn-action btn-sm" title="Editar">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for New Owner -->
+    <div class="modal fade" id="newOwnerModal" tabindex="-1" aria-labelledby="newOwnerModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="newOwnerModalLabel">Nuevo Propietario</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3">
+                            <label for="nombre" class="form-label">Nombre</label>
+                            <input type="text" class="form-control" id="nombre" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="apellidoPaterno" class="form-label">Apellido Paterno</label>
+                            <input type="text" class="form-control" id="apellidoPaterno" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="apellidoMaterno" class="form-label">Apellido Materno</label>
+                            <input type="text" class="form-control" id="apellidoMaterno" required>
+                        </div>
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="activo" checked>
+                                <label class="form-check-label" for="activo">
+                                    Activo
+                                </label>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

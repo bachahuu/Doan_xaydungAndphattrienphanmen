@@ -1,54 +1,182 @@
-<!-- templates/admin/fragment/sidebar.html -->
-<div th:fragment="sidebar">
-    <aside id="sidebar">
-        <div class="d-flex">
-            <button class="toggle-btn" type="button">
-                <i class="lni lni-grid-alt"></i>
-            </button>
-            <div class="sidebar-logo">
-                <a href="#">Fresh Fruit</a>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<!-- Sidebar Fragment -->
+<div th:fragment="sidebar" class="sidebar" id="sidebar">
+    <!-- Header với thông tin user -->
+    <div class="sidebar-header">
+        <div class="user-info">
+            <div class="user-avatar">
+                <img src="/images/admin.png" alt="User Avatar" class="avatar-img">
+            </div>
+            <div class="user-details">
+                <h6 class="user-name">Manuel</h6>
+                <small class="user-email">Manuel@email.com</small>
             </div>
         </div>
+    </div>
 
-        <ul class="sidebar-nav">
-            <li class="sidebar-item">
-                <a th:href="@{/admin/order}" class="sidebar-link">
-                    <i class="lni lni-agenda"></i><span>Đơn hàng</span>
+    <!-- Navigation Menu -->
+    <nav class="sidebar-nav">
+        <ul class="nav-list">
+            <!-- Estados de cuenta -->
+            <li class="nav-item">
+                <a href="#" class="nav-link" data-bs-toggle="collapse" data-bs-target="#promotions">
+                    <i class="fas fa-gift"></i>
+                    <span>đơn hàng</span>
+                    <i class="lni lni-chevron-right arrow"></i>
                 </a>
-            </li>
-
-            <li class="sidebar-item">
-                <a href="#" class="sidebar-link has-dropdown" >
-                    <i class="lni lni-protection"></i><span>Danh mục</span>
-                </a>
-                <ul id="auth" class="sidebar-dropdown list-unstyled " >
-                    <li class="sidebar-item"><a th:href="@{/admin/product}" class="sidebar-link">Sản phẩm</a></li>
-                    <li class="sidebar-item"><a th:href="@{/admin/discount}" class="sidebar-link">Chương trình khuyến mãi</a></li>
-                    <li class="sidebar-item"><a th:href="@{/admin/suppliers}" class="sidebar-link">Nhà cung cấp</a></li>
+                <ul class="collapse sub-menu" id="promotions">
+                    <li class="sub-nav-item">
+                        <a href="/admin/order" class="sub-nav-link">
+                            <i class="fas fa-tags"></i>
+                            <span>Quản lý đơn hàng</span>
+                        </a>
+                    </li>
                 </ul>
             </li>
 
-            <li class="sidebar-item">
-                <a th:href="@{/admin/reports}" class="sidebar-link">
-                    <i class="lni lni-layout"></i><span>Thống kê và báo cáo</span>
+            <!-- Catálogos -->
+            <li class="nav-item">
+                <a href="#" class="nav-link active" data-bs-toggle="collapse" data-bs-target="#catalogos">
+                    <i class="lni lni-grid-alt"></i>
+                    <span>Danh mục</span>
+                    <i class="lni lni-chevron-down arrow"></i>
                 </a>
+                <ul class="collapse show sub-menu" id="catalogos">
+                    <li class="sub-nav-item">
+                        <a href="/admin/product" class="sub-nav-link active">
+                            <i class="fas fa-box"></i>
+                            <span>Quản lý sản phẩm</span>
+                        </a>
+                    </li>
+                    <li class="sub-nav-item">
+                        <a href="#" class="sub-nav-link">
+                            <i class="fas fa-list"></i>
+                            <span>danh mục sản phẩm</span>
+                        </a>
+                    </li>
+                    <li class="sub-nav-item">
+                        <a href="#" class="sub-nav-link">
+                            <i class="fas fa-truck"></i>
+                            <span>Quản lý nhà cung cấp</span>
+                        </a>
+                    </li>
+                </ul>
             </li>
-            <li class="sidebar-item">
-                <a th:href="@{/admin/news}" class="sidebar-link">
-                    <i class="lni lni-popup"></i><span>Tin tức</span>
+
+            <!-- Consultas -->
+            <li class="nav-item">
+                <a href="#" class="nav-link" data-bs-toggle="collapse" data-bs-target="#consultas">
+                    <i class="lni lni-search-alt"></i>
+                    <span>Thông tin</span>
+                    <i class="lni lni-chevron-right arrow"></i>
                 </a>
+                <ul class="collapse sub-menu" id="consultas">
+                    <li class="sub-nav-item">
+                        <a href="#" class="sub-nav-link">
+                            <i class="fas fa-users"></i>
+                            <span>Khách hàng</span>
+                        </a>
+                    </li>
+                    <li class="sub-nav-item">
+                        <a href="#" class="sub-nav-link">
+                            <i class="fas fa-user-tie"></i>
+                            <span>Nhân viên</span>
+                        </a>
+                    </li>
+                    <li class="sub-nav-item">
+                        <a href="#" class="sub-nav-link">
+                            <i class="fas fa-user-shield"></i>
+                            <span>Tài khoản nội bộ</span>
+                        </a>
+                    </li>
+                </ul>
             </li>
-            <li class="sidebar-item">
-                <a th:href="@{/admin/settings}" class="sidebar-link">
-                    <i class="lni lni-cog"></i><span>Cài đặt</span>
+
+            <!-- Khuyến mãi -->
+            <li class="nav-item">
+                <a href="#" class="nav-link" data-bs-toggle="collapse" data-bs-target="#promotions">
+                    <i class="fas fa-gift"></i>
+                    <span>Chương trình khuyến mãi</span>
+                    <i class="lni lni-chevron-right arrow"></i>
                 </a>
+                <ul class="collapse sub-menu" id="promotions">
+                    <li class="sub-nav-item">
+                        <a href="/admin/discount" class="sub-nav-link">
+                            <i class="fas fa-tags"></i>
+                            <span>Quản lý khuyến mãi</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            <!-- Thanh toán -->
+            <li class="nav-item">
+                <a href="#" class="nav-link" data-bs-toggle="collapse" data-bs-target="#payments">
+                    <i class="fas fa-credit-card"></i>
+                    <span>Phương thức thanh toán</span>
+                    <i class="lni lni-chevron-right arrow"></i>
+                </a>
+                <ul class="collapse sub-menu" id="payments">
+                    <li class="sub-nav-item">
+                        <a href="/admin/payment-methods" class="sub-nav-link">
+                            <i class="fas fa-money-bill-wave"></i>
+                            <span>Quản lý thanh toán</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            <!-- Bài viết & Quảng cáo -->
+            <li class="nav-item">
+                <a href="#" class="nav-link" data-bs-toggle="collapse" data-bs-target="#content">
+                    <i class="fas fa-newspaper"></i>
+                    <span>Bài viết & Quảng cáo</span>
+                    <i class="lni lni-chevron-right arrow"></i>
+                </a>
+                <ul class="collapse sub-menu" id="content">
+                    <li class="sub-nav-item">
+                        <a href="/admin/posts" class="sub-nav-link">
+                            <i class="fas fa-file-alt"></i>
+                            <span>Quản lý bài viết</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            <!-- Báo cáo - Thống kê -->
+            <li class="nav-item">
+                <a href="#" class="nav-link" data-bs-toggle="collapse" data-bs-target="#reports">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>Báo cáo - Thống kê</span>
+                    <i class="lni lni-chevron-right arrow"></i>
+                </a>
+                <ul class="collapse sub-menu" id="reports">
+                    <li class="sub-nav-item">
+                        <a href="/admin/sales-report" class="sub-nav-link">
+                            <i class="fas fa-chart-line"></i>
+                            <span>Báo cáo doanh thu</span>
+                        </a>
+                    </li>
+                    <li class="sub-nav-item">
+                        <a href="/admin/inventory-report" class="sub-nav-link">
+                            <i class="fas fa-warehouse"></i>
+                            <span>Báo cáo tồn kho</span>
+                        </a>
+                    </li>
+                </ul>
             </li>
         </ul>
+    </nav>
 
-        <div class="sidebar-footer">
-            <a th:href="@{/login}" class="sidebar-link">
-                <i class="lni lni-exit"></i><span>Đăng xuất</span>
-            </a>
+    <!-- Footer -->
+    <div class="sidebar-footer">
+        <div class="footer-info">
+            <i class="fas fa-envelope"></i>
+            <span>hector@email.com</span>
         </div>
-    </aside>
+    </div>
 </div>
+</body>
+</html>

@@ -1,0 +1,231 @@
+/* ===== MANAGE ORDERS PAGE STYLES ===== */
+
+/* Content Wrapper */
+.container {
+    min-height: 100vh;
+    background-color: #f8f9fa;
+    padding: 20px;
+}
+
+/* Header Styles */
+h2 {
+    font-size: 28px;
+    font-weight: 600;
+    color: #212529;
+    margin-bottom: 30px;
+    line-height: 1.2;
+}
+
+/* Excel Export Button */
+.btn-danger {
+    font-weight: 600;
+    padding: 10px 20px;
+    font-size: 14px;
+    border-radius: 6px;
+    box-shadow: 0 2px 4px rgba(220, 53, 69, 0.15);
+    transition: all 0.2s ease;
+}
+
+.btn-danger:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(220, 53, 69, 0.25);
+}
+
+/* Table Section */
+.table-striped {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+}
+
+/* Table Styles */
+.table {
+    margin: 0;
+    font-size: 14px;
+}
+
+.table thead th {
+    background-color: #f8f9fa;
+    border-bottom: 2px solid #dee2e6;
+    font-weight: 600;
+    color: #495057;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 16px 12px;
+    white-space: nowrap;
+}
+
+.table tbody td {
+    padding: 16px 12px;
+    vertical-align: middle;
+    border-bottom: 1px solid #f1f3f4;
+    color: #495057;
+}
+
+.table tbody tr {
+    transition: background-color 0.15s ease;
+}
+
+.table tbody tr:hover {
+    background-color: #f8f9fa;
+}
+
+.table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* Status Styles - Simplified */
+#status-DH001 {
+    font-size: 14px;
+    color: #212529;
+}
+
+/* Action Buttons - Connected style */
+.btn-group {
+    display: inline-flex;
+}
+
+.btn-warning {
+    background-color: #ffc107;
+    border-color: #ffc107;
+    color: #212529;
+    font-weight: 500;
+}
+
+.btn-warning:hover {
+    background-color: #e0a800;
+    border-color: #d39e00;
+    color: #212529;
+}
+
+/* Remove spacing between dropdown toggle buttons */
+.dropdown-toggle-split {
+    margin-left: -1px !important;
+}
+
+/* Override general button spacing for dropdown buttons */
+.btn-group .btn {
+    margin: 0;
+}
+
+.btn-success {
+    background-color: #28a745;
+    border-color: #28a745;
+    color: #fff;
+    font-weight: 500;
+}
+
+.dropdown-menu {
+    border: none;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    border-radius: 6px;
+    padding: 8px 0;
+}
+
+.dropdown-item {
+    font-size: 14px;
+    padding: 8px 16px;
+    color: #495057;
+    transition: all 0.2s ease;
+}
+
+.dropdown-item:hover {
+    background-color: #f8f9fa;
+    color: #0d6efd;
+}
+
+/* Modal Styles */
+.modal-content {
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+}
+
+.modal-header {
+    border-bottom: 1px solid #f1f3f4;
+    padding: 20px 24px;
+}
+
+.modal-title {
+    font-weight: 600;
+    color: #212529;
+}
+
+.modal-body {
+    padding: 24px;
+}
+
+.modal-footer {
+    border-top: 1px solid #f1f3f4;
+    padding: 16px 24px;
+}
+
+/* Form Styles */
+.form-label {
+    font-weight: 500;
+    color: #495057;
+    margin-bottom: 8px;
+}
+
+.form-control {
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    padding: 10px 12px;
+    font-size: 14px;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.form-control:focus {
+    border-color: #80bdff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+/* Modal Table Styles */
+.table-responsive {
+    margin: -8px -16px;
+}
+
+.modal .table {
+    margin: 0;
+}
+
+.modal .table thead th {
+    background-color: #f8f9fa;
+    font-size: 12px;
+}
+
+/* Icons */
+.fas, .fa-regular {
+    font-size: 14px;
+}
+
+/* Button Spacing */
+.btn {
+    margin: 0 4px;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .container {
+        padding: 15px;
+    }
+
+    h2 {
+        font-size: 24px;
+    }
+
+    .table {
+        font-size: 13px;
+    }
+
+    .modal-dialog {
+        margin: 0.5rem;
+    }
+}
+
+/* Large Modal */
+.modal-xl {
+    max-width: 95%;
+}

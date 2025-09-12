@@ -24,4 +24,10 @@ public class adminDashboard {
         return "admin/layout/main";
     }
 
+    @GetMapping("/admin/category")
+    public String showcategory(Model model) {
+        model.addAttribute("view", "admin/products/pro");
+        return "admin/layout/main";
+    }
+
 }
