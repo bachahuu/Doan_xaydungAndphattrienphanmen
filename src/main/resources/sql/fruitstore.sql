@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 11, 2025 at 05:30 PM
+-- Generation Time: Sep 22, 2025 at 06:59 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -36,6 +36,14 @@ CREATE TABLE `baiviet` (
   `nhanVienId` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Dumping data for table `baiviet`
+--
+
+INSERT INTO `baiviet` (`id`, `maBaiViet`, `tieuDe`, `noiDung`, `ngayDang`, `nhanVienId`) VALUES
+(1, 'BV01', 'Meo bao quan trai cay', 'Nen de trong tu lanh o 5 do C', '2025-09-01', 1),
+(2, 'BV02', 'Loi ich an nho', 'Nho giau vitamin C', '2025-09-05', 2);
+
 -- --------------------------------------------------------
 
 --
@@ -51,6 +59,14 @@ CREATE TABLE `baocao` (
   `TongSanPhamTon` int(11) DEFAULT 0,
   `NguoiLap` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `baocao`
+--
+
+INSERT INTO `baocao` (`MaBaoCao`, `NgayTao`, `LoaiBaoCao`, `TongDoanhThu`, `TongDonHang`, `TongSanPhamTon`, `NguoiLap`) VALUES
+(1, '2025-09-10', 'Doanh thu thang', 2000000.00, 10, 500, 'Nguyen Van A'),
+(2, '2025-09-15', 'Ton kho', 0.00, 0, 450, 'Tran Thi B');
 
 -- --------------------------------------------------------
 
@@ -68,6 +84,15 @@ CREATE TABLE `binhluan` (
   `khachHangId` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Dumping data for table `binhluan`
+--
+
+INSERT INTO `binhluan` (`id`, `maBL`, `noiDung`, `ngayBL`, `danhGia`, `sanPhamId`, `khachHangId`) VALUES
+(1, 'BL01', 'San pham rat tot', '2025-09-18 06:31:03', 5, 1, 1),
+(2, 'BL02', 'Gia hop ly', '2025-09-18 06:31:03', 4, 2, 2),
+(3, 'BL03', 'Nho ngot', '2025-09-18 06:31:03', 5, 3, 3);
+
 -- --------------------------------------------------------
 
 --
@@ -82,6 +107,15 @@ CREATE TABLE `chitietdonhang` (
   `gia` decimal(10,2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Dumping data for table `chitietdonhang`
+--
+
+INSERT INTO `chitietdonhang` (`id`, `donHangId`, `sanPhamId`, `soLuong`, `gia`) VALUES
+(1, 1, 1, 2, 60000.00),
+(2, 2, 2, 3, 60000.00),
+(3, 3, 3, 2, 80000.00);
+
 -- --------------------------------------------------------
 
 --
@@ -95,6 +129,15 @@ CREATE TABLE `chitietgiohang` (
   `soLuong` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Dumping data for table `chitietgiohang`
+--
+
+INSERT INTO `chitietgiohang` (`id`, `gioHangId`, `sanPhamId`, `soLuong`) VALUES
+(1, 1, 1, 1),
+(2, 2, 2, 2),
+(3, 3, 3, 1);
+
 -- --------------------------------------------------------
 
 --
@@ -105,9 +148,15 @@ CREATE TABLE `danhmuc` (
   `id` int(11) NOT NULL,
   `maDanhMuc` varchar(20) NOT NULL,
   `tenDanhMuc` varchar(100) NOT NULL,
-  `moTa` text DEFAULT NULL,
-  `trangThai` tinyint(1) DEFAULT 1
+  `moTa` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `danhmuc`
+--
+
+INSERT INTO `danhmuc` (`id`, `maDanhMuc`, `tenDanhMuc`, `moTa`) VALUES
+(1, 'DM01', 'Trai cay noi dia', 'Trai cay Viet Nam');
 
 -- --------------------------------------------------------
 
@@ -124,8 +173,17 @@ CREATE TABLE `donhang` (
   `tongTien` decimal(12,2) NOT NULL,
   `khachHangId` int(11) NOT NULL,
   `phuongThucThanhToanId` int(11) DEFAULT NULL,
-  `maKhuyenMai` varchar(20) DEFAULT NULL
+  `khuyenMaiId` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `donhang`
+--
+
+INSERT INTO `donhang` (`id`, `maDonHang`, `ngayTao`, `trangThai`, `ghiChu`, `tongTien`, `khachHangId`, `phuongThucThanhToanId`, `khuyenMaiId`) VALUES
+(1, 'DH01', '2025-09-01', 'ChoXuLy', 'Giao gap', 50000.00, 1, 1, NULL),
+(2, 'DH02', '2025-09-02', 'DangGiao', '', 80000.00, 2, 2, NULL),
+(3, 'DH03', '2025-09-03', 'HoanThanh', 'Giao thanh cong', 60000.00, 3, 1, NULL);
 
 -- --------------------------------------------------------
 
@@ -139,6 +197,15 @@ CREATE TABLE `giohang` (
   `khachHangId` int(11) NOT NULL,
   `ngayTao` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `giohang`
+--
+
+INSERT INTO `giohang` (`id`, `maGioHang`, `khachHangId`, `ngayTao`) VALUES
+(1, 'GH01', 1, '2025-09-18 06:31:03'),
+(2, 'GH02', 2, '2025-09-18 06:31:03'),
+(3, 'GH03', 3, '2025-09-18 06:31:03');
 
 -- --------------------------------------------------------
 
@@ -154,8 +221,25 @@ CREATE TABLE `khachhang` (
   `soDienThoai` varchar(15) DEFAULT NULL,
   `email` varchar(100) DEFAULT NULL,
   `loaiKhachHang` enum('moi','thuong','vip','tam_thoi') DEFAULT 'moi',
-  `taiKhoanId` int(11) DEFAULT NULL
+  `taiKhoanId` int(11) DEFAULT NULL,
+  `trangThaiTaiKhoan` tinyint(1) NOT NULL DEFAULT 1 COMMENT '0 = Ngưng hoạt động, 1 = Đang hoạt động'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `khachhang`
+--
+
+INSERT INTO `khachhang` (`id`, `maKhachHang`, `tenKhachHang`, `diaChi`, `soDienThoai`, `email`, `loaiKhachHang`, `taiKhoanId`, `trangThaiTaiKhoan`) VALUES
+(1, 'KH001', 'Nguyen Van M', 'Ha Noi', '0981111111', 'm@gmail.com', 'vip', 1, 1),
+(2, 'KH002', 'Tran Thi N', 'HCM', '0982222222', 'n@gmail.com', 'thuong', 2, 1),
+(3, 'KH003', 'Le Van O', 'Da Nang', '0983333333', 'o@gmail.com', 'moi', 3, 1),
+(4, 'KH004', 'Pham Thi P', 'Hai Phong', '0984444444', 'p@gmail.com', 'moi', 4, 1),
+(5, 'KH005', 'Hoang Van Q', 'Hue', '0985555555', 'q@gmail.com', 'vip', 5, 1),
+(6, 'KH006', 'Nguyen Thi R', 'Can Tho', '0986666666', 'r@gmail.com', 'thuong', 6, 1),
+(7, 'KH007', 'Tran Van S', 'Quang Ninh', '0987777777', 's@gmail.com', 'tam_thoi', 7, 1),
+(8, 'KH008', 'Do Thi T', 'Ninh Binh', '0988888888', 't@gmail.com', 'vip', 8, 1),
+(9, 'KH009', 'Nguyen Van U', 'Thanh Hoa', '0989999999', 'u@gmail.com', 'thuong', 9, 1),
+(10, 'KH010', 'Pham Thi V', 'Nam Dinh', '0970000000', 'v@gmail.com', 'moi', 10, 1);
 
 -- --------------------------------------------------------
 
@@ -170,8 +254,17 @@ CREATE TABLE `khuyenmai` (
   `giaTri` decimal(10,2) NOT NULL,
   `ngayBatDau` date NOT NULL,
   `ngayKetThuc` date NOT NULL,
-  `moTa` text DEFAULT NULL
+  `moTa` text DEFAULT NULL,
+  `trangThai` tinyint(1) NOT NULL DEFAULT 1 COMMENT '0 = Het hieu luc, 1 = Dang ap dung'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `khuyenmai`
+--
+
+INSERT INTO `khuyenmai` (`id`, `maKM`, `tenKM`, `giaTri`, `ngayBatDau`, `ngayKetThuc`, `moTa`, `trangThai`) VALUES
+(1, 'KM01', 'Sale Tet', 10.00, '2025-01-01', '2025-02-01', 'Giam gia Tet', 1),
+(2, 'KM02', 'Sale He', 5.00, '2025-06-01', '2025-07-01', 'Giam gia mua he', 1);
 
 -- --------------------------------------------------------
 
@@ -187,6 +280,14 @@ CREATE TABLE `nhacungcap` (
   `diaChi` text DEFAULT NULL,
   `email` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `nhacungcap`
+--
+
+INSERT INTO `nhacungcap` (`id`, `maNCC`, `tenNCC`, `soDienThoai`, `diaChi`, `email`) VALUES
+(1, 'NCC01', 'CTY Rau Qua VN', '0911111111', 'Ha Noi', 'rauqua@gmail.com'),
+(3, 'BK004', 'Bách Khoa fruit', '0348830862', 'Hưng Yên', 'bachahuu182004@gmail.com');
 
 -- --------------------------------------------------------
 
@@ -205,6 +306,22 @@ CREATE TABLE `nhanvien` (
   `taiKhoanId` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Dumping data for table `nhanvien`
+--
+
+INSERT INTO `nhanvien` (`id`, `maNhanVien`, `tenNhanVien`, `soDienThoai`, `diaChi`, `chucVu`, `ngayVaoLam`, `taiKhoanId`) VALUES
+(1, 'NV001', 'Nguyen Van A', '0901111111', 'Ha Noi', 'Quan ly', '2025-09-18 06:31:03', 1),
+(2, 'NV002', 'Tran Thi B', '0902222222', 'HCM', 'Nhan vien', '2025-09-18 06:31:03', 2),
+(3, 'NV003', 'Le Van C', '0903333333', 'Da Nang', 'Nhan vien', '2025-09-18 06:31:03', 3),
+(4, 'NV004', 'Pham Thi D', '0904444444', 'Hai Phong', 'Nhan vien', '2025-09-18 06:31:03', 4),
+(5, 'NV005', 'Nguyen Van E', '0905555555', 'Can Tho', 'Nhan vien', '2025-09-18 06:31:03', 5),
+(6, 'NV006', 'Hoang Thi F', '0906666666', 'Hue', 'Nhan vien', '2025-09-18 06:31:03', 6),
+(7, 'NV007', 'Tran Van G', '0907777777', 'Quang Ninh', 'Nhan vien', '2025-09-18 06:31:03', 7),
+(8, 'NV008', 'Do Thi H', '0908888888', 'Ninh Binh', 'Nhan vien', '2025-09-18 06:31:03', 8),
+(9, 'NV009', 'Nguyen Van I', '0909999999', 'Thanh Hoa', 'Nhan vien', '2025-09-18 06:31:03', 9),
+(10, 'NV010', 'Pham Thi K', '0910000000', 'Nam Dinh', 'Nhan vien', '2025-09-18 06:31:03', 10);
+
 -- --------------------------------------------------------
 
 --
@@ -220,9 +337,18 @@ CREATE TABLE `sanpham` (
   `hinhAnh` varchar(255) DEFAULT NULL,
   `soLuongTon` int(11) DEFAULT 0,
   `danhMucId` int(11) DEFAULT NULL,
-  `nhaCungCapId` int(11) NOT NULL,
+  `nhaCungCapId` int(11) DEFAULT NULL,
   `khuyenMaiId` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `sanpham`
+--
+
+INSERT INTO `sanpham` (`id`, `maSanPham`, `tenSanPham`, `gia`, `moTa`, `hinhAnh`, `soLuongTon`, `danhMucId`, `nhaCungCapId`, `khuyenMaiId`) VALUES
+(1, 'SP01', 'Tao My', 30000.00, 'Tao nhap khau tu My', 'tao.jpg', 100, NULL, NULL, 1),
+(2, 'SP02', 'Cam Sai Gon', 20000.00, 'Cam tuoi ngon', 'cam.jpg', 200, 1, 1, NULL),
+(3, 'SP03', 'Nho Uc', 40000.00, 'Nho do tu Uc', 'nho.jpg', 150, NULL, NULL, 2);
 
 -- --------------------------------------------------------
 
@@ -237,6 +363,22 @@ CREATE TABLE `taikhoancuahang` (
   `role` enum('Admin','NV') DEFAULT 'NV'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Dumping data for table `taikhoancuahang`
+--
+
+INSERT INTO `taikhoancuahang` (`id`, `username`, `password`, `role`) VALUES
+(1, 'admin1', '123456', 'Admin'),
+(2, 'nv1', '123456', 'NV'),
+(3, 'nv2', '123456', 'NV'),
+(4, 'nv3', '123456', 'NV'),
+(5, 'nv4', '123456', 'NV'),
+(6, 'nv5', '123456', 'NV'),
+(7, 'nv6', '123456', 'NV'),
+(8, 'nv7', '123456', 'NV'),
+(9, 'nv8', '123456', 'NV'),
+(10, 'nv9', '123456', 'NV');
+
 -- --------------------------------------------------------
 
 --
@@ -249,6 +391,22 @@ CREATE TABLE `taikhoankhachhang` (
   `password` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Dumping data for table `taikhoankhachhang`
+--
+
+INSERT INTO `taikhoankhachhang` (`id`, `username`, `password`) VALUES
+(1, 'kh1', '123456'),
+(2, 'kh2', '123456'),
+(3, 'kh3', '123456'),
+(4, 'kh4', '123456'),
+(5, 'kh5', '123456'),
+(6, 'kh6', '123456'),
+(7, 'kh7', '123456'),
+(8, 'kh8', '123456'),
+(9, 'kh9', '123456'),
+(10, 'kh10', '123456');
+
 -- --------------------------------------------------------
 
 --
@@ -258,8 +416,17 @@ CREATE TABLE `taikhoankhachhang` (
 CREATE TABLE `thanhtoan` (
   `id` int(11) NOT NULL,
   `tenPTTT` varchar(100) NOT NULL,
-  `moTa` text DEFAULT NULL
+  `moTa` text DEFAULT NULL,
+  `trangThai` tinyint(1) NOT NULL DEFAULT 1 COMMENT '0 = Ngưng sử dụng, 1 = Đang hoạt động'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `thanhtoan`
+--
+
+INSERT INTO `thanhtoan` (`id`, `tenPTTT`, `moTa`, `trangThai`) VALUES
+(1, 'Tien mat', 'Thanh toan khi nhan hang', 1),
+(2, 'Chuyen khoan', 'Thanh toan qua ngan hang', 1);
 
 --
 -- Indexes for dumped tables
@@ -318,7 +485,8 @@ ALTER TABLE `donhang`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `maDonHang` (`maDonHang`),
   ADD KEY `donhang_ibfk_1` (`khachHangId`),
-  ADD KEY `donhang_ibfk_2` (`phuongThucThanhToanId`);
+  ADD KEY `donhang_ibfk_2` (`phuongThucThanhToanId`),
+  ADD KEY `fk_donhang_khuyenmai` (`khuyenMaiId`);
 
 --
 -- Indexes for table `giohang`
@@ -396,97 +564,97 @@ ALTER TABLE `thanhtoan`
 -- AUTO_INCREMENT for table `baiviet`
 --
 ALTER TABLE `baiviet`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `baocao`
 --
 ALTER TABLE `baocao`
-  MODIFY `MaBaoCao` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `MaBaoCao` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `binhluan`
 --
 ALTER TABLE `binhluan`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `chitietdonhang`
 --
 ALTER TABLE `chitietdonhang`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `chitietgiohang`
 --
 ALTER TABLE `chitietgiohang`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `danhmuc`
 --
 ALTER TABLE `danhmuc`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `donhang`
 --
 ALTER TABLE `donhang`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `giohang`
 --
 ALTER TABLE `giohang`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `khachhang`
 --
 ALTER TABLE `khachhang`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `khuyenmai`
 --
 ALTER TABLE `khuyenmai`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `nhacungcap`
 --
 ALTER TABLE `nhacungcap`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `nhanvien`
 --
 ALTER TABLE `nhanvien`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `sanpham`
 --
 ALTER TABLE `sanpham`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `taikhoancuahang`
 --
 ALTER TABLE `taikhoancuahang`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `taikhoankhachhang`
 --
 ALTER TABLE `taikhoankhachhang`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `thanhtoan`
 --
 ALTER TABLE `thanhtoan`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Constraints for dumped tables
@@ -524,7 +692,8 @@ ALTER TABLE `chitietgiohang`
 --
 ALTER TABLE `donhang`
   ADD CONSTRAINT `donhang_ibfk_1` FOREIGN KEY (`khachHangId`) REFERENCES `khachhang` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `donhang_ibfk_2` FOREIGN KEY (`phuongThucThanhToanId`) REFERENCES `thanhtoan` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+  ADD CONSTRAINT `donhang_ibfk_2` FOREIGN KEY (`phuongThucThanhToanId`) REFERENCES `thanhtoan` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_donhang_khuyenmai` FOREIGN KEY (`khuyenMaiId`) REFERENCES `khuyenmai` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
 -- Constraints for table `giohang`
@@ -548,9 +717,9 @@ ALTER TABLE `nhanvien`
 -- Constraints for table `sanpham`
 --
 ALTER TABLE `sanpham`
-  ADD CONSTRAINT `fk_sanpham_dm` FOREIGN KEY (`danhMucId`) REFERENCES `danhmuc` (`id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_sanpham_dm` FOREIGN KEY (`danhMucId`) REFERENCES `danhmuc` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_sanpham_km` FOREIGN KEY (`khuyenMaiId`) REFERENCES `khuyenmai` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_sanpham_ncc` FOREIGN KEY (`nhaCungCapId`) REFERENCES `nhacungcap` (`id`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_sanpham_ncc` FOREIGN KEY (`nhaCungCapId`) REFERENCES `nhacungcap` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

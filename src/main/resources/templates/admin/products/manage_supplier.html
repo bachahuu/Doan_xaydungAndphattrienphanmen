@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="content">
+    <div class="container">
+        <h1 style="text-align:center; font-family: 'Times New Roman', Times, serif;">Quản Lý Nhà Cung Cấp</h1>
+        
+        <!-- Nút thêm nhà cung cấp -->
+        <div style="text-align:right; margin-right:45px; margin-bottom:10px;">
+            <button id="btnAddSupplier" type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addSupplierModal">
+                Thêm Nhà Cung Cấp
+            </button>
+        </div>  
+        <table class="table table-striped" id ="supplierTable">
+            <thead>
+                <tr style="text-align:center;">
+                    <th>STT</th>
+                    <th>Mã NCC</th>
+                    <th>Tên Nhà Cung Cấp</th>
+                    <th>Số Điện Thoại</th>
+                    <th>Email</th>
+                    <th>Địa Chỉ</th>
+                    <th>Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr style="text-align:center;" th:each="supplier, stt : ${suppliers}" >
+                    <td th:text="${stt.index + 1}">1</td> 
+                    <td th:text="${supplier.maNCC}">NCC001</td> 
+                    <td th:text="${supplier.tenNCC}">Công ty TNHH An Châu</td> 
+                    <td th:text="${supplier.soDienThoai}">0123456789</td> 
+                    <td th:text="${supplier.email}">anchau@gmail.com</td>
+                    <td th:text="${supplier.diaChi}">123 Nguyễn Văn Linh, Q7, TP.HCM</td>
+                    <td>
+                        <div class="btn-group">
+                            <button class="btn btn-sm btn-info" 
+                                data-bs-toggle="modal" 
+                                data-bs-target="#editSupplierModal"
+                                th:data-supplier-id="${supplier.id}">
+                                <i class="fas fa-edit"></i>
+                            </button> 
+                            <button class="btn btn-sm btn-danger" 
+                                th:data-supplier-id="${supplier.id}">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Modal Sửa thông tin nhà cung cấp -->
+    <div class="modal fade" id="editSupplierModal" tabindex="-1" aria-labelledby="editSupplierModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editSupplierModalLabel">Sửa Thông Tin Nhà Cung Cấp</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editSupplierForm">
+                        <div class="mb-3">
+                            <label for="maNCC" class="form-label">Mã Nhà Cung Cấp</label>
+                            <input type="text" class="form-control" id="maNCC" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label for="tenNCC" class="form-label">Tên Nhà Cung Cấp</label>
+                            <input type="text" class="form-control" id="tenNCC" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="soDienThoai" class="form-label">Số Điện Thoại</label>
+                            <input type="tel" class="form-control" id="soDienThoai" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="email" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="diaChi" class="form-label">Địa Chỉ</label>
+                            <textarea class="form-control" id="diaChi" rows="3" required></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                    <button type="button" class="btn btn-primary" id="saveUpdateBtn">Lưu Thay Đổi</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Thêm Nhà Cung Cấp -->
+    <div class="modal fade" id="addSupplierModal" tabindex="-1" aria-labelledby="addSupplierModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addSupplierModalLabel">Thêm Nhà Cung Cấp Mới</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addSupplierForm" class="row g-3">
+                        <!-- Thông tin cơ bản -->
+                        <div class="col-md-6">
+                            <label class="form-label">Mã nhà cung cấp *</label>
+                            <input type="text" class="form-control" id="addSupplierCode" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Tên nhà cung cấp *</label>
+                            <input type="text" class="form-control" id="addSupplierName" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Số điện thoại *</label>
+                            <input type="tel" class="form-control" id="addPhone" required 
+                                   pattern="[0-9]{10}" title="Số điện thoại phải có 10 chữ số">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Email *</label>
+                            <input type="email" class="form-control" id="addEmail" required>
+                        </div>
+
+                        <!-- Địa chỉ -->
+                        <div class="col-12">
+                            <label class="form-label">Địa chỉ *</label>
+                            <textarea class="form-control" id="addAddress" rows="3" required></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                    <button type="button" class="btn btn-primary" id="saveNewSupplierBtn">Lưu nhà cung cấp</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript riêng cho trang nhà cung cấp -->
+    <script th:src="@{/js/admin/supplier.js}"></script>
+</div>
+</html>
