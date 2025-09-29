@@ -1,0 +1,232 @@
+
+<div th:fragment="content">
+<div class="container mt-4 mb-5">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="border rounded p-3 bg-white text-center">
+                <img th:src="@{'/images/' + ${product.hinhAnh}}" th:alt="${product.tenSanPham}" class="img-fluid rounded product-main-img" style="max-height:320px;object-fit:contain;box-shadow:0 2px 12px rgba(0,0,0,0.10);background:#fafafa;" />
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="border rounded p-4 bg-white h-100 d-flex flex-column justify-content-between">
+                <div>
+                    <h2 class="text-primary font-weight-bold mb-2" th:text="${product.tenSanPham}"></h2>
+                    <h4 class="text-warning mb-3" th:text="${#numbers.formatInteger(product.gia, 1, 'COMMA') + ' VNĐ/KG'}"></h4>
+                    <p class="text-muted mb-3" th:text="${product.moTa}"></p>
+                </div>
+                <form method="post" th:action="@{'/cart/add'}" class="form-inline align-items-center mt-3">
+                    <input type="hidden" name="productId" th:value="${product.id}" />
+                    <label class="mr-2 font-weight-bold">Số lượng:</label>
+                    <input type="number" name="quantity" value="1" min="1" class="form-control mr-3" style="width:80px;" />
+                    <button type="submit" class="btn btn-warning font-weight-bold px-4">Thêm vào giỏ hàng <i class="fa fa-shopping-cart ml-1"></i></button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Thông tin chi tiết -->
+    <div class="card mt-5">
+        <div class="card-header bg-light">
+            <h5 class="mb-0">Thông tin chi tiết về sản phẩm</h5>
+        </div>
+        <div class="card-body">
+            <div><b>Nhà cung cấp:</b> <span th:text="${product.nhaCungCap != null ? product.nhaCungCap.tenNCC : 'Đang cập nhật...'}"></span></div>
+            <div><b>Mô tả sản phẩm:</b> <span th:text="${product.moTa != null ? product.moTa : 'Đang cập nhật...'}"></span></div>
+        </div>
+    </div>
+
+    <!-- Gợi ý sản phẩm khác -->
+    <div class="suggest-section mt-5">
+        <h4 class="suggest-title mb-3">Có thể bạn sẽ thích</h4>
+        <div class="suggest-slider-container">
+            <button class="suggest-arrow left" onclick="slideSuggest(-1)"><i class="fa-solid fa-chevron-left"></i></button>
+            <div class="suggest-slider-track" id="suggestSlider">
+                <div th:each="sp : ${suggestList}" class="suggest-card">
+                    <div class="suggest-img">
+                        <img th:src="@{'/images/' + ${sp.hinhAnh}}" th:alt="${sp.tenSanPham}" />
+                    </div>
+                    <div class="suggest-info">
+                        <div class="suggest-name" th:text="${sp.tenSanPham}"></div>
+                        <div class="suggest-price" th:text="${#numbers.formatInteger(sp.gia, 1, 'COMMA') + ' VNĐ/KG'}"></div>
+                        <a th:href="@{'/product/' + ${sp.id}}" class="suggest-btn">Xem chi tiết</a>
+                    </div>
+                </div>
+            </div>
+            <button class="suggest-arrow right" onclick="slideSuggest(1)"><i class="fa-solid fa-chevron-right"></i></button>
+        </div>
+    </div>
+</div>
+
+<script>
+function slideSuggest(direction) {
+    const track = document.getElementById('suggestSlider');
+    const card = track.querySelector('.suggest-card');
+    if (!card) return;
+    const cardWidth = card.offsetWidth + 16;
+    const container = track.parentElement;
+    const maxScroll = track.scrollWidth - container.offsetWidth;
+    let newScroll = track.scrollLeft + direction * cardWidth * 2;
+    if (newScroll < 0) newScroll = 0;
+    if (newScroll > maxScroll) newScroll = maxScroll;
+    track.scrollTo({ left: newScroll, behavior: 'smooth' });
+}
+</script>
+<style>
+body { background: #f5f6fa; }
+.product-main-img { max-width: 100%; }
+.suggest-section {
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 1400px;
+    width: 95%;
+}
+.suggest-title {
+    font-size: 1.7rem;
+    font-weight: bold;
+    color: #222;
+    margin-bottom: 24px;
+}
+.suggest-slider-container {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    position: relative;
+}
+.suggest-arrow {
+    background: #fac031;
+    border: none;
+    color: #fff;
+    font-size: 2rem;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 10px;
+    transition: background 0.2s;
+    box-shadow: 0 2px 8px rgba(250,192,49,0.15);
+}
+.suggest-arrow:hover {
+    background: #fda211;
+    color: #fff;
+    transform: scale(1.08);
+    box-shadow: 0 4px 16px rgba(250,192,49,0.25);
+}
+.suggest-arrow:active {
+    background: #e89c0f;
+    color: #fff;
+    transform: scale(0.96);
+}
+.suggest-arrow.disabled,
+.suggest-arrow:disabled {
+    background: #eee;
+    color: #ccc;
+    cursor: not-allowed;
+    box-shadow: none;
+    pointer-events: none;
+    opacity: 0.7;
+}
+.suggest-slider-track {
+    display: flex;
+    gap: 15px;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    padding-bottom: 8px;
+    flex: 1;
+    width: 100%;
+}
+.suggest-card {
+    min-width: 325px;
+    max-width: 325px;
+    height: 515px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px 10px 18px 10px;
+    transition: box-shadow 0.3s, transform 0.3s;
+}
+.suggest-card:hover {
+    box-shadow: 0 8px 32px rgba(250, 192, 49, 0.4), 0 2px 8px rgba(0,0,0,0.15);
+    transform: scale(1.04);
+    z-index: 2;
+}
+.suggest-img {
+    width: 300px;
+    height: 245px;
+    margin: 0 auto 10px auto;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.suggest-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 10px;
+    background: #fafafa;
+    box-shadow: 0 1px 6px rgba(0,0,0,0.07);
+    display: block;
+    transition: 0.3s;
+}
+.suggest-img:hover img {
+    transform: scale(1.1);
+}
+.suggest-info {
+    text-align: center;
+    width: 100%;
+}
+.suggest-name {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #fac031;
+    margin-bottom: 8px;
+    min-height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.suggest-price {
+    color: #e67e22;
+    font-size: 1.2rem;
+    margin-bottom: 12px;
+    font-weight: bold;
+}
+.suggest-btn {
+    display: inline-block;
+    background: #fac031;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 28px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.2s;
+    margin-top: 10px;
+}
+.suggest-btn:hover { background: #fda211; color: #000; }
+@media (max-width: 1200px) {
+    .suggest-section { max-width: 100vw; }
+    .suggest-slider-track { gap: 10px; }
+    .suggest-card { min-width: 45vw; max-width: 48vw; height: 38vw; }
+    .suggest-img { width: 90%; height: 30vw; }
+}
+@media (max-width: 900px) {
+    .product-main-img { max-height: 220px; }
+    .suggest-section { max-width: 100vw; }
+    .suggest-card { min-width: 90vw; max-width: 95vw; height: auto; }
+    .suggest-img { width: 90vw; height: 30vw; }
+}
+</style>
+<!-- Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+</div>

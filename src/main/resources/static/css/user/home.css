@@ -1,3 +1,77 @@
+/* Slider sản phẩm ngang */
+.slider-container {
+    position: relative;
+    width: 95%;
+    margin: 0 auto 30px auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.slider-track {
+    display: flex;
+    overflow-x: auto;
+    overflow-y: visible;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    width: 100%;
+    padding-bottom: 8px;
+    scrollbar-width: thin;
+    scrollbar-color: #fac031 #eee;
+}
+.slider-track::-webkit-scrollbar {
+    height: 8px;
+}
+.slider-track::-webkit-scrollbar-thumb {
+    background: #fac031;
+    border-radius: 4px;
+}
+.slider-track::-webkit-scrollbar-track {
+    background: #eee;
+    border-radius: 4px;
+}
+.slider-arrow {
+    background: #fac031;
+    border: none;
+    color: #fff;
+    font-size: 2rem;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 10px;
+    transition: background 0.2s;
+    z-index: 3;
+    box-shadow: 0 2px 8px rgba(250,192,49,0.15);
+}
+.slider-arrow:hover {
+    background: #fda211;
+    color: #fff;
+    transform: scale(1.08);
+    box-shadow: 0 4px 16px rgba(250,192,49,0.25);
+}
+.slider-arrow:active {
+    background: #e89c0f;
+    color: #fff;
+    transform: scale(0.96);
+}
+.slider-arrow.disabled,
+.slider-arrow:disabled {
+    background: #eee;
+    color: #ccc;
+    cursor: not-allowed;
+    box-shadow: none;
+    pointer-events: none;
+    opacity: 0.7;
+}
+.slider-track .menu_card {
+    margin-right: 15px;
+}
+.slider-track .menu_card:last-child {
+    margin-right: 0;
+}
 *{
     margin: 0;
     padding: 0;
@@ -174,6 +248,7 @@ html{
     grid-gap: 15px;
 }
 
+
 .menu_card{
     background: #fff;
     color: #000;
@@ -183,6 +258,13 @@ html{
     margin-bottom: 20px;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    transition: box-shadow 0.3s, transform 0.3s;
+}
+
+.menu_card:hover {
+    box-shadow: 0 8px 32px rgba(250, 192, 49, 0.4), 0 2px 8px rgba(0,0,0,0.15);
+    transform: scale(1.04);
+    z-index: 2;
 }
 
 .menu_img{ width: 300px; height: 245px; margin: 0 auto; overflow: hidden; }

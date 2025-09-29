@@ -3,11 +3,10 @@ package com.example.fruitstore.entity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-
 import lombok.Data;
-import jakarta.persistence.*;
 
 @Entity
 @Table(name = "nhacungcap")
@@ -29,4 +28,43 @@ public class supplierEntity {
     @Column(name = "diaChi")
     private String diaChi;
 
+    public String getTenNCC() {
+        return tenNCC;
+    }
+
+    public String getSoDienThoai() {
+        return soDienThoai;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getDiaChi() {
+        return diaChi;
+    }
+
+    public String getMaNCC() {
+        return maNCC;
+    }
+
+    public void setTenNCC(String tenNCC) {
+        this.tenNCC = tenNCC;
+    }
+
+    public void setSoDienThoai(String soDienThoai) {
+        this.soDienThoai = soDienThoai;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setDiaChi(String diaChi) {
+        this.diaChi = diaChi;
+    }
+
+    public void setMaNCC(String maNCC) {
+        this.maNCC = maNCC;
+    }
 }

@@ -54,80 +54,57 @@
         <!-- Sản phẩm -->
         <div class="menu" id="Menu">
             <h1>Our<span>Menu</span></h1>
-
-            <div class="menu_box">
-                <!-- Dứa -->
-                <div class="menu_card">
-                    <div class="menu_img">
-                        <img src="/images/pngegg.png" alt="">
-                    </div>
-                    <div class="small_card"><i class="fa-solid fa-heart"></i></div>
-                    <div class="menu_info">
-                        <h2>Dứa</h2>
-                        <p>Hương Vị: Ngọt thanh, chua nhẹ, giòn, mọng nước và thơm mát.<br>Dinh Dưỡng: Giàu vitamin C, mangan, chất xơ và enzyme bromelain.</p>
-                        <h3>$1.99</h3>
-                        <div class="menu_icon">
-                            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+            <div class="slider-container">
+                <button class="slider-arrow left" id="sliderLeft" onclick="slideMenu(-1)"><i class="fa-solid fa-chevron-left"></i></button>
+                <div class="slider-track" id="menuSlider">
+                    <div th:each="sp : ${sanPhamList}" class="menu_card">
+                        <div class="menu_img">
+                            <img th:src="@{'/images/' + ${sp.hinhAnh}}" th:alt="${sp.tenSanPham}" />
                         </div>
-                        <a href="#" class="menu_btn">Learn More</a>
-                    </div>
-                    <div class="card_shopping"><i class="fa-solid fa-cart-shopping"></i></div>
-                </div>
-
-                <!-- Táo -->
-                <div class="menu_card">
-                    <div class="menu_img">
-                        <img src="/images/pngegg (3).png" alt="">
-                    </div>
-                    <div class="small_card"><i class="fa-solid fa-heart"></i></div>
-                    <div class="menu_info">
-                        <h2>Táo</h2>
-                        <p>Hương Vị: Ngọt thanh, chua nhẹ, giòn, mọng nước và thơm mát.<br>Dinh Dưỡng: Giàu vitamin C, mangan, chất xơ và enzyme bromelain.</p>
-                        <h3>$1.99</h3>
-                        <div class="menu_icon">
-                            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                        <div class="menu_info">
+                            <h2 th:text="${sp.tenSanPham}"></h2>
+                            <p th:text="${sp.moTa}"></p>
+                            <h3 th:text="${#numbers.formatInteger(sp.gia, 1, 'COMMA') + ' VNĐ/KG'}"></h3>
+                            <a href="#" class="menu_btn">Order Now</a>
                         </div>
-                        <a href="#" class="menu_btn">Learn More</a>
+                        <div class="card_shopping"><i class="fa-solid fa-cart-shopping"></i></div>
                     </div>
-                    <div class="card_shopping"><i class="fa-solid fa-cart-shopping"></i></div>
                 </div>
-
-                <!-- Lựu -->
-                <div class="menu_card">
-                    <div class="menu_img">
-                        <img src="/images/pngegg (2).png" alt="">
-                    </div>
-                    <div class="small_card"><i class="fa-solid fa-heart"></i></div>
-                    <div class="menu_info">
-                        <h2>Lựu</h2>
-                        <p>Hương Vị: Ngọt thanh, chua nhẹ, giòn, mọng nước và thơm mát.<br>Dinh Dưỡng: Giàu vitamin C, mangan, chất xơ và enzyme bromelain.</p>
-                        <h3>$1.99</h3>
-                        <div class="menu_icon">
-                            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
-                        </div>
-                        <a href="#" class="menu_btn">Learn More</a>
-                    </div>
-                    <div class="card_shopping"><i class="fa-solid fa-cart-shopping"></i></div>
-                </div>
-
-                <!-- Cam -->
-                <div class="menu_card">
-                    <div class="menu_img">
-                        <img src="/images/pngegg (1).png" alt="">
-                    </div>
-                    <div class="small_card"><i class="fa-solid fa-heart"></i></div>
-                    <div class="menu_info">
-                        <h2>Cam</h2>
-                        <p>Hương Vị: Ngọt thanh, chua nhẹ, giòn, mọng nước và thơm mát.<br>Dinh Dưỡng: Giàu vitamin C, mangan, chất xơ và enzyme bromelain.</p>
-                        <h3>$1.99</h3>
-                        <div class="menu_icon">
-                            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
-                        </div>
-                        <a href="#" class="menu_btn">Learn More</a>
-                    </div>
-                    <div class="card_shopping"><i class="fa-solid fa-cart-shopping"></i></div>
-                </div>
+                <button class="slider-arrow right" id="sliderRight" onclick="slideMenu(1)"><i class="fa-solid fa-chevron-right"></i></button>
             </div>
+            <script>
+            function slideMenu(direction) {
+                const track = document.getElementById('menuSlider');
+                const card = track.querySelector('.menu_card');
+                if (!card) return;
+                const cardWidth = card.offsetWidth + 15;
+                const container = track.parentElement;
+                const maxScroll = track.scrollWidth - container.offsetWidth;
+                let newScroll = track.scrollLeft + direction * cardWidth;
+                if (newScroll < 0) newScroll = 0;
+                if (newScroll > maxScroll) newScroll = maxScroll;
+                track.scrollTo({ left: newScroll, behavior: 'smooth' });
+            }
+            // Optional: hide left/right arrow if can't scroll
+            function updateArrows() {
+                const track = document.getElementById('menuSlider');
+                const leftBtn = document.getElementById('sliderLeft');
+                const rightBtn = document.getElementById('sliderRight');
+                if (!track) return;
+                leftBtn.disabled = track.scrollLeft <= 0;
+                rightBtn.disabled = track.scrollLeft + track.offsetWidth >= track.scrollWidth - 1;
+                leftBtn.classList.toggle('disabled', leftBtn.disabled);
+                rightBtn.classList.toggle('disabled', rightBtn.disabled);
+            }
+            document.addEventListener('DOMContentLoaded', function() {
+                const track = document.getElementById('menuSlider');
+                if (track) {
+                    track.addEventListener('scroll', updateArrows);
+                    window.addEventListener('resize', updateArrows);
+                    updateArrows();
+                }
+            });
+            </script>
         </div>
     </div>
 </body>

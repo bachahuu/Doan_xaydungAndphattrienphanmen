@@ -1,20 +1,19 @@
 package com.example.fruitstore.controller.user;
 
-import org.springframework.web.bind.annotation.GetMapping;
-
-import org.springframework.ui.Model;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class dashboard {
 
-    @GetMapping("/menu")
+    @GetMapping("/menu-static")
     public String showMenu(Model model) {
         model.addAttribute("view", "user/products/menu");
         return "user/layout/main";
     }
 
-    @GetMapping("/home")
+    @GetMapping("/home-static")
     public String showHome(Model model) {
         model.addAttribute("view", "user/products/home");
         return "user/layout/main";
