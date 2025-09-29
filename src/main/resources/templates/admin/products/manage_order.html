@@ -12,50 +12,45 @@
         
         <table class="table table-striped">
             <thead>
-                <tr style="text-align:center;">
+                <tr style="text-align:center;" >
                     <th>STT</th>
                     <th>Mã đơn hàng</th>
                     <th>Ngày đặt</th>
-                    <th>Ngày Cập nhật</th>
-                    <th>Trạng Thái</th>
-                    <th>Quản lý</th>
+                    <th>Khách hàng </th>
+                    <th>Trạng thái</th>
                     <th>Thao tác</th>
                 </tr>
             </thead>
             <tbody>
-                <tr style="text-align:center;">
-                    <td>1</td>
-                    <td>DH001</td>
-                    <td>2024-01-01</td>
-                    <td>2024-01-01</td>
-                    <td id="status-DH001">cho_xu_ly</td>
-                    <td>
-                        <a class="btn btn-danger" onclick="return confirm('bạn có muốn xóa không ?')">
-                            <i class="fas fa-trash-alt"></i>
-                        </a>
-                        <!-- Nút Chi tiết đơn hàng với modal -->
-                        <button type="button" 
-                                class="btn btn-success btn-order-detail" 
-                                data-ma-don-hang="DH001"
-                                data-bs-toggle="modal" 
-                                data-bs-target="#orderDetailModal">
-                            Chi tiết đơn hàng
-                        </button>
-                    </td>
-                    <td>
-                        <div class="btn-group" id="action-group-DH001">
-                            <!-- <button type="button" class="btn btn-warning">Thao tác</button> -->
-                            <button type="button" class="btn btn-warning dropdown-toggle dropdown-toggle-split" 
-                                    data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <!-- <span class="sr-only">Toggle Dropdown</span> -->
-                                 chưa xử lý 
+                <tr style="text-align:center;" th:each="order, stt : ${orders}">
+                    <td style="min-width: 60px;" th:text="${stt.index + 1}">1</td>
+                    <td style="min-width: 100px;" th:text="${order.maDonHang}">DH001</td>
+                    <td style="min-width: 120px;" th:text="${order.ngayTao}">2024-01-01</td>
+                    <td style="min-width: 100px;" th:text="${order.khachHangId}">2024-01-01</td>
+                    <td style="min-width: 100px;" th:id="'status-' + ${order.maDonHang}" th:text="${order.trangThai}">cho_xu_ly</td>
+                    <td style="min-width: 120px;">
+                        <div style="display: flex; gap: 8px; justify-content: center;">
+                            <!-- Nút Xem chi tiết đơn hàng -->
+                            <button type="button" 
+                                    class="btn btn-primary btn-order-detail" 
+                                    th:data-ma-don-hang="${order.maDonHang}"
+                                    data-bs-toggle="modal" 
+                                    data-bs-target="#orderDetailModal"
+                                    onclick="showOrderDetail(this.dataset.maDonHang)"
+                                    style="width: 40px; height: 40px; padding: 0; display: flex; align-items: center; justify-content: center;">
+                                <i class="fas fa-eye" style="color: white; font-size: 16px;"></i>
                             </button>
-                            <div class="dropdown-menu">
-                                <a class="dropdown-item" href="#" onclick="update_trang_thai('DH001', 'hoan_tat')">
-                                    Xác nhận đơn hàng</a>
-                                <a class="dropdown-item" href="#" onclick="update_trang_thai('DH001', 'huy_bo')">
-                                    Hủy đơn hàng</a>
-                            </div>
+                            
+                            <!-- Nút Sửa đơn hàng -->
+                            <button type="button" 
+                                    class="btn btn-success btn-edit-order" 
+                                    th:data-ma-don-hang="${order.maDonHang}"
+                                    data-bs-toggle="modal" 
+                                    data-bs-target="#editOrderModal"
+                                    onclick="showEditOrder(this.dataset.maDonHang)"
+                                    style="width: 40px; height: 40px; padding: 0; display: flex; align-items: center; justify-content: center;">
+                                <i class="fas fa-pen" style="color: white; font-size: 16px;"></i>
+                            </button>
                         </div>
                     </td>
                 </tr>
@@ -78,42 +73,58 @@
                 <!-- Modal Body -->
                 <div class="modal-body">
                     <div class="container-fluid">
-                        <!-- Thông tin chi tiết đơn hàng -->
-                        <div class="table-responsive">
-                            <table class="table table-striped">
-                                <thead>
-                                    <tr style="text-align:center;">
-                                        <th>Khách hàng</th>
-                                        <th>Email khách hàng</th>
-                                        <th>SĐT khách hàng</th>
-                                        <th>Chiết Khấu</th>
-                                        <th>Tổng tiền</th>
-                                        <th>Phương thức thanh toán</th>
-                                        <th>Địa chỉ nhận hàng</th>
-                                        <th>Thao tác</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr style="text-align:center;">
-                                        <td id="modal-ten-nguoi-mua">-</td>
-                                        <td id="modal-email-nguoi-mua">-</td>
-                                        <td id="modal-sdt-nguoi-mua">-</td>
-                                        <td id="modal-ten-khuyen-mai">-</td>
-                                        <td id="modal-tong-tien">-</td>
-                                        <td id="modal-phuong-thuc">-</td>
-                                        <td id="modal-dia-chi">-</td>
-                                        <td>
-                                            <button type="button" 
-                                                    class="btn btn-success btn-edit-order" 
-                                                    data-bs-toggle="modal" 
-                                                    data-bs-target="#editOrderModal"
-                                                    style="margin-right: 10px">
-                                                <i class="fa-regular fa-pen-to-square"></i>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                        <!-- Thông tin tổng quan đơn hàng - dạng form-like -->
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                <label class="form-label">Mã đơn hàng</label>
+                                <div id="detail-ma-don-hang" class="form-control">-</div>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Trạng thái</label>
+                                <div id="detail-trang-thai" class="form-control">-</div>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Ngày tạo</label>
+                                <div id="detail-ngay-tao" class="form-control">-</div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label class="form-label">Khách hàng</label>
+                                <div id="detail-khach-hang" class="form-control">-</div>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">SDT Khách hàng</label>
+                                <div id="detail-SDT-khach-hang" class="form-control">-</div>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Tổng tiền</label>
+                                <div id="detail-tong-tien" class="form-control">-</div>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Ghi chú</label>
+                                <div id="detail-ghi-chu" class="form-control">-</div>
+                            </div>
+                            <div class="col-md-12">
+                                <label class="form-label">Địa chỉ nhận hàng</label>
+                                <!-- <div id="detail-dia-chi" class="form-control">-</div> -->
+                                <textarea class="form-control" id="detail-dia-chi" name="diaChiNguoiMua" rows="2" readonly></textarea>
+                            </div>
+                        </div>
+
+                        <!-- Danh sách sản phẩm trong đơn -->
+                        <div class="mt-4">
+                            <h5 style="font-family: 'Times New Roman', Times, serif;">Sản phẩm</h5>
+                            <div id="detail-items" class="list-group">
+                                <!-- Render bằng JS: mỗi item gồm tên sản phẩm + số lượng -->
+                            </div>
+                        </div>
+
+                        <!-- Nút mở modal sửa -->
+                        <div class="mt-3">
+                            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#editOrderModal">
+                                <i class="fas fa-pen" style="color: white;"></i>
+                                <span style="margin-left:6px;">Sửa đơn hàng</span>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -140,7 +151,7 @@
                 
                 <!-- Modal Body -->
                 <div class="modal-body">
-                    <form th:action="@{/admin/orders/update}" method="post">
+                    <form id="editOrderForm">
                         <input type="hidden" id="edit-ma-don-hang" name="maDonHang">
                         
                         <div class="mb-3">
@@ -169,6 +180,17 @@
                         </div>
                         
                         <div class="mb-3">
+                            <label for="edit-trang-thai" class="form-label">Trạng Thái</label>
+                            <select class="form-control" id="edit-trang-thai" name="trangThai" required>
+                                <option value="Cho_xu_ly">Chờ xử lý</option>
+                                <option value="Xac_Nhan">Xác nhận</option>
+                                <option value="Dang_giao">Đang giao</option>
+                                <option value="Hoan_tat">Hoàn tất</option>
+                                <option value="huy_bo">Hủy bỏ</option>
+                            </select>
+                        </div>
+                        
+                        <div class="mb-3">
                             <label for="edit-phuong-thuc" class="form-label">Phương Thức Thanh Toán</label>
                             <input type="text" class="form-control" id="edit-phuong-thuc" name="phuongThucThanhToan" required>
                         </div>
@@ -180,7 +202,7 @@
                         
                         <div class="d-flex justify-content-between">
                             <button type="submit" class="btn btn-success">Cập nhật</button>
-                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Đóng</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
                         </div>
                     </form>
                 </div>

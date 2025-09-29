@@ -1,55 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
-    loadSupplierList();
-    attachSupplierEventListeners();
     attachAddSupplierListener();
+    attachSupplierEventListeners();
 });
-
-// Hàm load danh sách nhà cung cấp
-function loadSupplierList() {
-    fetch('/api/admin/supplier/list')
-        .then(response => {
-            if (!response.ok) throw new Error('Không tải được danh sách nhà cung cấp');
-            return response.json();
-        })
-        .then(data => {
-            const tbody = document.querySelector('#supplierTable tbody');
-            tbody.innerHTML = ''; // Xóa dữ liệu cũ
-            data.forEach((s, index) => { 
-                tbody.innerHTML += `
-                    <tr style="text-align:center;">
-                        <td>${index + 1}</td>
-                        <td>${s.maNCC}</td>
-                        <td>${s.tenNCC}</td>
-                        <td>${s.soDienThoai}</td>
-                        <td>${s.email}</td>
-                        <td>${s.diaChi}</td>
-                        <td>
-                            <div class="btn-group">
-                                <button class="btn btn-sm btn-info" 
-                                    data-bs-toggle="modal" 
-                                    data-bs-target="#editSupplierModal"
-                                    data-supplier-id="${s.maNCC}">
-                                    <i class="fas fa-edit"></i>
-                                </button> 
-                                <button class="btn btn-sm btn-danger" 
-                                    data-supplier-id="${s.maNCC}">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-                `;
-            });
-            // Gắn lại sự kiện cho các nút sau khi tải danh sách
-            attachSupplierEventListeners();
-        })
-        .catch(error => {
-            console.error('Lỗi:', error);
-            if(confirm('Không thể tải danh sách nhà cung cấp. Bạn có muốn tải lại trang?')) {
-                window.location.href = window.location.href;
-            }
-        });
-}
 
 function attachSupplierEventListeners() {
     // Gán sự kiện cho nút sửa
@@ -84,7 +36,9 @@ function attachSupplierEventListeners() {
     });
 
     // Gán sự kiện cho nút Lưu trong modal
-    document.getElementById('saveUpdateBtn').addEventListener('click', function() {
+    const updateBtn = document.getElementById('saveUpdateBtn');
+    if (updateBtn) {
+        updateBtn.addEventListener('click', function() {
                 if (!currentSupplierId) {
                     alert('Không tìm thấy mã nhà cung cấp!');
                     return;
@@ -130,9 +84,11 @@ function attachSupplierEventListeners() {
                 .catch(error => {
                     alert(error.message);
                 });
-    });
-    // Gán sự kiện cho nút xóa
-    document.querySelectorAll('.btn-danger').forEach(button => {
+        });
+    }
+    
+    // Gán sự kiện cho nút xóa (chỉ nút xóa thực sự, không phải nút đóng modal)
+    document.querySelectorAll('.btn-danger[data-supplier-id]').forEach(button => {
         button.addEventListener('click', function() {
             const supplierId = button.getAttribute('data-supplier-id');
             if (confirm('Bạn có chắc chắn muốn xóa nhà cung cấp này không?')) {
@@ -155,7 +111,9 @@ function attachSupplierEventListeners() {
 
 // Gán sự kiện cho form thêm nhà cung cấp
 function attachAddSupplierListener() {
-    document.getElementById('saveNewSupplierBtn').addEventListener('click', function() {
+    const saveBtn = document.getElementById('saveNewSupplierBtn');
+    if (saveBtn) {
+        saveBtn.addEventListener('click', function() {
         const data = {
             maNCC: document.getElementById('addSupplierCode').value.trim(),
             tenNCC: document.getElementById('addSupplierName').value.trim(),
@@ -222,5 +180,6 @@ function attachAddSupplierListener() {
         .catch(error => {
             alert(error.message);
         });
-    });
+        });
+    }
 }

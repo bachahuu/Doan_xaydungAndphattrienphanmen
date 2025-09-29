@@ -8,12 +8,19 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import com.example.fruitstore.entity.supplierEntity;
+import com.example.fruitstore.service.orderService;
 import com.example.fruitstore.service.supplierService;
+import com.example.fruitstore.entity.order.orderEntity;
 
 @Controller
 public class adminDashboard {
+    @Autowired
+    private orderService orderService;
+
     @GetMapping("/admin/order")
     public String showorder(Model model) {
+        List<orderEntity> orders = orderService.getAllOrders();
+        model.addAttribute("orders", orders);
         model.addAttribute("view", "admin/products/manage_order");
         return "admin/layout/main";
     }
