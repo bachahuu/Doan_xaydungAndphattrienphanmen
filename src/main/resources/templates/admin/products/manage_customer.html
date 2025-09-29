@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="content">
+    <div class="container">
+        <h1 style="text-align:center; font-family: 'Times New Roman', Times, serif;">
+            Quản Lý Khách Hàng
+        </h1>
+
+        <!-- ✅ Chỉ hiển thị danh sách, không thêm/sửa/xoá -->
+        <table class="table table-striped mt-4" id="customerTable">
+            <thead>
+                <tr style="text-align:center;">
+                    <th>STT</th>
+                    <th>Mã KH</th>
+                    <th>Tên Khách Hàng</th>
+                    <th>Số Điện Thoại</th>
+                    <th>Địa Chỉ</th>
+                    <th>Email</th>
+                    <th>Loại KH</th>
+                    <th>Tài Khoản ID</th>
+                    <th>Trạng Thái</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Nếu muốn load trực tiếp bằng Thymeleaf -->
+                <tr style="text-align:center;" th:each="customer, stt : ${customers}">
+                    <td th:text="${stt.index + 1}">1</td>
+                    <td th:text="${customer.maKhachHang}">KH001</td>
+                    <td th:text="${customer.tenKhachHang}">Nguyễn Văn B</td>
+                    <td th:text="${customer.soDienThoai}">0901234567</td>
+                    <td th:text="${customer.diaChi}">123 Đường ABC, Q1, HCM</td>
+                    <td th:text="${customer.email}">abc@gmail.com</td>
+                    <td th:text="${customer.loaiKhachHang}">Khách VIP</td>
+                    <td th:text="${customer.taiKhoanId}">TK01</td>
+                    <td th:text="${customer.trangThaiTaiKhoan == 1 ? 'Đang hoạt động' : 'Ngừng hoạt động'}">
+                        Đang hoạt động
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- JavaScript riêng cho trang khách hàng -->
+    <script th:src="@{/js/admin/customer.js}"></script>
+</div>
+</html>

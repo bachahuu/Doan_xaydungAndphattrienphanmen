@@ -7,8 +7,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import com.example.fruitstore.entity.supplierEntity;
-import com.example.fruitstore.service.supplierService;
+import com.example.fruitstore.entity.CustomerEntity;
+import com.example.fruitstore.entity.EmployeeEntity; // Lớp entity cho nhân viên
+import com.example.fruitstore.entity.supplierEntity; // Lớp entity cho nhà cung cấp
+import com.example.fruitstore.service.supplierService; // Dịch vụ cho nhà cung cấp
+import com.example.fruitstore.service.CustomerService;
+import com.example.fruitstore.service.EmployeeService; // Dịch vụ cho nhân viên
 
 @Controller
 public class adminDashboard {
@@ -45,5 +49,25 @@ public class adminDashboard {
         model.addAttribute("view", "admin/products/manage_supplier");
         return "admin/layout/main";
     }
+    @Autowired
+    private EmployeeService employeeService;
+    @GetMapping("/admin/employee")
+    public String showEmployeeList(Model model) {
+        List<EmployeeEntity> employees = employeeService.getAllEmployees(); // Lấy danh sách nhân viên
+        model.addAttribute("employees", employees);
+        model.addAttribute("view", "admin/products/manage_employee");
+        return "admin/layout/main";
+    }
 
+    @Autowired
+    private CustomerService customerService;
+    @GetMapping("/admin/customer")
+    public String showCustomerList(Model model) {
+        // Nếu chỉ xem danh sách thì gọi service lấy tất cả khách hàng
+        List<CustomerEntity> customers = customerService.getAllCustomers();
+        model.addAttribute("customers", customers);
+        // Truyền tên view để main.html load fragment manage_customer
+        model.addAttribute("view", "admin/products/manage_customer");
+        return "admin/layout/main";
+    }
 }
