@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="content">
+    <div class="container">
+        <h1 style="text-align:center; font-family: 'Times New Roman', Times, serif;">Quản Lý Nhân Viên</h1>
+        
+        <!-- Nút thêm nhân viên -->
+        <div style="text-align:right; margin-right:45px; margin-bottom:10px;">
+            <button id="btnAddEmployee" type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addEmployeeModal">
+                Thêm Nhân Viên
+            </button>
+        </div>  
+        <table class="table table-striped" id="employeeTable">
+            <thead>
+                <tr style="text-align:center;">
+                    <th>STT</th>
+                    <th>Mã NV</th>
+                    <th>Tên Nhân Viên</th>
+                    <th>Số Điện Thoại</th>
+                    <th>Địa Chỉ</th>
+                    <th>Chức Vụ</th>
+                    <th>Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr style="text-align:center;" th:each="employee, stt : ${employees}">
+                    <td th:text="${stt.index + 1}">1</td> 
+                    <td th:text="${employee.maNV}">NV001</td> 
+                    <td th:text="${employee.tenNV}">Nguyễn Văn A</td> 
+                    <td th:text="${employee.soDienThoai}">0123456789</td> 
+                    <td th:text="${employee.diaChi}">123 Nguyễn Văn Linh, Q7, TP.HCM</td>
+                    <td th:text="${employee.chucVu}">Quản lý</td>
+                    <td>
+                        <div class="btn-group">
+                            <button class="btn btn-sm btn-info" 
+                                data-bs-toggle="modal" 
+                                data-bs-target="#editEmployeeModal"
+                                th:data-employee-id="${employee.id}">
+                                <i class="fas fa-edit"></i>
+                            </button> 
+                            <button class="btn btn-sm btn-danger" 
+                                th:data-employee-id="${employee.id}">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Modal Sửa thông tin nhân viên -->
+    <div class="modal fade" id="editEmployeeModal" tabindex="-1" aria-labelledby="editEmployeeModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editEmployeeModalLabel">Sửa Thông Tin Nhân Viên</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editEmployeeForm">
+                        <div class="mb-3">
+                            <label for="maNV" class="form-label">Mã Nhân Viên</label>
+                            <input type="text" class="form-control" id="maNV" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label for="tenNV" class="form-label">Tên Nhân Viên</label>
+                            <input type="text" class="form-control" id="tenNV" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="soDienThoai" class="form-label">Số Điện Thoại</label>
+                            <input type="tel" class="form-control" id="soDienThoai" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="diaChi" class="form-label">Địa Chỉ</label>
+                            <textarea class="form-control" id="diaChi" rows="3" required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="chucVu" class="form-label">Chức Vụ</label>
+                            <input type="text" class="form-control" id="chucVu" required>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                    <button type="button" class="btn btn-primary" id="saveUpdateEmployeeBtn">Lưu Thay Đổi</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Thêm Nhân Viên -->
+    <div class="modal fade" id="addEmployeeModal" tabindex="-1" aria-labelledby="addEmployeeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addEmployeeModalLabel">Thêm Nhân Viên Mới</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addEmployeeForm" class="row g-3">
+                        <!-- Thông tin cơ bản -->
+                        <div class="col-md-6">
+                            <label class="form-label">Mã nhân viên *</label>
+                            <input type="text" class="form-control" id="addEmployeeCode" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Tên nhân viên *</label>
+                            <input type="text" class="form-control" id="addEmployeeName" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Số điện thoại *</label>
+                            <input type="tel" class="form-control" id="addPhone" required 
+                                   pattern="[0-9]{10}" title="Số điện thoại phải có 10 chữ số">
+                        </div>
+
+                        <!-- Địa chỉ -->
+                        <div class="col-12">
+                            <label class="form-label">Địa chỉ *</label>
+                            <textarea class="form-control" id="addAddress" rows="3" required></textarea>
+                        </div>
+
+                        <!-- Chức vụ -->
+                        <div class="col-12">
+                            <label class="form-label">Chức vụ *</label>
+                            <input type="text" class="form-control" id="addPosition" required>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                    <button type="button" class="btn btn-primary" id="saveNewEmployeeBtn">Lưu nhân viên</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript riêng cho trang nhân viên -->
+    <script th:src="@{/js/admin/employee.js}"></script>
+</div>
+</html>
