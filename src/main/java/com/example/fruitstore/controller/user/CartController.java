@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.fruitstore.entity.SanPham;
-import com.example.fruitstore.repository.SanPhamRepository;
+import com.example.fruitstore.respository.SanPhamRepository;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -22,8 +22,8 @@ public class CartController {
     @PostMapping("/cart/add")
     @ResponseBody
     public Map<String, Object> addToCart(@RequestParam("productId") Integer productId,
-                                         @RequestParam("quantity") Integer quantity,
-                                         HttpSession session) {
+            @RequestParam("quantity") Integer quantity,
+            HttpSession session) {
         Map<String, Object> response = new HashMap<>();
         SanPham product = sanPhamRepository.findById(productId).orElse(null);
         if (product == null) {

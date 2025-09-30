@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.fruitstore.entity.SanPham;
-import com.example.fruitstore.repository.SanPhamRepository;
+import com.example.fruitstore.respository.SanPhamRepository;
 
 @Service
 public class SanPhamService {

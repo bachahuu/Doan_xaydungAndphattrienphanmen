@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', function(){
 
 // Hàm hiển thị modal sửa đơn hàng
 function showEditOrder(ma_don_hang) {
-    document.getElementById('edit-ma-don-hang').value = ma_don_hang;
+    document.getElementById('edit-ma-don-hang-display').value = ma_don_hang;
     
     // Lấy chi tiết đơn hàng để điền vào form
     fetch(`/api/admin/order/detail/${ma_don_hang}`)
@@ -37,6 +37,13 @@ function showEditOrder(ma_don_hang) {
             document.getElementById('edit-ten-nguoi-mua').value = order.khachHangId || '';
             document.getElementById('edit-tong-tien').value = order.tongTien || '';
             document.getElementById('edit-trang-thai').value = order.trangThai || 'Cho_xu_ly';
+            document.getElementById('edit-ngay-tao').value = order.ngayTao;
+            document.getElementById('edit-ten-nguoi-mua').value = order.khachHangId;
+            document.getElementById('edit-tong-tien').value = order.tongTien;
+            document.getElementById('edit-phuong-thuc').value = order.phuongThucThanhToanId;
+            document.getElementById('edit-ten-khuyen-mai').value = order.khuyenMaiId;
+            document.getElementById('edit-dia-chi').value = order.diaChiGiaoHang;
+            document.getElementById('edit-ghi-chu').value = order.ghiChu;
         })
         .catch(error => {
             console.error('Error:', error);
@@ -54,7 +61,7 @@ function showOrderDetail(ma_don_hang) {
         })
         .then(order => {
             // Thông tin tổng quan
-            const setText = (id, value) => {
+            const setText = (id, value) => {    
                 const el = document.getElementById(id);
                 if (el) el.textContent = value ?? '-';
             };
@@ -63,9 +70,10 @@ function showOrderDetail(ma_don_hang) {
             setText('detail-ngay-tao', order.ngayTao);
             setText('detail-khach-hang', order.khachHangId);
             setText('detail-SDT-khach-hang', order.soDienThoaiNguoiMua || order.sdtNguoiMua || order.sdt || '-');
-            setText('detail-tong-tien', order.tongTien);
+            setText('detail-tong-tien', order.tongTien);    
             setText('detail-ghi-chu', order.ghiChu);
             setText('detail-dia-chi', order.diaChiGiaoHang || '-');
+            setText('detail-khuyen-mai',order.khuyenMaiId);
             // Danh sách sản phẩm
             const itemsContainer = document.getElementById('detail-items');
             if (itemsContainer) {
