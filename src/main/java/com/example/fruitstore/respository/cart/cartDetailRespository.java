@@ -7,8 +7,9 @@ import java.util.List;
 
 @Repository
 public interface cartDetailRespository extends JpaRepository<cartDetailEntity, Integer> {
-    cartDetailEntity findByGioHangIdAndSanPhamId(Integer gioHangId, Integer sanPhamId);
+    // use nested property path: cart.id and sanPham.id
+    cartDetailEntity findByCart_IdAndSanPham_Id(Integer gioHangId, Integer sanPhamId);
 
-    List<cartDetailEntity> findByGioHangId(Integer gioHangId);
+    List<cartDetailEntity> findByCart_Id(Integer gioHangId);
 
 }

@@ -11,10 +11,10 @@ import com.example.fruitstore.entity.CustomerEntity;
 import com.example.fruitstore.entity.EmployeeEntity; // Lớp entity cho nhân viên
 import com.example.fruitstore.entity.supplierEntity; // Lớp entity cho nhà cung cấp
 import com.example.fruitstore.service.supplierService; // Dịch vụ cho nhà cung cấp
+import com.example.fruitstore.service.order.orderService;
 import com.example.fruitstore.service.CustomerService;
 import com.example.fruitstore.service.EmployeeService; // Dịch vụ cho nhân viên
 import com.example.fruitstore.entity.order.orderEntity;
-import com.example.fruitstore.service.orderService;
 
 @Controller
 public class adminDashboard {

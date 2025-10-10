@@ -26,8 +26,8 @@
                     <td style="min-width: 60px;" th:text="${stt.index + 1}">1</td>
                     <td style="min-width: 100px;" th:text="${order.maDonHang}">DH001</td>
                     <td style="min-width: 120px;" th:text="${order.ngayTao}">2024-01-01</td>
-                    <td style="min-width: 100px;" th:text="${order.khachHangId}">2024-01-01</td>
-                    <td style="min-width: 100px;" th:id="'status-' + ${order.maDonHang}" th:text="${order.trangThai}">cho_xu_ly</td>
+                    <td style="min-width: 100px;" th:text="${order.khachHang.tenKhachHang}">2024-01-01</td>
+                    <td style="min-width: 100px;" th:id="'status-' + ${order.maDonHang}" th:text="${order.getTrangThaiDisplay()}">cho_xu_ly</td>
                     <td style="min-width: 120px;">
                         <div style="display: flex; gap: 8px; justify-content: center;">
                             <!-- Nút Xem chi tiết đơn hàng -->
@@ -116,7 +116,7 @@
                             
                             <div class="col-md-12">
                                 <label class="form-label">Địa chỉ nhận hàng</label>
-                                <textarea class="form-control" id="detail-dia-chi" name="diaChiNguoiMua" rows="2" readonly></textarea>
+                                <textarea class="form-control" id="detail-dia-chi" name="diaChiGiaoHang" rows="2" readonly></textarea>
                             </div>
                             
                             <div class="col-md-12">
@@ -132,14 +132,6 @@
                                 <!-- Render bằng JS: mỗi item gồm tên sản phẩm + số lượng -->
                             </div>
                         </div>
-
-                        <!-- Nút mở modal sửa -->
-                        <div class="mt-3">
-                            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#editOrderModal">
-                                <i class="fas fa-pen" style="color: white;"></i>
-                                <span style="margin-left:6px;">Sửa đơn hàng</span>
-                            </button>
-                        </div>
                     </div>
                 </div>
                 
@@ -151,103 +143,103 @@
         </div>
     </div>
 
-    <!-- Modal Sửa thông tin đơn hàng -->
-    <div class="modal fade" id="editOrderModal" tabindex="-1" aria-labelledby="editOrderModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-xl">
-            <div class="modal-content">
-                <!-- Modal Header -->
-                <div class="modal-header">
-                    <h4 class="modal-title" id="editOrderModalLabel" style="font-family: 'Times New Roman', Times, serif;">
-                        Sửa thông tin đơn hàng
-                    </h4>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                
-                <!-- Modal Body -->
-                <div class="modal-body">
-                    <div class="container-fluid">
-                        <form id="editOrderForm">
-                            <input type="hidden" id="edit-ma-don-hang" name="maDonHang">
-                            
-                            <!-- Thông tin đơn hàng theo layout giống modal xem -->
-                            <div class="row g-3">
-                                <div class="col-md-4">
-                                    <label class="form-label">Mã đơn hàng</label>
-                                    <input type="text" class="form-control" id="edit-ma-don-hang-display" readonly>
-                                </div>
-                                <div class="col-md-4">
-                                    <label for="edit-trang-thai" class="form-label">Trạng thái</label>
-                                    <select class="form-control" id="edit-trang-thai" name="trangThai" required>
-                                        <option value="Cho_xu_ly">Chờ xử lý</option>
-                                        <option value="Xac_Nhan">Xác nhận</option>
-                                        <option value="Dang_giao">Đang giao</option>
-                                        <option value="Hoan_tat">Hoàn tất</option>
-                                        <option value="huy_bo">Hủy bỏ</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-4">
-                                    <label class="form-label">Ngày tạo</label>
-                                    <input type="text" class="form-control" id="edit-ngay-tao" readonly>
+        <!-- Modal Sửa thông tin đơn hàng -->
+        <div class="modal fade" id="editOrderModal" tabindex="-1" aria-labelledby="editOrderModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="editOrderModalLabel" style="font-family: 'Times New Roman', Times, serif;">
+                            Sửa thông tin đơn hàng
+                        </h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    
+                    <!-- Modal Body -->
+                    <div class="modal-body">
+                        <div class="container-fluid">
+                            <form id="editOrderForm">
+                                <input type="hidden" id="edit-ma-don-hang" name="maDonHang">
+                                <input type="hidden" id="edit-khach-hang-id" name="khachHangId">
+                                <!-- Thông tin đơn hàng theo layout giống modal xem -->
+                                <div class="row g-3">
+                                    <div class="col-md-4">
+                                        <label class="form-label">Mã đơn hàng</label>
+                                        <input type="text" class="form-control" id="edit-ma-don-hang-display" readonly>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="edit-trang-thai" class="form-label">Trạng thái</label>
+                                        <select class="form-control" id="edit-trang-thai" name="trangThai" required>
+                                            <option value="ChoXuLy">Chờ xử lý</option>
+                                            <option value="XacNhan">Xác nhận</option>
+                                            <option value="DangGiao">Đang giao</option>
+                                            <option value="HoanThanh">Hoàn tất</option>
+                                            <option value="DaHuy">Hủy bỏ</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label">Ngày tạo</label>
+                                        <input type="text" class="form-control" id="edit-ngay-tao" readonly>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <label for="edit-ten-nguoi-mua" class="form-label">Khách hàng</label>
+                                        <input type="text" class="form-control" id="edit-ten-nguoi-mua" name="tenNguoiMua" readonly>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="edit-email-nguoi-mua" class="form-label">Email khách hàng</label>
+                                        <input type="email" class="form-control" id="edit-email-nguoi-mua" name="emailNguoiMua" readonly>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="edit-sdt-nguoi-mua" class="form-label">SDT Khách hàng</label>
+                                        <input type="text" class="form-control" id="edit-sdt-nguoi-mua" name="sdtNguoiMua" readonly>
+                                    </div>
+                                    
+                                    <div class="col-md-4">
+                                        <label for="edit-ten-khuyen-mai" class="form-label">Chương Trình Khuyến Mãi</label>
+                                        <input type="text" class="form-control" id="edit-ten-khuyen-mai" name="tenKhuyenMai">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="edit-tong-tien" class="form-label">Tổng tiền</label>
+                                        <input type="text" class="form-control" id="edit-tong-tien" name="tongTien" readonly>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="edit-phuong-thuc" class="form-label">Phương thức thanh toán</label>
+                                        <input type="text" class="form-control" id="edit-phuong-thuc" name="phuongThucThanhToan" required>
+                                    </div>
+                                    
+                                    <div class="col-md-12">
+                                        <label for="edit-dia-chi" class="form-label">Địa chỉ nhận hàng</label>
+                                        <textarea class="form-control" id="edit-dia-chi" name="diaChiGiaoHang" rows="2" required></textarea>
+                                    </div>
+                                    
+                                    <div class="col-md-12">
+                                        <label for="edit-ghi-chu" class="form-label">Ghi chú</label>
+                                        <textarea class="form-control" id="edit-ghi-chu" name="ghiChu" rows="2"></textarea>
+                                    </div>
                                 </div>
 
-                                <div class="col-md-4">
-                                    <label for="edit-ten-nguoi-mua" class="form-label">Khách hàng</label>
-                                    <input type="text" class="form-control" id="edit-ten-nguoi-mua" name="tenNguoiMua" required>
-                                </div>
-                                <div class="col-md-4">
-                                    <label for="edit-email-nguoi-mua" class="form-label">Email khách hàng</label>
-                                    <input type="email" class="form-control" id="edit-email-nguoi-mua" name="emailNguoiMua" required>
-                                </div>
-                                <div class="col-md-4">
-                                    <label for="edit-sdt-nguoi-mua" class="form-label">SDT Khách hàng</label>
-                                    <input type="text" class="form-control" id="edit-sdt-nguoi-mua" name="sdtNguoiMua" required>
+                                <!-- Danh sách sản phẩm (readonly) -->
+                                <div class="mt-4">
+                                    <h5 style="font-family: 'Times New Roman', Times, serif;">Sản phẩm</h5>
+                                    <div id="edit-items" class="list-group">
+                                        <!-- Render bằng JS: mỗi item gồm tên sản phẩm + số lượng -->
+                                    </div>
                                 </div>
                                 
-                                <div class="col-md-4">
-                                    <label for="edit-ten-khuyen-mai" class="form-label">Chương Trình Khuyến Mãi</label>
-                                    <input type="text" class="form-control" id="edit-ten-khuyen-mai" name="tenKhuyenMai">
+                                <div class="d-flex justify-content-between mt-4">
+                                    <button type="submit" class="btn btn-success">
+                                        <i class="fas fa-save"></i>
+                                        <span style="margin-left:6px;">Cập nhật</span>
+                                    </button>
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
                                 </div>
-                                <div class="col-md-4">
-                                    <label for="edit-tong-tien" class="form-label">Tổng tiền</label>
-                                    <input type="text" class="form-control" id="edit-tong-tien" name="tongTien" required>
-                                </div>
-                                <div class="col-md-4">
-                                    <label for="edit-phuong-thuc" class="form-label">Phương thức thanh toán</label>
-                                    <input type="text" class="form-control" id="edit-phuong-thuc" name="phuongThucThanhToan" required>
-                                </div>
-                                
-                                <div class="col-md-12">
-                                    <label for="edit-dia-chi" class="form-label">Địa chỉ nhận hàng</label>
-                                    <textarea class="form-control" id="edit-dia-chi" name="diaChiNguoiMua" rows="2" required></textarea>
-                                </div>
-                                
-                                <div class="col-md-12">
-                                    <label for="edit-ghi-chu" class="form-label">Ghi chú</label>
-                                    <textarea class="form-control" id="edit-ghi-chu" name="ghiChu" rows="2"></textarea>
-                                </div>
-                            </div>
-
-                            <!-- Danh sách sản phẩm (readonly) -->
-                            <div class="mt-4">
-                                <h5 style="font-family: 'Times New Roman', Times, serif;">Sản phẩm</h5>
-                                <div id="edit-items" class="list-group">
-                                    <!-- Render bằng JS: mỗi item gồm tên sản phẩm + số lượng -->
-                                </div>
-                            </div>
-                            
-                            <div class="d-flex justify-content-between mt-4">
-                                <button type="submit" class="btn btn-success">
-                                    <i class="fas fa-save"></i>
-                                    <span style="margin-left:6px;">Cập nhật</span>
-                                </button>
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                            </div>
-                        </form>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
     <!-- JavaScript riêng cho trang order -->
     <script th:inline="javascript">

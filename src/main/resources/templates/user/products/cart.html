@@ -19,34 +19,38 @@
                                         </tr>
                                         <tr class="title2">
                                             <th>Sản Phẩm</th>
-                                            <th>Giá</th>
                                             <th>Số Lượng</th>
+                                            <th>Giá</th>
                                             <th>Chọn</th>
                                         </tr>
                                     </thead>
-                                    <tbody class="danhmuc">
-                                        <!-- Ví dụ demo -->
-                                        <tr class="product_rows">
+                                    <tbody class="danhmuc" >
+                                        <!-- Lặp qua từng giỏ hàng -->
+                                    <th:block th:each="cart : ${carts}">
+                                        <!-- lăo qua từng chi tiết giỏ hàng -->
+                                        <tr class="product_rows" th:each="detail : ${cart.cartDetail}">
                                             <td>
-                                                <img src="/images/tao-do-8.jpg" alt="" />
-                                                <span>Táo Mỹ</span>
-                                            </td>
-                                            <td>
-                                                <p><span class="price">120000</span><sup>đ</sup></p>
+                                                <img th:src="@{'/images/' + ${detail.sanPham.hinhAnh}}" th:alt="${detail.sanPham.tenSanPham}" />
+                                                <span th:text="${detail.sanPham.tenSanPham}">Táo Mỹ</span>
                                             </td>
                                             <td>
                                                 <input
                                                     type="number"
-                                                    value="1"
-                                                    min="1"
+                                                    th:value="${detail.soLuong}"
+                                                    min="0"
+                                                    th:attr="data-detail-id=${detail.id}, data-price=${detail.sanPham.gia}"
                                                 />
                                             </td>
                                             <td>
-                                                <a href="#" class="btn btn-danger"
-                                                    ><i class="fas fa-trash-alt"></i
-                                                ></a>
+                                                <p><span class="price" th:attr="data-price-id=${detail.id}" th:text="${#numbers.formatInteger(detail.sanPham.gia * detail.soLuong ,1,'COMMA')}">120000</span><sup>đ</sup></p>
+                                            </td>
+                                            <td>
+                                                <a href="#" class="btn btn-danger btn-delete" th:attr ="data-id=${detail.id}">
+                                                    <i class="fas fa-trash-alt"></i>
+                                                </a>
                                             </td>
                                         </tr>
+                                    </th:block>
                                     </tbody>
                                 </table>
                             </form>
@@ -65,10 +69,6 @@
                                     <tr>
                                         <td>Tổng Sản Phẩm:</td>
                                         <td id="total-products">0</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Tổng Tiền Hàng:</td>
-                                        <td id="total-price">0đ</td>
                                     </tr>
                                     <tr class="dd5">
                                         <td>Tạm tính :</td>
@@ -119,7 +119,7 @@
                 window.location.href = "/location";
             }
         </script>
-        <!-- <script src="./JS/giohang.js"></script> -->
+        <script th:src="@{/js/user/cart.js}"></script>
     </div>
 </body>
 </html>

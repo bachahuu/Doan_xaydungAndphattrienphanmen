@@ -18,14 +18,11 @@ public class cartEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Integer id;
-    @Column(name = "maGioHang")
-    private String maGioHang;
+    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true) // quan hệ 1 - nhiều với chi tiết giỏ
+    @JsonManagedReference
+    private List<cartDetailEntity> cartDetail;
     @Column(name = "khachHangId")
     private Integer khachHangId;
     @Column(name = "ngayTao")
     private Date ngayTao;
-
-    @OneToMany(mappedBy = "gioHang", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
-    private List<cartDetailEntity> chiTietGioHang;
 }

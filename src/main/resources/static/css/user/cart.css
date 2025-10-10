@@ -22,7 +22,7 @@
   
   /* --- BÊN TRÁI --- */
   .cart-content-left {
-    width: 60%;
+    width: 64%;
   }
   
   .cart-content-left form table {
@@ -150,7 +150,7 @@
   
   /* --- BÊN PHẢI --- */
   .cart-content-right {
-    width: 400px;
+    width: 441px;
     text-align: left;
     border-collapse: collapse;
     box-shadow: 2px 2px 5px #aaa;

@@ -48,7 +48,7 @@
                                     <input class="address" type="text" id="address" name="txtaddress" />
                                 </td>
                             </tr>
-                            <tr id="info_an2" style="display: table-row">
+                            <!-- <tr id="info_an2" style="display: table-row">
                                 <td colspan="3">
                                     <div class="address-selects">
                                         <select id="city" name="city">
@@ -62,7 +62,7 @@
                                         </select>
                                     </div>
                                 </td>
-                            </tr>
+                            </tr> -->
                             <tr>
                                 <td colspan="3">
                                     <div class="checkbox-container">
@@ -92,7 +92,8 @@
                                             <option value="">Mã free Ship/Mã giảm giá</option>
                                             <option th:each="km : ${listKhuyenMai}" 
                                                     th:value="${km.maKhuyenMai}" 
-                                                    th:text="${km.tenKhuyenMai}"></option>
+                                                    th:text="${km.tenKhuyenMai}">
+                                            </option>
                                         </select>
                                         <div class="button_apdung">
                                             <button type="submit" name="btnapdung_KM">Áp dụng</button>

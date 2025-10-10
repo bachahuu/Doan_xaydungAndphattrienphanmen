@@ -15,7 +15,7 @@ import lombok.Data;
 public class supplierEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column(name = "nhaCungCapId")
     private Integer id;
     @Column(name = "maNCC")
     private String maNCC;

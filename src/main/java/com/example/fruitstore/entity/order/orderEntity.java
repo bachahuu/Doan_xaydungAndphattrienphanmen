@@ -7,7 +7,11 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
+import com.example.fruitstore.entity.CustomerEntity;
+import com.example.fruitstore.entity.discountEntity;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -20,21 +24,28 @@ public class orderEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Integer id;
-
-    @OneToMany(mappedBy = "donHang", cascade = CascadeType.ALL, orphanRemoval = true) // quan hệ 1 - nhiều với chi tiết
-                                                                                      // đơn hàng
-    private List<orderDetailEntity> chiTietDonHang;
+    @Column(name = "maDonHang")
+    private String maDonHang;
+    // Quan hệ
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true) // quan hệ 1 - nhiều với chi tiết
+    // đơn hàng
+    @JsonManagedReference
+    private List<orderDetailEntity> orderDetail;
     // cascade = CascadeType.ALL : khi xoá đơn hàng thì sẽ xoá luôn chi tiết đơn
     // hàng tương ứng
 
-    @Column(name = "maDonHang")
-    private String maDonHang;
-    @Column(name = "khachHangId")
-    private Integer khachHangId;
+    // mỗi đơn hàng gắn với 1 khách hàng
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "khachHangId")
+    private CustomerEntity khachHang;
+    // mỗi đơn hàng gắn với 1 phương thức thanh toán
     @Column(name = "phuongThucThanhToanId")
     private Integer phuongThucThanhToanId;
-    @Column(name = "khuyenMaiId")
-    private Integer khuyenMaiId;
+    // mỗi đơn hàng gắn với 1 khuyến mãi
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "khuyenMaiId")
+    private discountEntity discount;
+
     @Column(name = "tongTien")
     private BigDecimal tongTien;
     @Column(name = "ngayTao")
@@ -53,6 +64,23 @@ public class orderEntity {
         DangGiao,
         HoanThanh,
         DaHuy
+    }
+
+    public String getTrangThaiDisplay() {
+        switch (this.trangThai) {
+            case ChoXuLy:
+                return "Chờ xử lý";
+            case XacNhan:
+                return "Xác nhận";
+            case DangGiao:
+                return "Đang giao";
+            case HoanThanh:
+                return "Hoàn tất";
+            case DaHuy:
+                return "Đã hủy";
+            default:
+                return "Không xác định";
+        }
     }
 
 }

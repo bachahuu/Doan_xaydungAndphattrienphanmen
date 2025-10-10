@@ -1,11 +1,19 @@
 package com.example.fruitstore.controller.user;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import com.example.fruitstore.entity.cart.cartEntity;
+import com.example.fruitstore.service.cartService;
+
 @Controller
 public class dashboard {
+    @Autowired
+    private cartService cartService;
 
     @GetMapping("/menu-static")
     public String showMenu(Model model) {
@@ -21,6 +29,8 @@ public class dashboard {
 
     @GetMapping("/cart")
     public String showCart(Model model) {
+        List<cartEntity> carts = cartService.getAllCarts();
+        model.addAttribute("carts", carts);
         model.addAttribute("view", "user/products/cart");
         return "user/layout/main";
     }

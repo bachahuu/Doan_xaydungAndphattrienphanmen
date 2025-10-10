@@ -5,20 +5,24 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import com.example.fruitstore.respository.cart.cartRespository;
 
-import jakarta.persistence.criteria.CriteriaBuilder.In;
-
-import com.example.fruitstore.entity.cart.cartDetailEntity;
 import com.example.fruitstore.entity.cart.cartEntity;
+import com.example.fruitstore.entity.SanPham;
+import com.example.fruitstore.entity.cart.cartDetailEntity;
 import com.example.fruitstore.respository.cart.cartDetailRespository;
+import com.example.fruitstore.respository.SanPhamRepository;
+import java.util.Date;
 
 @Service
 public class cartService {
     private final cartRespository cartRespo;
     private final cartDetailRespository cartDetailRespo;
+    private final SanPhamRepository sanPhamRepo;
 
-    public cartService(cartRespository cartRespo, cartDetailRespository cartDetailRespo) {
+    public cartService(cartRespository cartRespo, cartDetailRespository cartDetailRespo,
+            SanPhamRepository sanPhamRepo) {
         this.cartRespo = cartRespo;
         this.cartDetailRespo = cartDetailRespo;
+        this.sanPhamRepo = sanPhamRepo;
     }
 
     // Lấy tất cả giỏ hàng -> mảng json
@@ -27,29 +31,59 @@ public class cartService {
     }
 
     // Lấy giỏ hàng theo mã giỏ hàng -> json
-    public cartEntity getCartByMaGioHang(String maGioHang) {
-        cartEntity cart = cartRespo.findByMaGioHang(maGioHang);
-        if (cart == null) {
-            throw new RuntimeException("không tìm thấy giỏ hàng: " + maGioHang);
-        }
-        return cart;
+    // Lấy giỏ hàng theo id -> json
+    public cartEntity getCartById(Integer id) {
+        return cartRespo.findById(id).orElseThrow(() -> new RuntimeException("không tìm thấy giỏ hàng: " + id));
     }
 
     // Thêm giỏ hàng -> json
-    public cartEntity addCart(Integer khachHangId) {
+    public cartDetailEntity addCart(Integer khachHangId, Integer productId, Integer quantity) {
+        // Tìm giỏ hàng theo khachHangId, nếu không có thì tạo mới
         cartEntity cart = cartRespo.findByKhachHangId(khachHangId);
-        if (cart != null) {
-            return cart; // Trả về giỏ hàng hiện có nếu đã tồn tại
+        if (cart == null) {
+            // Nếu không tìm thấy giỏ hàng (cart là null), thì tạo mới
+            cart = new cartEntity();
+            cart.setKhachHangId(khachHangId);
+            cart.setNgayTao(new Date());
+            cart = cartRespo.save(cart); // Lưu giỏ hàng mới và gán lại vào biến cart
         }
-        cartEntity newCart = new cartEntity();
-        newCart.setMaGioHang("GH" + System.currentTimeMillis());
-        newCart.setKhachHangId(khachHangId);
-        return cartRespo.save(newCart);
+        // Tìm sản phẩm theo productId xem sanpham đã tồn tại trong giỏ hang chưa
+        cartDetailEntity existingDetail = cartDetailRespo.findByCart_IdAndSanPham_Id(cart.getId(), productId);
+
+        if (existingDetail != null) {
+            existingDetail.setSoLuong(existingDetail.getSoLuong() + quantity);
+            return cartDetailRespo.save(existingDetail);
+        } else {
+            cartDetailEntity newDetail = new cartDetailEntity();
+            SanPham product = sanPhamRepo.findById(productId)
+                    .orElseThrow(() -> new RuntimeException("Không tìm thấy sản phẩm với ID: " + productId));
+
+            newDetail.setCart(cart);
+            newDetail.setSanPham(product);
+            newDetail.setSoLuong(quantity);
+            return cartDetailRespo.save(newDetail);
+        }
     }
 
-    // Xoá giỏ hàng -> string
-    public String deleteCart(String maGioHang) {
-        cartEntity cart = getCartByMaGioHang(maGioHang);
+    // update số lượng sản phẩn trong giỏ hàng
+    public Double updateSoLuongSanPham(Integer chiTietId, Integer soLuong) {
+        cartDetailEntity cartDetail = cartDetailRespo.findById(chiTietId)
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy chi tiết giỏ hàng với ID: " + chiTietId));
+
+        if (soLuong <= 0) {
+            return -1.0; // Trả về -1 để frontend hiểu là cần hỏi xoá
+        }
+        cartDetail.setSoLuong(soLuong);
+        cartDetailRespo.save(cartDetail);
+
+        // tính lại tiền trong giỏ hàng
+        Double total = cartDetail.getSanPham().getGia() * soLuong;
+        return total;
+    }
+
+    // Xoá giỏ hàng theo id -> string
+    public String deleteCart(Integer id) {
+        cartEntity cart = getCartById(id);
         cartRespo.delete(cart);
         return "Xoá giỏ hàng thành công!";
     }

@@ -35,11 +35,13 @@
                             <button class="btn btn-sm btn-info" 
                                 data-bs-toggle="modal" 
                                 data-bs-target="#editSupplierModal"
-                                th:data-supplier-id="${supplier.id}">
+                                th:data-mancc="${supplier.maNCC}"
+                                onclick="showEditSupplier(this.dataset.mancc)">
                                 <i class="fas fa-edit"></i>
                             </button> 
                             <button class="btn btn-sm btn-danger" 
-                                th:data-supplier-id="${supplier.id}">
+                                th:data-mancc="${supplier.maNCC}"
+                                onclick="handleDeleteSupplier(this.dataset.mancc)">
                                 <i class="fas fa-trash"></i>
                             </button>
                         </div>
@@ -133,7 +135,5 @@
         </div>
     </div>
 
-    <!-- JavaScript riêng cho trang nhà cung cấp -->
-    <script th:src="@{/js/admin/supplier.js}"></script>
 </div>
 </html>
