@@ -33,7 +33,6 @@ public class orderEntity {
     private List<orderDetailEntity> orderDetail;
     // cascade = CascadeType.ALL : khi xoá đơn hàng thì sẽ xoá luôn chi tiết đơn
     // hàng tương ứng
-
     // mỗi đơn hàng gắn với 1 khách hàng
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "khachHangId")
@@ -55,6 +54,12 @@ public class orderEntity {
     private TrangThai trangThai;
     @Column(name = "ghiChu")
     private String ghiChu;
+    @Column(name = "tenNguoiNhan")
+    private String tenNguoiNhan;
+    @Column(name = "soDienThoaiNguoiNhan")
+    private String soDienThoaiNguoiNhan;
+    @Column(name = "emailNguoiNhan")
+    private String emailNguoiNhan;
     @Column(name = "diaChiGiaoHang")
     private String diaChiGiaoHang;
 

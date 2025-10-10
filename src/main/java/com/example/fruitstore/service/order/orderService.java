@@ -56,7 +56,8 @@ public class orderService {
         existingOrder.setDiaChiGiaoHang(updateOrder.getDiaChiGiaoHang());
         existingOrder.setGhiChu(updateOrder.getGhiChu());
         existingOrder.setPhuongThucThanhToanId(updateOrder.getPhuongThucThanhToanId());
-        existingOrder.setKhuyenMaiId(updateOrder.getKhuyenMaiId());
+        // 'khuyenMaiId' in DB maps to the 'discount' relation in the entity
+        existingOrder.setDiscount(updateOrder.getDiscount());
         existingOrder.setTongTien(updateOrder.getTongTien());
         orderRespo.save(existingOrder);
 
