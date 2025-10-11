@@ -13,7 +13,7 @@
             <div class="form-container">
                 <!-- Form -->
                 <form action="#" method="post">
-                    <input type="hidden" id="cartTotalPriceInput" name="cartTotalPrice" value="" />
+                    <input type="hidden" id="cartTotalPriceInput" name="cartTotalPrice" th:value="${cartTotalPrice}" />
                     
                     <!-- Left Section - Customer Information -->
                     <div class="customer-info-section">
@@ -90,13 +90,14 @@
                                     <div class="voucher-section">
                                         <select id="voucher" name="voucher">
                                             <option value="">Mã free Ship/Mã giảm giá</option>
-                                            <option th:each="km : ${listKhuyenMai}" 
-                                                    th:value="${km.maKhuyenMai}" 
-                                                    th:text="${km.tenKhuyenMai}">
+                                            <option th:each="km : ${discounts}" 
+                                                    th:value="${km.id}" 
+                                                    th:text="${km.tenKM}"
+                                                    th:attr="data-value=${km.giaTri}, data-condition-value=${km.giaTriDonHangToiThieu}">
                                             </option>
                                         </select>
                                         <div class="button_apdung">
-                                            <button type="submit" name="btnapdung_KM">Áp dụng</button>
+                                            <button type="submit" name="btnapdung_KM" id="apply-voucher-btn">Áp dụng</button>
                                         </div>
                                     </div>
                                 </td>
@@ -113,7 +114,7 @@
                                 <td colspan="2">
                                     <div class="price-row">
                                         <span>Tạm tính</span>
-                                        <span class="price-value"><span id="tamtinh-value">0</span><sup>đ</sup></span>
+                                        <span class="price-value"><span id="tamtinh-value" th:text="${#numbers.formatInteger(cartTotalPrice , 0 , 'COMMA')}">0</span><sup>đ</sup></span>
                                     </div>
                                 </td>
                             </tr>

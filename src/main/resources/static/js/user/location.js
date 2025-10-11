@@ -19,8 +19,78 @@ document.addEventListener("DOMContentLoaded", function () {
         infomation_an2.style.display = "flex";
       }
     });
-  });
+
+    updateCartTotalFromServer(); // Cập nhật tổng tiền ban đầu khi trang load xong
+
+    // Xử lý sự kiện khi chọn mã khuyến mãi
+    const applybutton = document.getElementById('apply-voucher-btn');
+    if(applybutton){
+      applybutton.addEventListener('click', function(e) {
+          e.preventDefault();
+          applyDiscount();
+      });
+    }
+
+
+
+});
   
-  function pay() {
-    window.location.href = "/payment";
+function pay() {window.location.href = "/payment";}
+
+// Hàm tiện ích để định dạng tiền tệ
+function formatCurrency(number) {
+    return new Intl.NumberFormat('vi-VN').format(Math.round(number));
+}
+// Lấy tổng tiền giỏ hàng từ input ẩn mà server đã truyền vào
+function updateCartTotalFromServer() {
+  const cartTotal = parseFloat(document.getElementById('cartTotalPriceInput').value) || 0;
+
+  const tamtinhEl = document.getElementById('tamtinh-value');
+  const totalEl = document.getElementById('total-value');
+  const shippingFee = 30000; // Phí vận chuyển cố định
+
+  if (tamtinhEl) tamtinhEl.textContent = formatCurrency(cartTotal);
+  if (totalEl) totalEl.textContent = formatCurrency(cartTotal + shippingFee);
+}
+
+// hàm xử lý nút áp dụng mã khuyến mãi
+function applyDiscount() {
+  const discountselect = document.getElementById('voucher');
+  const selectedOption = discountselect.options[discountselect.selectedIndex];
+  const cartTotal = parseFloat(document.getElementById('cartTotalPriceInput').value) || 0;
+
+  const shippingFee = 30000;
+  let discountAmount = 0;
+
+  if (selectedOption && selectedOption.value) {
+          // Lấy giá trị giảm giá và giá trị điều kiện từ thẻ option
+          const fixedDiscountAmount = parseFloat(selectedOption.getAttribute('data-value')) || 0;
+          const conditionValue = parseFloat(selectedOption.getAttribute('data-condition-value')) || 0;
+
+          // Kiểm tra điều kiện đơn hàng
+          if (cartTotal >= conditionValue) {
+              // TH1: Đơn hàng ĐỦ điều kiện -> Gán giá trị giảm giá
+              if (!isNaN(fixedDiscountAmount)) {
+                  discountAmount = fixedDiscountAmount;
+              }
+          } else {
+              // TH2: Đơn hàng KHÔNG đủ điều kiện -> Thông báo lỗi và reset dropdown
+              const requiredAmountFormatted = formatCurrency(conditionValue);
+              alert(`Mã này chỉ áp dụng cho đơn hàng từ ${requiredAmountFormatted}đ trở lên.`);
+              
+              // Tự động trả dropdown về lựa chọn mặc định để người dùng biết mã đã không được áp dụng
+              discountselect.value = ""; 
+          }
   }
+
+  // Đảm bảo số tiền giảm không lớn hơn tổng tiền hàng
+    if (discountAmount > cartTotal) {
+        discountAmount = cartTotal;
+    }
+    const finalTotalEl = cartTotal - discountAmount + shippingFee ;
+
+    // Cập nhật giao diện
+    document.getElementById('giamgia-value').innerText = formatCurrency(discountAmount);
+    document.getElementById('total-value').innerText = formatCurrency(finalTotalEl);
+
+}

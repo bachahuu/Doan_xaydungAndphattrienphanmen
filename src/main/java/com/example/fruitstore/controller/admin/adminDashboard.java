@@ -35,11 +35,11 @@ public class adminDashboard {
         return "admin/layout/main";
     }
 
-    @GetMapping("/admin/discount")
-    public String showdiscount(Model model) {
-        model.addAttribute("view", "admin/products/manage_discount");
-        return "admin/layout/main";
-    }
+    // @GetMapping("/admin/discount")
+    // public String showdiscount(Model model) {
+    // model.addAttribute("view", "admin/products/manage_discount");
+    // return "admin/layout/main";
+    // }
 
     // @GetMapping("/admin/category")
     // public String showcategory(Model model) {

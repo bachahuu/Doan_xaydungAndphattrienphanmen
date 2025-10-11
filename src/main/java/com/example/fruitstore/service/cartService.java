@@ -25,6 +25,11 @@ public class cartService {
         this.sanPhamRepo = sanPhamRepo;
     }
 
+    // lấy giỏ hàng theo id khách hàng
+    public cartEntity getCartByKhachHangId(Integer khachHangId) {
+        return cartRespo.findByKhachHangId(khachHangId);
+    }
+
     // Lấy tất cả giỏ hàng -> mảng json
     public List<cartEntity> getAllCarts() {
         return cartRespo.findAll();

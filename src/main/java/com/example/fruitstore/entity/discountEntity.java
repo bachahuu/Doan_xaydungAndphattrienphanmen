@@ -22,6 +22,9 @@ public class discountEntity {
     @Column(name = "giaTri")
     private Double giaTri;
 
+    @Column(name = "giaTriDonHangToiThieu")
+    private Double giaTriDonHangToiThieu;
+
     @Column(name = "ngayBatDau")
     private java.sql.Date ngayBatDau;
 
