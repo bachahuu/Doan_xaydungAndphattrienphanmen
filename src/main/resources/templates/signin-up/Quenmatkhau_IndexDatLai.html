@@ -13,11 +13,14 @@
                 <h2><b>Quên Mật Khẩu</b></h2>
                 <div id="resetPasswordForm">
                     <p>Nhập mật khẩu mới của bạn bên dưới.</p>
-                    <form action="" method="post">
+                    <form action="/dat-lai-mat-khau" method="post">
+                        <input type="hidden" name="accountId" th:value="${accountId}">
                         <input type="password" placeholder="Mật Khẩu Mới" name="mat_khau_moi" required>
                         <input type="password" placeholder="Xác Nhận Mật Khẩu" name="nhap_lai_mat_khau" required>
                         <input type="submit" value="Đặt Lại Mật Khẩu">
                     </form>
+                    <!-- Hiển thị thông báo lỗi -->
+                    <div th:if="${error}" style="color:red;">[[${error}]]</div>
                 </div>
                 <div class="navigation-buttons">
                     <button onclick="window.location.href='/login'">Quay lại Đăng Nhập?</button>

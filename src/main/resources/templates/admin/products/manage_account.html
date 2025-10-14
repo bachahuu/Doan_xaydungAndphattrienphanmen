@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="content">
+    <div class="container">
+        <h1 style="text-align:center; font-family: 'Times New Roman', Times, serif;">Quản Lý Tài Khoản Cửa Hàng</h1>
+        
+        <!-- Nút thêm tài khoản -->
+        <div style="text-align:right; margin-right:45px; margin-bottom:10px;">
+            <button id="btnAddAccount" type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addAccountModal">
+                Thêm Tài Khoản
+            </button>
+        </div>  
+        <table class="table table-striped" id="accountTable">
+            <thead>
+                <tr style="text-align:center;">
+                    <th>STT</th>
+                    <th>Tên đăng nhập</th>
+                    <th>Mật khẩu</th>
+                    <th>Quyền</th>
+                    <th>Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr style="text-align:center;" th:each="acc, stt : ${accounts}">
+                    <td th:text="${stt.index + 1}">1</td> 
+                    <td th:text="${acc.username}">admin1</td> 
+                    <td>
+                        <span th:text="${acc.password}">******</span>
+                    </td>
+                    <td>
+                        <span th:text="${acc.role == 'Admin' ? 'Quản trị' : 'Nhân viên'}"></span>
+                    </td>
+                    <td>
+                        <div class="btn-group">
+                            <button class="btn btn-sm btn-info" 
+                                data-bs-toggle="modal" 
+                                data-bs-target="#editAccountModal"
+                                th:data-account-id="${acc.id}">
+                                <i class="fas fa-edit"></i>
+                            </button> 
+                            <button class="btn btn-sm btn-danger" 
+                                th:data-account-id="${acc.id}">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Modal Sửa tài khoản -->
+    <div class="modal fade" id="editAccountModal" tabindex="-1" aria-labelledby="editAccountModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editAccountModalLabel">Sửa Tài Khoản</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editAccountForm">
+                        <input type="hidden" id="edit_id">
+                        <div class="mb-3">
+                            <label for="edit_username" class="form-label">Tên đăng nhập</label>
+                            <input type="text" class="form-control" id="edit_username" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label for="edit_password" class="form-label">Mật khẩu</label>
+                            <input type="password" class="form-control" id="edit_password" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="edit_role" class="form-label">Quyền</label>
+                            <select class="form-control" id="edit_role" required>
+                                <option value="Admin">Quản trị</option>
+                                <option value="NV">Nhân viên</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                    <button type="button" class="btn btn-primary" id="saveUpdateAccountBtn">Lưu Thay Đổi</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Thêm tài khoản -->
+    <div class="modal fade" id="addAccountModal" tabindex="-1" aria-labelledby="addAccountModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addAccountModalLabel">Thêm Tài Khoản Mới</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="addAccountForm" class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Tên đăng nhập *</label>
+                                <input type="text" class="form-control" id="add_username" name="username" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Mật khẩu *</label>
+                                <input type="password" class="form-control" id="add_password" name="password" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Quyền *</label>
+                                <select class="form-control" id="add_role" name="role" required>
+                                    <option value="">Chọn quyền</option>
+                                    <option value="Admin">Quản trị</option>
+                                    <option value="NV">Nhân viên</option>
+                                </select>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                        <button type="button" class="btn btn-primary" id="saveNewAccountBtn">Lưu tài khoản</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    <!-- JavaScript riêng cho trang tài khoản -->
+    <script th:src="@{/js/admin/account.js}"></script>
+</div>
+</html>
