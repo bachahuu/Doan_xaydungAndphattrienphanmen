@@ -29,14 +29,17 @@
                 </form>
             </div>
             <div class="form signupform">
-                <form action="" method="post">
+                <form action="/signup" method="post">
                     <h3>Đăng ký</h3>
                     <input type="text" placeholder="Họ và tên" name="ho_ten" required>
                     <input type="text" placeholder="Số điện thoại" name="so_dien_thoai" required>
                     <input type="email" placeholder="Địa chỉ Email" name="email" required>
+                    <input type="text" placeholder="Tên đăng nhập" name="ten_dang_nhap" required>
                     <input type="password" placeholder="Mật khẩu" name="mat_khau" required>
                     <input type="password" placeholder="Nhập lại mật khẩu" name="nhap_lai_mat_khau" required>
                     <input type="submit" value="Đăng ký">
+                    <div style="color:red; font-size:14px; margin-top:5px;" th:if="${signupError}" th:text="${signupError}"></div>
+                    <div style="color:green; font-size:14px; margin-top:5px;" th:if="${signupSuccess}" th:text="${signupSuccess}"></div>
                 </form>
             </div>
         </div>

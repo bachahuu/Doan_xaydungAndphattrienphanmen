@@ -12,11 +12,12 @@
             <div class="box forgotpassword">
                 <h2><b>Quên Mật Khẩu</b></h2>
                 <!-- <p>Nhập địa chỉ email của bạn bên dưới để đặt lại mật khẩu.</p> -->
-                <form id="emailForm" action="" method="post">
-                    <input type="text" id="so_dien_thoai" placeholder="Số điện thoại" name="so_dien_thoai" required>
+                <form id="emailForm" action="/quen-mat-khau" method="post">
+                    <input type="text" id="ten_dang_nhap" placeholder="Tên đăng nhập" name="ten_dang_nhap" required>
                     <input type="email" id="email" placeholder="Địa chỉ Email" name="email" required>
                     <input type="submit" value="Gửi">
                 </form>
+                <div th:if="${error}" style="color:red;">[[${error}]]</div>
                 <div class="navigation-buttons">
                     <button onclick="window.location.href='/login'">Quay lại Đăng Nhập?</button>
                 </div>
