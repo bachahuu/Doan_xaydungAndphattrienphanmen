@@ -1,9 +1,15 @@
 package com.example.fruitstore.controller.user;
 
+import org.springframework.boot.autoconfigure.graphql.GraphQlProperties.Http;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.example.fruitstore.service.cartService;
+
+import jakarta.servlet.http.HttpSession;
+
+import com.example.fruitstore.entity.CustomerEntity;
+import com.example.fruitstore.entity.loginCustomerEntity;
 import com.example.fruitstore.entity.cart.cartDetailEntity;
 import com.example.fruitstore.entity.cart.cartEntity;
 import java.util.List;
@@ -28,12 +34,24 @@ public class CartController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<cartDetailEntity> addProductToCart(
+    public ResponseEntity<?> addProductToCart(
             @RequestParam("productId") Integer productId,
-            @RequestParam("quantity") Integer quantity) {
+            @RequestParam("quantity") Integer quantity, HttpSession session) {
 
-        Integer khachHangId = 1;// chỗ này phải thay thế bằng ID người dùng thực tế sau khi có hệ thống đăng
-                                // nhập
+        // Lấy đối tượng loginCustomerEntity từ session
+        loginCustomerEntity loginCustomer = (loginCustomerEntity) session.getAttribute("customer");
+        // kiểm tra xem người dùng đã đăng nhập chưa
+        if (loginCustomer == null) {
+            return new ResponseEntity<>("Vui lòng đăng nhập để thêm sản phẩm.", HttpStatus.UNAUTHORIZED);
+        }
+        // Lấy thông tin CustomerEntity liên quan và ID của khách hàng
+        CustomerEntity customer = loginCustomer.getCustomer();
+        if (customer == null) {
+            return new ResponseEntity<>("Lỗi: Dữ liệu khách hàng không hợp lệ.", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        Integer khachHangId = customer.getId();
+
         try {
             // Gọi đến service với đủ 3 tham số
             cartDetailEntity addedItem = cartService.addCart(khachHangId, productId, quantity);
@@ -45,7 +63,6 @@ public class CartController {
     }
 
     @PutMapping("/detail/{chiTietId}")
-
     public Double updateSoLuong(@PathVariable Integer chiTietId, @RequestParam Integer soLuong) {
         return cartService.updateSoLuongSanPham(chiTietId, soLuong);
     }
@@ -65,4 +82,29 @@ public class CartController {
     public void removeProductFromCart(@PathVariable Integer chiTietId) {
         cartService.removeSanPham(chiTietId);
     }
+
+    // kiểm tra giỏ hàng của khách hàng hiện tại
+    @GetMapping("/check-empty")
+    public ResponseEntity<String> checkCartEmpty(HttpSession session) {
+        // Lấy đối tượng loginCustomerEntity từ session
+        loginCustomerEntity loginCustomer = (loginCustomerEntity) session.getAttribute("customer");
+        // kiểm tra xem người dùng đã đăng nhập chưa
+        if (loginCustomer == null) {
+            return new ResponseEntity<>("Vui lòng đăng nhập để kiểm tra giỏ hàng.", HttpStatus.UNAUTHORIZED);
+        }
+        CustomerEntity customer = loginCustomer.getCustomer();
+        if (customer == null) {
+            return new ResponseEntity<>("Lỗi: Dữ liệu khách hàng không hợp lệ.", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        Integer khachHangId = customer.getId();
+        cartEntity cart = cartService.getCartByKhachHangId(khachHangId);
+
+        if (cart == null || cart.getCartDetail() == null || cart.getCartDetail().isEmpty()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Giỏ hàng của bạn đang trống.");
+        }
+
+        return ResponseEntity.ok("Giỏ hàng hợp lệ.");
+    }
+
 }

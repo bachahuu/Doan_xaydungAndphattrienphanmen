@@ -12,8 +12,10 @@
 
             <div class="form-container">
                 <!-- Form -->
-                <form action="#" method="post">
+                <form th:action="@{/shipping/submit}"id="shippingForm" method="post">
                     <input type="hidden" id="cartTotalPriceInput" name="cartTotalPrice" th:value="${cartTotalPrice}" />
+                    <input type="hidden" id="discountIdInput" name="discountId" value="" />
+                    <input type="hidden" id="finalTotalInput" name="finalTotal" value="" />
                     
                     <!-- Left Section - Customer Information -->
                     <div class="customer-info-section">
@@ -29,10 +31,10 @@
                             <tr>
                                 <td colspan="3">
                                     <div class="info_row">
-                                        <div>
+                                        <!-- <div>
                                             <label for="email">Email</label>
                                             <input class="email" type="email" id="email" name="txtemail" />
-                                        </div>
+                                        </div> -->
                                         <div>
                                             <label for="phone">Số điện thoại</label>
                                             <input class="phone" type="text" id="phone" name="txtphone" />
@@ -74,8 +76,8 @@
                             <tr id="storeInfomation" style="display: none">
                                 <td colspan="3">
                                     <div style="text-align: center;">
-                                        <p>Địa chỉ: Số 16 Nguyễn Xiển - Phường Thanh Xuân Nam - Quận Thanh Xuân - Hà Nội</p>
-                                        <p>Sđt: 0941234789 - 0942568456</p>
+                                        <p>Địa chỉ: Số 15 Nguyễn Khuyến, Văn Quán, Hà Đông, Hà Nội</p>
+                                        <p>Số điện thoại: 089.663.1696 / 0586.928.928</p>
                                     </div>
                                 </td>
                             </tr>
@@ -97,7 +99,7 @@
                                             </option>
                                         </select>
                                         <div class="button_apdung">
-                                            <button type="submit" name="btnapdung_KM" id="apply-voucher-btn">Áp dụng</button>
+                                            <button type="button" name="btnapdung_KM" id="apply-voucher-btn">Áp dụng</button>
                                         </div>
                                     </div>
                                 </td>
@@ -137,7 +139,7 @@
                             <tr>
                                 <td colspan="2">
                                     <div class="buttun_thanhtoan">
-                                        <input type="button" name="btnthanhtoan" value="Hoàn tất thanh toán" onclick="pay()" />
+                                        <input type="submit" name="btnthanhtoan" value="Hoàn tất thông tin" />
                                     </div>
                                 </td>
                             </tr>

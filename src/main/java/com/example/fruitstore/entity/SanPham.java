@@ -45,6 +45,7 @@ public class SanPham {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "khuyenMaiId")
+    @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler", "orders", "sanPhams" })
     private discountEntity discount;
 
     // Getter & Setter

@@ -50,7 +50,10 @@ function updateCartTotalFromServer() {
   const shippingFee = 30000; // Phí vận chuyển cố định
 
   if (tamtinhEl) tamtinhEl.textContent = formatCurrency(cartTotal);
+  const finalTotal = cartTotal + shippingFee;
   if (totalEl) totalEl.textContent = formatCurrency(cartTotal + shippingFee);
+  // Cập nhật giá trị cuối cùng vào input ẩn để gửi về server
+    document.getElementById('finalTotalInput').value = finalTotal;
 }
 
 // hàm xử lý nút áp dụng mã khuyến mãi
@@ -61,7 +64,7 @@ function applyDiscount() {
 
   const shippingFee = 30000;
   let discountAmount = 0;
-
+  let discountId = ""; // Biến để lưu ID của voucher
   if (selectedOption && selectedOption.value) {
           // Lấy giá trị giảm giá và giá trị điều kiện từ thẻ option
           const fixedDiscountAmount = parseFloat(selectedOption.getAttribute('data-value')) || 0;
@@ -72,6 +75,7 @@ function applyDiscount() {
               // TH1: Đơn hàng ĐỦ điều kiện -> Gán giá trị giảm giá
               if (!isNaN(fixedDiscountAmount)) {
                   discountAmount = fixedDiscountAmount;
+                  discountId = selectedOption.value; // Lưu ID của voucher
               }
           } else {
               // TH2: Đơn hàng KHÔNG đủ điều kiện -> Thông báo lỗi và reset dropdown
@@ -93,4 +97,8 @@ function applyDiscount() {
     document.getElementById('giamgia-value').innerText = formatCurrency(discountAmount);
     document.getElementById('total-value').innerText = formatCurrency(finalTotalEl);
 
+    // CẬP NHẬT CÁC INPUT ẨN ĐỂ GỬI LÊN SERVER
+    document.getElementById('discountIdInput').value = discountId;
+    document.getElementById('finalTotalInput').value = finalTotalEl;
+  
 }

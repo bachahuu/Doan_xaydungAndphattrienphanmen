@@ -9,6 +9,7 @@ import jakarta.persistence.Table;
 
 import lombok.Data;
 import jakarta.persistence.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "taikhoankhachhang")
@@ -24,4 +25,8 @@ public class loginCustomerEntity {
 
 	@Column(name = "password", nullable = false, length = 255)
 	private String password;
+
+	@OneToOne(mappedBy = "account", fetch = FetchType.LAZY)
+	@JsonIgnore
+	private com.example.fruitstore.entity.CustomerEntity customer;
 }

@@ -92,6 +92,7 @@
                                 <label class="form-label">Khách hàng</label>
                                 <div id="detail-khach-hang" class="form-control">-</div>
                             </div>
+                            
                             <div class="col-md-4">
                                 <label class="form-label">Email khách hàng</label>
                                 <div id="detail-email-khach-hang" class="form-control">-</div>
@@ -100,10 +101,21 @@
                                 <label class="form-label">SDT Khách hàng</label>
                                 <div id="detail-SDT-khach-hang" class="form-control">-</div>
                             </div>
-                            
+                            <div class="col-md-4">
+                                <label class="form-label">Tên người nhận</label>
+                                <div id="detail-ten-nguoi-nhan" class="form-control">-</div>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">SDT người nhận</label>
+                                <div id="detail-SDT-nguoi-nhan" class="form-control">-</div>
+                            </div> 
                             <div class="col-md-4">
                                 <label class="form-label">Chương Trình Khuyến Mãi</label>
                                 <div id="detail-khuyen-mai" class="form-control">-</div>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Tiền Ship</label>
+                                <div id="detail-delivery" class="form-control">-</div>
                             </div>
                             <div class="col-md-4">
                                 <label class="form-label">Tổng tiền</label>
@@ -119,17 +131,17 @@
                                 <textarea class="form-control" id="detail-dia-chi" name="diaChiGiaoHang" rows="2" readonly></textarea>
                             </div>
                             
+                            
                             <div class="col-md-12">
                                 <label class="form-label">Ghi chú</label>
                                 <textarea class="form-control" id="detail-ghi-chu" rows="2" readonly></textarea>
                             </div>
-                        </div>
-
-                        <!-- Danh sách sản phẩm trong đơn -->
-                        <div class="mt-4">
-                            <h5 style="font-family: 'Times New Roman', Times, serif;">Sản phẩm</h5>
-                            <div id="detail-items" class="list-group">
-                                <!-- Render bằng JS: mỗi item gồm tên sản phẩm + số lượng -->
+                            <!-- Danh sách sản phẩm trong đơn -->
+                            <div class="mt-4">
+                                <h5 style="font-family: 'Times New Roman', Times, serif;">Sản phẩm</h5>
+                                <div id="detail-items" class="list-group">
+                                    <!-- Render bằng JS: mỗi item gồm tên sản phẩm + số lượng -->
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -187,12 +199,21 @@
                                         <input type="text" class="form-control" id="edit-ten-nguoi-mua" name="tenNguoiMua" readonly>
                                     </div>
                                     <div class="col-md-4">
+                                        <label for="edit-ten-nguoi-nhan" class="form-label">Tên người nhận</label>
+                                        <input type="text" class="form-control" id="edit-ten-nguoi-nhan" name="tenNguoinhan" >
+                                    </div>
+                                    <div class="col-md-4">
                                         <label for="edit-email-nguoi-mua" class="form-label">Email khách hàng</label>
                                         <input type="email" class="form-control" id="edit-email-nguoi-mua" name="emailNguoiMua" readonly>
                                     </div>
                                     <div class="col-md-4">
                                         <label for="edit-sdt-nguoi-mua" class="form-label">SDT Khách hàng</label>
                                         <input type="text" class="form-control" id="edit-sdt-nguoi-mua" name="sdtNguoiMua" readonly>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <label for="edit-sdt-nguoi-nhan" class="form-label">SDT Người Nhận</label>
+                                        <input type="text" class="form-control" id="edit-sdt-nguoi-nhan" name="sdtNguoinhan" readonly>
                                     </div>
                                     
                                     <div class="col-md-4">

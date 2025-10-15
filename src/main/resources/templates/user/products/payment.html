@@ -2,20 +2,22 @@
 <html xmlns:th="http://www.thymeleaf.org">
  <body>
     <!-- templates/user/products/payment.html -->
-    <div th:fragment="content" class="payment-page">
+<div th:fragment="content" class="payment-page">
         <div class="container my-4">
             <h2 class="text-center mb-4">Vận chuyển và đơn hàng đã đặt</h2>
 
             <!-- Thông tin vận chuyển -->
             <div class="mb-4">
                 <ul>
-                    <li>Khách Hàng: <span th:text="${shippingInfo != null ? shippingInfo.name : '—'}"></span></li>
-                    <li>Email: <span th:text="${shippingInfo != null ? shippingInfo.email : '—'}"></span></li>
-                    <li>Số điện thoại: <span th:text="${shippingInfo != null ? shippingInfo.phone : '—'}"></span></li>
-                    <li>Địa chỉ nhận hàng: <span th:text="${shippingInfo != null ? shippingInfo.address : '—'}"></span></li>
-                    <li>Phí vận chuyển: <span th:text="${paymentInfo != null ? paymentInfo.phivanchuyen : 30000}"></span> đ</li>
-                    <li>Giảm giá: <span th:text="${paymentInfo != null ? paymentInfo.giam_gia : 0}"></span> đ</li>
-                    <li><strong>Tổng tiền: <span th:text="${paymentInfo != null ? paymentInfo.tong_tien : 0}"></span> đ</strong></li>
+                    <li>Khách Hàng: <span th:text="${shippingInfo?.get('txtname') ?: '—'}"></span></li>
+                    <li>Email: <span th:text="${shippingInfo?.get('txtemail') ?: '—'}"></span></li>
+                    <li>Số điện thoại: <span th:text="${shippingInfo?.get('txtphone') ?: '—'}"></span></li>
+                    <li>Địa chỉ nhận hàng: <span th:text="${shippingInfo?.get('txtaddress') ?: '—'}"></span></li>
+                    <!-- <li>Phí vận chuyển: <span>30,000</span> đ</li>
+                    <li>Giảm giá:<span th:with="cartTotal=${T(java.lang.Double).parseDouble(shippingInfo?.get('cartTotalPrice') ?: '0')}, 
+                    finalTotal=${T(java.lang.Double).parseDouble(shippingInfo?.get('finalTotal') ?: '0')}"
+                    th:text="${#numbers.formatDecimal(cartTotal + 30000 - finalTotal, 0, 'COMMA', 0, 'POINT')}">0</span> đ</li> -->
+                    <!-- <li><strong>Tổng tiền: <span th:text="${#numbers.formatDecimal(T(java.lang.Double).parseDouble(shippingInfo?.get('finalTotal') ?: '0'), 0, 'COMMA', 0, 'POINT')}">0</span> đ</strong></li> -->
                 </ul>
             </div>
 
@@ -24,8 +26,6 @@
                 <table class="table table-bordered align-middle text-center">
                     <thead class="table-light">
                         <tr>
-                            <th>STT</th>
-                            <th>Mã sp</th>
                             <th>Tên sản phẩm</th>
                             <th>Hình ảnh</th>
                             <th>Số lượng</th>
@@ -34,16 +34,14 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr th:each="item, stat : ${cartItems}">
-                            <td th:text="${stat.index + 1}">1</td>
-                            <td th:text="${item.id}">SP01</td>
-                            <td th:text="${item.name}">Tên SP</td>
+                        <tr th:each="item : ${cartItems}">
+                            <td th:text="${item.sanPham.tenSanPham}">Tên SP</td>
                             <td>
-                                <img th:if="${item.img != null}" th:src="@{/images/{img}(img=${item.img})}" alt="img" class="product-img">
+                                <img th:if="${item.sanPham.hinhAnh != null}" th:src="@{'/images/' + ${item.sanPham.hinhAnh}}"  class="product-img" alt="img"  style="width: 80px; height: auto;">
                             </td>
-                            <td th:text="${item.quantity}">1</td>
-                            <td th:text="${item.price}">100000</td>
-                            <td th:text="${item.quantity * item.price}">100000</td>
+                            <td th:text="${item.soLuong}">1</td>
+                            <td th:text="${#numbers.formatDecimal(item.sanPham.gia, 0, 'COMMA', 0, 'POINT')}">100000</td>
+                            <td th:text="${#numbers.formatDecimal(item.soLuong * item.sanPham.gia, 0, 'COMMA', 0, 'POINT')}">100000</td>
                         </tr>
                         <tr th:if="${cartItems == null or #lists.isEmpty(cartItems)}">
                             <td colspan="7" class="text-center text-muted">Chưa có sản phẩm trong giỏ hàng</td>
@@ -52,11 +50,21 @@
                 </table>
             </div>
 
+            <!-- Ghi chú đơn hàng -->
+            <div class="order-note card p-3 mt-4">
+                <h5 class="mb-3">Ghi chú đơn hàng</h5>
+                <div class="form-group">
+                    <textarea id="orderNote" name="orderNote" class="form-control" rows="4" maxlength="500"
+                        placeholder="Nhập ghi chú cho đơn hàng của bạn (tối đa 500 ký tự)..."></textarea>
+                    <small id="charCount" class="text-muted">0 / 500 ký tự</small>
+                </div>
+            </div>
+
             <!-- Thanh toán -->
             <div class="payment-method card p-3">
                 <h5>Chọn hình thức thanh toán</h5>
 
-                <div th:if="${paymentMethods != null}">
+                <div th:if="${paymentMethods != null and !#lists.isEmpty(paymentMethods)}">
                     <div th:each="pm : ${paymentMethods}" class="form-check">
                         <input class="form-check-input" type="radio" name="paymentMethod" th:id="${'pm-' + pm.id}"
                             th:value="${pm.id}" />
@@ -64,10 +72,14 @@
                     </div>
                 </div>
 
-                <div th:if="${paymentMethods == null}">
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="paymentMethod" id="cod" value="cod">
-                        <label class="form-check-label" for="cod">Thanh toán khi nhận hàng (COD)</label>
+                <div th:if="${paymentMethods == null or #lists.isEmpty(paymentMethods)}">
+                    <p class="text-muted">Không có phương thức thanh toán nào khả dụng.</p>
+                </div>
+
+                <!-- <div th:if="${paymentMethods == null}">
+                    <div th:each="pm : ${paymentMethods}" class="form-check">
+                        <input class="form-check-input" type="radio" name="paymentMethod" th:id="${'pm-' + pm.id}" th:value="${pm.id}">
+                        <label class="form-check-label" th:for="${'pm-' + pm.id}" th:text="${pm.name}">Thanh toán khi nhận hàng (COD)</label>
                     </div>
                     <div class="form-check">
                         <input class="form-check-input" type="radio" name="paymentMethod" id="momo" value="momo">
@@ -77,14 +89,38 @@
                         <input class="form-check-input" type="radio" name="paymentMethod" id="bank" value="bank">
                         <label class="form-check-label" for="bank">Chuyển khoản ngân hàng</label>
                     </div>
-                </div>
+                </div> -->
 
                 <div class="mt-3">
-                    <p><strong>Tổng tiền cần thanh toán: <span id="total-display">0</span> đ</strong></p>
+                    <p>
+                    <strong>Tạm tính: 
+                    <span th:text="${#numbers.formatDecimal(T(java.lang.Double).parseDouble(shippingInfo?.get('cartTotalPrice') ?: '0'), 0, 'COMMA', 0, 'POINT')}">0</span> đ
+                    </strong>
+                    </p>
+
+                    <p>
+                    <strong>giảm giá: 
+                    <span th:with="cartTotal=${T(java.lang.Double).parseDouble(shippingInfo?.get('cartTotalPrice') ?: '0')}, 
+                    finalTotal=${T(java.lang.Double).parseDouble(shippingInfo?.get('finalTotal') ?: '0')}"
+                    th:text="${#numbers.formatDecimal(cartTotal + 30000 - finalTotal, 0, 'COMMA', 0, 'POINT')}">0</span> đ
+                    </strong>
+                    </p>
+
+                    <p>
+                    <strong>phí vận chuyển: 
+                    <span>30,000</span> đ
+                    </strong>
+                    </p>
+
+                    <p>
+                    <strong>Tổng tiền cần thanh toán: 
+                    <span id="total-display" th:text="${#numbers.formatDecimal(T(java.lang.Double).parseDouble(shippingInfo?.get('finalTotal') ?: '0'), 0, 'COMMA', 0, 'POINT')}">0</span> đ
+                    </strong>
+                    </p>
 
                     <form id="checkoutForm" th:action="@{/orders/checkout}" method="post">
-                        <input type="hidden" name="cartTotalPrice" id="cartTotalPriceInput" value="" />
-                        <input type="hidden" name="selectedPaymentMethod" id="selectedPaymentMethod" value="" />
+                        <!-- Lấy discountId từ session -->
+                        <input type="hidden" name="discountId" th:value="${shippingInfo?.get('discountId') ?: ''}" />
                         <button class="btn btn-primary" id="complete_pay" type="button">Xác nhận thanh toán</button>
                         <a class="btn btn-secondary ms-2" th:href="@{/home}">Home</a>
                     </form>
@@ -92,8 +128,9 @@
             </div>
         </div>
 
-        <!-- Success Modal -->
-        <div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="successModalLabel" aria-hidden="true">
+    <!-- Modal Thông báo thành công -->
+     <!-- Success Modal -->
+        <!-- <div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="successModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content success-modal-content">
                     <div class="modal-body text-center p-4">
@@ -112,17 +149,17 @@
                             <i class="fas fa-heart"></i>
                         </div>
                         <div class="modal-buttons">
-                            <a href="#" class="btn btn-primary" id="backToCartBtn">Quay lại Giỏ Hàng</a>
+                            <a href="#" class="btn btn-primary" id="backToCartBtn">Trang Chủ</a>
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-
-        <!-- Link đến file JS riêng -->
-        <script th:src="@{/js/user/payment.js}"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    </div>
+        </div> -->
+    <!-- Link đến file JS riêng -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script th:src="@{/js/user/payment.js}"></script>
+</div>
+    
  </body>   
 </html>

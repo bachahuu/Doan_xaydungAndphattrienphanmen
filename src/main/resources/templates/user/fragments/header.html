@@ -13,7 +13,8 @@
         <link rel="stylesheet" href="/css/user/location.css" />
         <link rel="stylesheet" href="/css/user/payment.css" />
         <link rel="stylesheet" href="/css/user/news.css">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <link rel="stylesheet" href="/css/user/my-account.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     </head>
     <body>
@@ -42,9 +43,28 @@
                     <a href="/cart" class="cart-link">
                         <i class="fa-solid fa-cart-shopping"></i>
                     </a>
-                    <a href="/login" class="Login_btn">Login</a>
+                    <div th:if="${session.customer == null}">
+                        <a href="/login" class="Login_btn">
+                            <i class="fa-solid fa-right-to-bracket"></i> Login
+                        </a>
+                    </div>
+
+                    <div th:if="${session.customer != null}" class="user-menu-container">
+                        <a href="#" class="user-name-link" id="user-menu-trigger">
+                            <i class="fa-solid fa-user"></i>
+                            <span th:text="${session.customer.username}">Username</span>
+                        </a>
+                        <div class="dropdown-menu" id="user-dropdown-menu">
+                                <h4>TÀI KHOẢN</h4>
+                                <ul>
+                                    <li><a href="/my-account"><i class="fa-solid fa-circle-info"></i> Thông tin tài khoản</a></li>
+                                    <li><a href="/logout"><i class="fa-solid fa-right-from-bracket"></i> Đăng xuất</a></li>
+                                </ul>
+                        </div>
+                    </div>
                 </div>
             </nav>
-        </section>    
+            <script src="/js/user/header.js"></script>
+        </section>
     </body>
     </html>

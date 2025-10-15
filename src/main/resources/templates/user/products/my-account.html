@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+    <div th:fragment="content">
+        <div class="container my-5">
+            <div class="profile-container">
+
+                <aside class="profile-sidebar">
+                    <div class="sidebar-header">
+                        <i class="fa-solid fa-user-gear"></i>
+                        <h2>Tài khoản của tôi</h2>
+                    </div>
+                    <nav class="sidebar-nav">
+                        <ul>
+                            <li>
+                                <a href="/my-account" class="active">
+                                    <i class="fa-solid fa-user-pen"></i>
+                                    <span>Thông tin hồ sơ</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/change-password">
+                                    <i class="fa-solid fa-lock"></i>
+                                    <span>Đổi mật khẩu</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/order-history">
+                                    <i class="fa-solid fa-receipt"></i>
+                                    <span>Lịch sử đơn hàng</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/logout">
+                                    <i class="fa-solid fa-right-from-bracket"></i>
+                                    <span>Đăng xuất</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </aside>
+
+                <main class="profile-content">
+                    <div class="content-header">
+                        <h1>Chỉnh sửa hồ sơ</h1>
+                        <!-- <p>Quản lý thông tin cá nhân của bạn để bảo mật tài khoản.</p> -->
+                    </div>
+
+                    <form th:action="@{/my-account/update}" method="post" th:object="${customer}">
+                        <input type="hidden"  />
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="ho" class="form-label">Họ</label>
+                                <input type="text" class="form-control" id="ho"  placeholder="Nhập họ của bạn">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="ten" class="form-label">Tên</label>
+                                <input type="text" class="form-control" id="ten"  placeholder=" Tên của bạn">
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="email"  placeholder=" Email của bạn">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="soDienThoai" class="form-label">Số điện thoại</label>
+                            <input type="text" class="form-control" id="soDienThoai"  placeholder="Số điện thoại">
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="diaChi" class="form-label">Địa chỉ</label>
+                            <textarea class="form-control" id="diaChi" rows="3"  placeholder=" Địa chỉ của bạn"></textarea>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="button" class="btn btn-secondary me-2">Hủy</button>
+                            <button type="submit" class="btn btn-warning">Lưu thay đổi</button>
+                        </div>
+                    </form>
+                </main>
+
+            </div>
+        </div>
+    </div>
+</body>
+</html>

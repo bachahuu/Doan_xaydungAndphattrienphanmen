@@ -99,6 +99,25 @@ function addToCart(event) {
         alert('Lỗi khi thêm vào giỏ hàng: ' + err.message);
     });
 }
+
+//kiểm tra giỏ hàng trống
+function diachi() {
+    fetch('/api/cart/check-empty')
+        .then(response => {
+            if (!response.ok) {
+                return response.text().then(msg => { throw new Error(msg); });
+            }
+            return response.text();
+        })
+        .then(msg => {
+            console.log(msg); // log nếu muốn
+            window.location.href = "/location"; // ✅ chỉ chuyển khi hợp lệ
+        })
+        .catch(err => {
+            alert(err.message || 'Giỏ hàng của bạn đang trống. Vui lòng thêm sản phẩm trước khi thanh toán.');
+        });
+}
+
 document.addEventListener('DOMContentLoaded', function(){
 
     // Cập nhật tổng ban đầu khi trang vừa load

@@ -27,8 +27,8 @@ public class loginController {
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ModelAndView login(@RequestParam("so_dien_thoai") String username,
-                              @RequestParam("mat_khau") String password,
-                              HttpSession session) {
+            @RequestParam("mat_khau") String password,
+            HttpSession session) {
         Object user = loginService.authenticate(username, password);
         if (user == null) {
             ModelAndView mav = new ModelAndView("signin-up/login");
@@ -73,7 +73,12 @@ public class loginController {
         if (customer == null) {
             return new ModelAndView("redirect:/login");
         }
-        ModelAndView mav = new ModelAndView("user/my-account");
+        // main.html nằm trong /user/layout/
+        ModelAndView mav = new ModelAndView("user/layout/main");
+
+        // my-account.html nằm trong /user/products/
+        mav.addObject("view", "user/products/my-account");
+
         mav.addObject("customer", customer);
         return mav;
     }

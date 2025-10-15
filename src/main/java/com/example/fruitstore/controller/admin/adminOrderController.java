@@ -10,14 +10,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.example.fruitstore.entity.order.orderEntity;
 
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.http.ResponseEntity;
-import com.example.fruitstore.entity.order.orderEntity.TrangThai;
 import com.example.fruitstore.service.order.orderService;
+import com.example.fruitstore.dto.OrderUpdateDTO;
 
 @RestController
 @RequestMapping("api/admin/order")
@@ -43,9 +41,10 @@ public class adminOrderController {
     }
 
     @PutMapping("/update/{maDonHang}")
-    public ResponseEntity<String> updateOrder(@PathVariable String maDonHang, @RequestBody orderEntity updateOrder) {
+    public ResponseEntity<String> updateOrder(@PathVariable String maDonHang,
+            @RequestBody orderEntity updatedOrderData) {
         try {
-            orderService.updateOrder(maDonHang, updateOrder);
+            orderService.updateOrder(maDonHang, updatedOrderData);
             return ResponseEntity.ok("Cập nhật đơn hàng thành công");
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Lỗi: " + e.getMessage());

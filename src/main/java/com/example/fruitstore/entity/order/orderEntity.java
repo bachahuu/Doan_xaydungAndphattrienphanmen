@@ -9,6 +9,7 @@ import java.util.List;
 
 import com.example.fruitstore.entity.CustomerEntity;
 import com.example.fruitstore.entity.discountEntity;
+import com.example.fruitstore.entity.phuongThucThanhToan;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
@@ -37,12 +38,17 @@ public class orderEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "khachHangId")
     private CustomerEntity khachHang;
+
     // mỗi đơn hàng gắn với 1 phương thức thanh toán
-    @Column(name = "phuongThucThanhToanId")
-    private Integer phuongThucThanhToanId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "phuongThucThanhToanId")
+    @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+    private phuongThucThanhToan phuongThucThanhToan;
+
     // mỗi đơn hàng gắn với 1 khuyến mãi
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "khuyenMaiId")
+    @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler", "orders", "sanPhams" })
     private discountEntity discount;
 
     @Column(name = "tongTien")
@@ -58,8 +64,6 @@ public class orderEntity {
     private String tenNguoiNhan;
     @Column(name = "soDienThoaiNguoiNhan")
     private String soDienThoaiNguoiNhan;
-    @Column(name = "emailNguoiNhan")
-    private String emailNguoiNhan;
     @Column(name = "diaChiGiaoHang")
     private String diaChiGiaoHang;
 

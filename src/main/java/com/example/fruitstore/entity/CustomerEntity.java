@@ -1,6 +1,7 @@
 package com.example.fruitstore.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.*;
 import lombok.Data;
@@ -35,6 +36,12 @@ public class CustomerEntity {
 
     @Column(name = "taiKhoanId")
     private Integer taiKhoanId;
+
+    @OneToOne
+    @JoinColumn(name = "taiKhoanId", referencedColumnName = "id", insertable = false, updatable = false)
+    @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+    @JsonIgnore
+    private loginCustomerEntity account;
 
     @Column(name = "trangThaiTaiKhoan")
     private Integer trangThaiTaiKhoan;

@@ -4,10 +4,12 @@ import jakarta.persistence.*;
 import lombok.Data;
 import java.util.List;
 import com.example.fruitstore.entity.order.orderEntity;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name = "khuyenmai")
 @Data
+@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler", "orders", "sanPhams" })
 public class discountEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

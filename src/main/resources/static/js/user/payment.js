@@ -1,83 +1,97 @@
 document.addEventListener('DOMContentLoaded', function () {
-    // Function to update totals from localStorage
-    function updateTotalsFromLocalStorage() {
-        const stored = localStorage.getItem('cartTotalPrice');
-        const cartTotal = stored ? parseInt(stored) : 0;
 
-        const ship = 30000; // Default shipping fee
-        const discount = 0; // Default discount
-        const tamTinh = Math.max(0, cartTotal - discount);
-        const total = tamTinh + ship;
+    // Ghi chú đơn hàng
+    const note = document.getElementById("orderNote");
+    const count = document.getElementById("charCount");
+        note.addEventListener("input", function () {
+            count.textContent = `${note.value.length} / 500 ký tự`;
+        });
 
-        document.getElementById('cartTotalPriceInput').value = cartTotal;
-        document.getElementById('total-display').innerText = total;
-    }
 
-    // Initialize totals
-    updateTotalsFromLocalStorage();
-
-    // Get the button and modal
-    const completePayButton = document.getElementById('complete_pay');
-    const successModal = document.getElementById('successModal');
     const checkoutForm = document.getElementById('checkoutForm');
+    const completePayButton = document.getElementById('complete_pay');
+    
 
-    // Initialize Bootstrap modal
-    const bootstrapModal = new bootstrap.Modal(successModal);
-
-    // Handle "Xác nhận thanh toán" button click
+    
+    // Xử lý nút thanh toán
     if (completePayButton) {
-        completePayButton.addEventListener('click', function () {
-            // Check if a payment method is selected
-            const selectedPaymentMethod = document.querySelector('input[name="paymentMethod"]:checked');
-            if (!selectedPaymentMethod) {
-                alert('Vui lòng chọn phương thức thanh toán!');
-                return;
-            }
-
-            // Update hidden form input with selected payment method
-            document.getElementById('selectedPaymentMethod').value = selectedPaymentMethod.value;
-
-            // Show the success modal
-            bootstrapModal.show();
-
-            // Optional: Submit the form after showing the modal
-            // checkoutForm.submit(); // Uncomment if you want immediate form submission
+        completePayButton.addEventListener('click', function (event) {
+            event.preventDefault(); 
+            handleFormSubmit();
         });
     }
 
-    // Handle form submission
-    if (checkoutForm) {
-        checkoutForm.addEventListener('submit', function (e) {
-            const radios = document.getElementsByName('paymentMethod');
-            let checked = null;
-            for (let i = 0; i < radios.length; i++) {
-                if (radios[i].checked) {
-                    checked = radios[i].value;
-                    break;
+    // Bước 2: Xử lý các thành phần khác như modal sau
+    // let bootstrapModal = null;
+
+    // if (successModalElement) {
+    //     // Khởi tạo modal để sẵn sàng sử dụng
+    //     bootstrapModal = new bootstrap.Modal(successModalElement, {
+    //         backdrop: 'static',
+    //         keyboard: false
+    //     });
+    
+    //     // Xử lý nút "Trang Chủ" trong modal
+    //     const backToHomeBtn = document.getElementById('backToCartBtn');
+    //     if (backToHomeBtn) {
+    //         backToHomeBtn.addEventListener('click', function (e) {
+    //             e.preventDefault();
+    //             window.location.href = '/home-static'; // Chuyển về trang chủ
+    //         });
+    //     }
+    // }    
+
+
+
+    function handleFormSubmit() {
+        const selectedPaymentMethod = document.querySelector('input[name="paymentMethod"]:checked');
+        if (!selectedPaymentMethod) {
+            alert('Vui lòng chọn một phương thức thanh toán!');
+            return;
+        }
+
+        const formData = new FormData(checkoutForm);
+        formData.set('paymentMethod', selectedPaymentMethod.value); 
+
+        completePayButton.disabled = true;
+        completePayButton.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Đang xử lý...';
+
+        
+        fetch("/orders/checkout", {
+            method: 'POST',
+            body: new URLSearchParams(formData)
+        })
+        .then(response => {
+            // Chuyển response thành JSON để đọc nội dung message
+            return response.json().then(data => {
+                // Nếu response không phải là 2xx (ví dụ 400, 500), ném ra lỗi
+                if (!response.ok) {
+                    throw new Error(data.message || 'Có lỗi xảy ra, vui lòng thử lại.');
                 }
-            }
-            if (!checked) {
-                e.preventDefault();
-                alert('Vui lòng chọn một phương thức thanh toán.');
-                return false;
-            }
-            document.getElementById('selectedPaymentMethod').value = checked;
+                // Nếu thành công, trả về dữ liệu (dù có thể không dùng)
+                return data;
+            });
+        })
+        .then(data => {
+            // Hiển thị thông báo thành công đơn giản
+            console.log('Success:', data.message);
+            alert('Đặt hàng thành công! Chúng tôi sẽ xác nhận và gửi hàng đến bạn sớm nhất.');
+            // Chuyển về trang chủ sau khi đóng alert
+            window.location.href = '/home-static';
+        })
+        .catch(error => {
+            // Xử lý khi có lỗi mạng hoặc lỗi từ server
+            console.error('Error:', error);
+            alert('Lỗi: ' + error.message);
+        })
+        .finally(() => {
+            // Luôn luôn kích hoạt lại nút bấm sau khi hoàn tất
+            completePayButton.disabled = false;
+            completePayButton.textContent = 'Xác nhận thanh toán';
         });
     }
 
-    // Handle "Quay lại Giỏ Hàng" button in the modal
-    const backToCartBtn = document.getElementById('backToCartBtn');
-    if (backToCartBtn) {
-        backToCartBtn.addEventListener('click', function (e) {
-            e.preventDefault();
-            window.location.href = '/cart'; // Adjust to your cart page URL
-        });
-    }
+ 
 
-    // Handle "Đóng" button in the modal
-    if (closeModalButton) {
-        closeModalButton.addEventListener('click', function () {
-            bootstrapModal.hide(); // Programmatically hide the modal
-        });
-    }
+    
 });
