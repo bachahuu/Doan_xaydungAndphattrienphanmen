@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 15, 2025 at 01:23 PM
+-- Generation Time: Oct 16, 2025 at 08:34 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -117,7 +117,18 @@ INSERT INTO `chitietdonhang` (`id`, `donHangId`, `sanPhamId`, `soLuong`, `gia`) 
 (16, 13, 3, 2, 40000.00),
 (18, 15, 14, 1, 70000.00),
 (19, 16, 14, 1, 70000.00),
-(20, 17, 11, 1, 40000.00);
+(20, 17, 11, 1, 40000.00),
+(23, 20, 8, 1, 30000.00),
+(24, 20, 14, 1, 70000.00),
+(26, 22, 2, 1, 20000.00),
+(27, 22, 11, 1, 40000.00),
+(28, 22, 14, 1, 70000.00),
+(29, 22, 13, 1, 18000.00),
+(32, 24, 8, 1, 30000.00),
+(33, 24, 9, 1, 20000.00),
+(34, 25, 2, 5, 20000.00),
+(38, 29, 22, 3, 32000.00),
+(39, 29, 14, 3, 70000.00);
 
 -- --------------------------------------------------------
 
@@ -164,25 +175,31 @@ CREATE TABLE `donhang` (
   `maDonHang` varchar(50) NOT NULL,
   `tenNguoiNhan` varchar(100) NOT NULL,
   `soDienThoaiNguoiNhan` varchar(15) NOT NULL,
-  `ngayTao` date NOT NULL,
+  `ngayTao` datetime NOT NULL,
   `trangThai` enum('ChoXuLy','XacNhan','DangGiao','HoanThanh','DaHuy') NOT NULL DEFAULT 'ChoXuLy',
   `ghiChu` text DEFAULT NULL,
   `diaChiGiaoHang` varchar(255) NOT NULL,
   `tongTien` decimal(12,2) NOT NULL,
   `khachHangId` int(11) NOT NULL,
   `phuongThucThanhToanId` int(11) DEFAULT NULL,
-  `khuyenMaiId` int(11) DEFAULT NULL
+  `khuyenMaiId` int(11) DEFAULT NULL,
+  `phiShip` decimal(10,0) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `donhang`
 --
 
-INSERT INTO `donhang` (`id`, `maDonHang`, `tenNguoiNhan`, `soDienThoaiNguoiNhan`, `ngayTao`, `trangThai`, `ghiChu`, `diaChiGiaoHang`, `tongTien`, `khachHangId`, `phuongThucThanhToanId`, `khuyenMaiId`) VALUES
-(13, 'DH1760503811665', 'Trần Thị Vân', '0348830862', '2025-10-14', 'XacNhan', '', 'thái bình ', 186000.00, 11, 2, 2),
-(15, 'DH1760512659911', 'Trần Thị Vân', '0348830862', '2025-10-14', 'XacNhan', '', 'thái bình ', 90000.00, 11, 2, 2),
-(16, 'DH1760512853821', 'Trần Thị Vân', '0348830862', '2025-10-14', 'ChoXuLy', 'ok luôn', 'thái bình ', 80000.00, 11, 2, 2),
-(17, 'DH1760513372173', 'Trần Thị Vân', '0348830862', '2025-10-15', 'ChoXuLy', 'ha', 'thái bình ', 60000.00, 12, 2, 2);
+INSERT INTO `donhang` (`id`, `maDonHang`, `tenNguoiNhan`, `soDienThoaiNguoiNhan`, `ngayTao`, `trangThai`, `ghiChu`, `diaChiGiaoHang`, `tongTien`, `khachHangId`, `phuongThucThanhToanId`, `khuyenMaiId`, `phiShip`) VALUES
+(13, 'DH1760503811665', 'Trần Thị Vân', '0348830862', '2025-10-14 00:00:00', 'HoanThanh', '', 'thái bình ', 186000.00, 11, 2, 2, 10000),
+(15, 'DH1760512659911', 'Trần Thị Vân', '0348830862', '2025-10-14 00:00:00', 'XacNhan', '', 'thái bình ', 90000.00, 11, 2, 2, 0),
+(16, 'DH1760512853821', 'Trần Thị Vân', '0348830862', '2025-10-14 00:00:00', 'ChoXuLy', 'ok luôn', 'thái bình ', 80000.00, 11, 2, 2, 0),
+(17, 'DH1760513372173', 'Trần Thị Vân', '0348830862', '2025-10-15 00:00:00', 'DaHuy', 'ha', 'thái bình ', 60000.00, 12, 2, 2, 0),
+(20, 'DH1760538633510', 'Trần Thị Vân', '0348830862', '2025-10-15 00:00:00', 'DaHuy', 'nhanh giúp tôi ', 'Số 15 Nguyễn Khuyến, Văn Quán, Hà Đông, Hà Nội', 80000.00, 12, 2, 1, 0),
+(22, 'DH1760550916184', 'Trần Thị Vân', '0348830862', '2025-10-15 00:00:00', 'ChoXuLy', '', 'Số 15 Nguyễn Khuyến, Văn Quán, Hà Đông, Hà Nội', 138000.00, 11, 3, 2, 0),
+(24, 'DH1760623791212', 'hà hữu nam', '0348830862', '2025-10-16 14:09:51', 'XacNhan', 'Ư', 'thái nguên', 60000.00, 12, 2, 1, 0),
+(25, 'DH1760633192750', 'hà hữu nam', '0348830862', '2025-10-16 16:46:32', 'ChoXuLy', '', 'Số 15 Nguyễn Khuyến, Văn Quán, Hà Đông, Hà Nội', 80000.00, 12, 1, 1, 0),
+(29, 'DH1760638007411', 'hà hữu nam', '0348830862', '2025-10-16 18:06:47', 'DangGiao', '', 'thái nguên', 316000.00, 12, 2, 1, 30000);
 
 -- --------------------------------------------------------
 
@@ -285,7 +302,7 @@ CREATE TABLE `nhacungcap` (
 --
 
 INSERT INTO `nhacungcap` (`nhaCungCapId`, `maNCC`, `tenNCC`, `soDienThoai`, `diaChi`, `email`) VALUES
-(1, 'NCC01', 'CTY Rau Qua Hà Bắc', '0911111111', 'Ha Noi', 'rauqua@gmail.com'),
+(1, 'NCC01', 'CTY Rau Qua Hà Bắc', '0911111111', 'Ha Noi city', 'rauqua@gmail.com'),
 (3, 'BK004', 'Bách Khoa fruit', '0348830868', 'thái bình', 'bachahuu182004@gmail.com');
 
 -- --------------------------------------------------------
@@ -604,13 +621,13 @@ ALTER TABLE `binhluan`
 -- AUTO_INCREMENT for table `chitietdonhang`
 --
 ALTER TABLE `chitietdonhang`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
 
 --
 -- AUTO_INCREMENT for table `chitietgiohang`
 --
 ALTER TABLE `chitietgiohang`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
 
 --
 -- AUTO_INCREMENT for table `danhmuc`
@@ -622,13 +639,13 @@ ALTER TABLE `danhmuc`
 -- AUTO_INCREMENT for table `donhang`
 --
 ALTER TABLE `donhang`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
 -- AUTO_INCREMENT for table `giohang`
 --
 ALTER TABLE `giohang`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
 -- AUTO_INCREMENT for table `khachhang`
