@@ -1,0 +1,94 @@
+
+/* Container cho toàn bộ danh sách đơn hàng */
+.order-list-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* Khoảng cách giữa các đơn hàng */
+}
+
+/* Kiểu dáng cho mỗi thẻ đơn hàng */
+.order-card {
+    background-color: #ffffff;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    padding: 20px;
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+    /* Không cần cursor: pointer ở đây nữa vì ta click vào nút */
+}
+
+.order-card:hover {
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+    transform: translateY(-4px);
+}
+
+/* Header của thẻ: chứa ngày đặt, trạng thái và nút xem chi tiết */
+.order-card-header {
+    display: flex;
+    justify-content: space-between; /* Đẩy các phần tử ra hai bên */
+    align-items: center; /* Căn giữa theo chiều dọc */
+    padding-bottom: 15px;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #f1f1f1;
+    gap: 15px; /* Khoảng cách giữa các nhóm phần tử */
+    flex-wrap: wrap; /* Cho phép rớt dòng trên màn hình nhỏ */
+}
+
+/* Nút xem chi tiết */
+.view-details-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px; /* Khoảng cách giữa icon và chữ */
+    transition: background-color 0.2s ease;
+}
+
+/* Thông tin ngày đặt */
+.order-date {
+    font-size: 14px;
+    color: #6c757d;
+}
+
+/* Trạng thái đơn hàng (các huy hiệu màu) */
+.order-status {
+    font-size: 14px;
+    font-weight: 600;
+    padding: 5px 12px;
+    border-radius: 20px;
+    color: #fff;
+    display: inline-block;
+    margin-left: 10px; /* Tạo khoảng cách với ngày đặt */
+    background-color: #6c757d;
+}
+
+/* Màu sắc cho từng trạng thái */
+.status-processing { background-color: #0d6efd; } /* Chờ xử lý */
+.status-confirmed { background-color: #20c997; } /* Xác nhận */
+.status-shipping { background-color: #fd7e14; } /* Đang giao */
+.status-completed { background-color: #198754; } /* Hoàn tất */
+.status-cancelled { background-color: #dc3545; } /* Đã hủy */
+
+
+/* Phần thân thẻ: chứa danh sách sản phẩm */
+.order-card-body p {
+    margin: 0;
+    color: #343a40;
+    line-height: 1.6;
+}
+
+/* Phần chân thẻ: chứa tổng tiền */
+.order-card-footer {
+    display: flex;
+    justify-content: flex-end; /* Đẩy tổng tiền sang phải */
+    align-items: center;
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid #f1f1f1;
+    font-size: 16px;
+    gap: 8px; /* Khoảng cách giữa chữ "Tổng tiền" và số tiền */
+}
+
+/* Kiểu chữ cho tổng tiền */
+.order-total {
+    font-size: 18px;
+    font-weight: 700;
+    color: #e44d26; /* Một màu cam/đỏ nổi bật */
+}

@@ -29,13 +29,18 @@
                 <ul class="collapse sub-menu" id="promotions">
                     <li class="sub-nav-item">
                         <a href="/admin/order" class="sub-nav-link">
-                            <i class="fas fa-tags"></i>
+                            <i class="fas fa-user-shield"></i>
                             <span>Quản lý đơn hàng</span>
+                        </a>
+                    </li>
+                    <li class="sub-nav-item">
+                        <a href="/admin/order/today" class="sub-nav-link">
+                            <i class="fas fa-user-clock"></i>
+                            <span>Đơn hàng theo ngày</span>
                         </a>
                     </li>
                 </ul>
             </li>
-
             <!-- Catálogos -->
             <li class="nav-item">
                 <a href="#" class="nav-link active" data-bs-toggle="collapse" data-bs-target="#catalogos">
@@ -172,6 +177,10 @@
 
     <!-- Footer -->
     <div class="sidebar-footer">
+        <a th:href="@{/logout}" class="logout-button">
+            <i class="fas fa-sign-out-alt"></i>
+            <span>Đăng xuất</span>
+        </a>
         <div class="footer-info">
             <i class="fas fa-envelope"></i>
             <span>hector@email.com</span>

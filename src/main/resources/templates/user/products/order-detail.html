@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="content">
+    <div class="container my-5">
+        <div class="profile-container">
+            <!-- Sidebar -->
+            <aside class="profile-sidebar" th:replace="~{user/products/lichsudonhang :: .profile-sidebar}"></aside>
+
+            <!-- Main content -->
+            <main class="profile-content">
+                <div class="content-header mb-4 d-flex justify-content-between align-items-center">
+                    <a href="/order-history" class="btn btn-outline-secondary btn-sm back-link">
+                        <i class="fa-solid fa-arrow-left"></i> Quay lại Lịch sử đơn hàng
+                    </a>
+                    <h3>Chi tiết đơn hàng #<span th:text="${order.maDonHang}">DH123</span></h3>
+                </div>
+
+                <div class="order-detail-card card shadow-sm p-4" th:object="${order}">
+                    <!-- Thông tin đơn hàng -->
+                    <div class="order-info-grid mb-3">
+                        <p><strong>Ngày đặt:</strong>
+                            <span th:text="${#temporals.format(order.ngayTao, 'dd/MM/yyyy HH:mm')}"></span>
+                        </p>
+                        <p><strong>Tổng tiền:</strong>
+                            <span class="order-total"
+                                  th:text="${#numbers.formatDecimal(order.tongTien, 0, 'COMMA', 0, 'POINT')} + 'đ'"></span>
+                        </p>
+                        <p><strong>Trạng thái:</strong>
+                            <span class="badge px-3 py-2"
+                                  th:text="*{trangThaiDisplay}"
+                                  th:classappend="*{trangThaiDisplay == 'Chờ xử lý'} ? ' bg-warning text-dark' :
+                                                  (*{trangThaiDisplay == 'Hoàn tất'} ? ' bg-success' :
+                                                  (*{trangThaiDisplay == 'Đã hủy'} ? ' bg-danger' :
+                                                  (*{trangThaiDisplay == 'Đang giao'} ? ' bg-primary' :
+                                                  (*{trangThaiDisplay == 'Xác nhận'} ? ' bg-info text-dark' : ' bg-secondary'))))">
+                            </span>
+                        </p>
+                        <p><strong>Phương thức thanh toán:</strong>
+                            <span th:text="*{phuongThucThanhToan.name}">COD</span>
+                        </p>
+                        <p th:if="${order.discount.giaTri != null}">
+                            <strong>Giá khuyến mãi:</strong>
+                            <span class="text-success"
+                                  th:text="${#numbers.formatDecimal(order.discount.giaTri, 0, 'COMMA', 0, 'POINT')} + 'đ'">0đ</span>
+                        </p>
+                        <p><strong>phí vận chuyển:</strong>
+                            <span th:text="${#numbers.formatDecimal(order.phiShip, 0, 'COMMA', 0, 'POINT')} + 'đ'">-</span>
+                        </p>
+                    </div>
+
+                    <hr>
+
+                    <!-- Danh sách sản phẩm -->
+                    <h5 class="mb-3"><strong>Sản phẩm đã đặt:</strong></h5>
+                    <ul class="list-group list-group-flush mb-4">
+                        <li class="list-group-item d-flex justify-content-between align-items-center"
+                            th:each="detail : ${order.orderDetail}">
+                            <div>
+                                <span class="fw-semibold" th:text="${detail.sanPham.tenSanPham}">Tên sản phẩm</span>
+                                <small class="text-muted ms-2">x <span th:text="${detail.soLuong}">1</span></small>
+                            </div>
+                            <div>
+                                <span class="text-danger"
+                                      th:text="${#numbers.formatDecimal(detail.sanPham.gia * detail.soLuong, 0, 'COMMA', 0, 'POINT')} + 'đ'">10000đ</span>
+                            </div>
+                        </li>
+                    </ul>
+
+                    <hr>
+
+                    <!-- Thông tin nhận hàng -->
+                    <h5 class="mb-3"><strong>Thông tin nhận hàng</strong></h5>
+
+                    <form th:action="@{'/order-history/' + ${order.id} + '/cancel'}" method="post" class="row g-3" onsubmit="return confirm('Bạn có chắc muốn hủy đơn hàng này không?');">
+                        <input type="hidden" th:field="*{id}" />
+
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Người nhận:</label>
+                            <span th:if="${order.trangThaiDisplay != 'Chờ xử lý'}" th:text="*{tenNguoiNhan}"></span>
+                            <input th:if="${order.trangThaiDisplay == 'Chờ xử lý'}" type="text"
+                                   th:field="*{tenNguoiNhan}" class="form-control" />
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Số điện thoại:</label>
+                            <span th:if="${order.trangThaiDisplay != 'Chờ xử lý'}" th:text="*{soDienThoaiNguoiNhan}"></span>
+                            <input th:if="${order.trangThaiDisplay == 'Chờ xử lý'}" type="text"
+                                   th:field="*{soDienThoaiNguoiNhan}" class="form-control" />
+                        </div>
+
+                        <div class="col-md-12">
+                            <label class="form-label fw-semibold">Địa chỉ giao hàng:</label>
+                            <span th:if="${order.trangThaiDisplay != 'Chờ xử lý'}" th:text="*{diaChiGiaoHang}"></span>
+                            <input th:if="${order.trangThaiDisplay == 'Chờ xử lý'}" type="text"
+                                   th:field="*{diaChiGiaoHang}" class="form-control" />
+                        </div>
+
+                        <div class="col-md-12">
+                            <label class="form-label fw-semibold">Ghi chú đơn hàng:</label>
+                            <span th:if="${order.trangThaiDisplay != 'Chờ xử lý'}" th:text="*{ghiChu}"></span>
+                            <textarea th:if="${order.trangThaiDisplay == 'Chờ xử lý'}"
+                                      th:field="*{ghiChu}" rows="3" class="form-control"
+                                      placeholder="Thêm ghi chú (nếu có)..."></textarea>
+                        </div>
+
+                        <!-- Nút hành động -->
+                        <div class="col-12 mt-4 text-end" th:if="${order.trangThaiDisplay == 'Chờ xử lý'}">
+                            <!-- <button type="submit" class="btn btn-primary me-2">
+                                <i class="fa-solid fa-save"></i> Lưu thay đổi
+                            </button> -->
+                            <button type="submit" class="btn btn-danger">
+                                <i class="fa-solid fa-times"></i> Hủy đơn hàng
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </main>
+        </div>
+    </div>
+</div>
+</html>

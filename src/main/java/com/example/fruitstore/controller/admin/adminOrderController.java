@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.http.ResponseEntity;
 import com.example.fruitstore.service.order.orderService;
-import com.example.fruitstore.dto.OrderUpdateDTO;
 
 @RestController
 @RequestMapping("api/admin/order")

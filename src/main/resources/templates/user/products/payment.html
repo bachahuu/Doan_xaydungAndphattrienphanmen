@@ -91,7 +91,14 @@
                     </div>
                 </div> -->
 
-                <div class="mt-3">
+                <div class="mt-3" th:with="
+                    storeAddress='Số 15 Nguyễn Khuyến, Văn Quán, Hà Đông, Hà Nội',
+                    isPickup=${shippingInfo?.get('txtaddress') == storeAddress},
+                    shippingFee=${isPickup ? 0.0 : 30000.0},
+                    cartTotal=${T(java.lang.Double).parseDouble(shippingInfo?.get('cartTotalPrice') ?: '0')},
+                    finalTotal=${T(java.lang.Double).parseDouble(shippingInfo?.get('finalTotal') ?: '0')},
+                    discountAmount=${(cartTotal + shippingFee) - finalTotal}
+                ">
                     <p>
                     <strong>Tạm tính: 
                     <span th:text="${#numbers.formatDecimal(T(java.lang.Double).parseDouble(shippingInfo?.get('cartTotalPrice') ?: '0'), 0, 'COMMA', 0, 'POINT')}">0</span> đ
@@ -100,15 +107,13 @@
 
                     <p>
                     <strong>giảm giá: 
-                    <span th:with="cartTotal=${T(java.lang.Double).parseDouble(shippingInfo?.get('cartTotalPrice') ?: '0')}, 
-                    finalTotal=${T(java.lang.Double).parseDouble(shippingInfo?.get('finalTotal') ?: '0')}"
-                    th:text="${#numbers.formatDecimal(cartTotal + 30000 - finalTotal, 0, 'COMMA', 0, 'POINT')}">0</span> đ
+                    <span th:text="${#numbers.formatDecimal(discountAmount, 0, 'COMMA', 0, 'POINT')}">0</span> đ
                     </strong>
                     </p>
 
                     <p>
                     <strong>phí vận chuyển: 
-                    <span>30,000</span> đ
+                    <span th:text="${#numbers.formatDecimal(shippingFee, 0, 'COMMA', 0, 'POINT')}">30,000</span> đ
                     </strong>
                     </p>
 

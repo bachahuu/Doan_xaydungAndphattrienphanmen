@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <div th:fragment="content">
+        <div class="container my-5">
+            <div class="profile-container">
+
+                <!-- Sidebar (Tái sử dụng từ my-account) -->
+                <aside class="profile-sidebar">
+                    <div class="sidebar-header">
+                        <i class="fa-solid fa-user-gear"></i>
+                        <h2>Tài khoản của tôi</h2>
+                    </div>
+                    <nav class="sidebar-nav">
+                        <ul>
+                            <li>
+                                <a href="/my-account">
+                                    <i class="fa-solid fa-user-pen"></i>
+                                    <span>Thông tin hồ sơ</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/change-password">
+                                    <i class="fa-solid fa-lock"></i>
+                                    <span>Đổi mật khẩu</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/order-history" class="active">
+                                    <i class="fa-solid fa-receipt"></i>
+                                    <span>Lịch sử đơn hàng</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/logout">
+                                    <i class="fa-solid fa-right-from-bracket"></i>
+                                    <span>Đăng xuất</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </aside>
+
+                <!-- Main Content - Order History List -->
+                <main class="profile-content">
+                    <div class="content-header">
+                        <h1>Lịch sử đơn hàng</h1>
+                    </div>
+
+                    <div class="order-list-container">
+                        <!-- Example Order Card 1 -->
+                         <!-- <input type="hidden" th:with="customerId=${session.customer.id}" th:value="${customerId}" id="customerId"/> -->
+                        <div class="order-card" th:each="order : ${orders}" th:attr="data-order-id=${order.id}">
+                            <div class="order-card-header">
+                                <div>
+                                    <span th:text="${#temporals.format(order.ngayTao, 'dd/MM/yyyy HH:mm:ss')}"></span>
+                                    <span class="order-status" th:text="${order.trangThaiDisplay}"
+                                        th:classappend="${order.trangThaiDisplay == 'Chờ xử lý'} ? ' status-processing' :
+                                                        (order.trangThaiDisplay == 'Hoàn tất' ? ' status-completed' :
+                                                        (order.trangThaiDisplay == 'Đã hủy' ? ' status-cancelled' :
+                                                        (order.trangThaiDisplay == 'Đang giao' ? ' status-shipping' :
+                                                        (order.trangThaiDisplay == 'Xác nhận' ? ' status-confirmed' : ''))))">
+                                    </span>
+                                </div>
+
+                                <div>
+                                    <a th:href="@{/order-history/{id}(id=${order.id})}" class="btn btn-sm btn-info view-details-btn">
+                                        <i class="fa-solid fa-eye"></i> Xem chi tiết
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="order-card-body">
+                                <p><strong>Sản phẩm:</strong> 
+                                    <span th:each="detail, stat : ${order.orderDetail}"
+                                    th:text="${detail.sanPham.tenSanPham + ' (SL: ' + detail.soLuong + ')'} + ${!stat.last ? ', ' : ''}">
+                                    </span>
+                                </p>
+                            </div>
+                            <div class="order-card-footer">
+                                <span>Tổng tiền:</span>
+                                <span class="order-total"
+                                    th:text="${#numbers.formatDecimal(order.tongTien, 0, 'COMMA', 0, 'POINT')} + 'đ'">
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+
+            </div>
+        </div>
+<!-- modal chi tiết  -->
+        <!-- <div class="modal fade" id="orderDetailModal" tabindex="-1" aria-labelledby="orderDetailModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content">
+                    <input type="hidden" id="modalOrderId" value=""/>
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="orderDetailModalLabel">Chi tiết đơn hàng #<span id="modal-order-maDonHang"></span></h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="order-info-static">
+                            <p><strong>Ngày đặt:</strong> <span id="modal-order-date"></span></p>
+                            <p><strong>Trạng thái:</strong> <span id="modal-order-status" class="order-status"></span></p>
+                            <p><strong>Tổng tiền:</strong> <span id="modal-order-total" class="fw-bold text-danger"></span></p>
+                            <hr>
+                            <h6><strong>Sản phẩm:</strong></h6>
+                            <ul id="modal-product-list" class="list-group list-group-flush mb-3">
+                                </ul>
+                        </div>
+                        
+                        <div class="order-info-editable">
+                            <h4>Thông tin nhận hàng</h4>
+                            <form id="updateRecipientForm">
+                                <div class="mb-3">
+                                    <label for="modal-recipient-name" class="form-label">Tên người nhận</label>
+                                    <input type="text" id="modal-recipient-name" name="tenNguoiNhan" class="form-control">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="modal-recipient-phone" class="form-label">Số điện thoại</label>
+                                    <input type="text" id="modal-recipient-phone" name="soDienThoaiNhan" class="form-control">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="modal-recipient-address" class="form-label">Địa chỉ giao hàng</label>
+                                    <textarea id="modal-recipient-address" name="diaChiGiaoHang" class="form-control" rows="3"></textarea>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                        <button type="button" class="btn btn-warning" id="saveChangesBtn">Lưu thay đổi</button>
+                    </div>
+                </div>
+            </div>
+        </div> -->
+        
+    </div>
+</html>

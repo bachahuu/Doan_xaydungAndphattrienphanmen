@@ -21,11 +21,6 @@ public class orderController {
     @Autowired
     private orderService orderService;
 
-    // Temporary: get current user id. Replace with real auth later.
-    private Integer getCurrentUserId() {
-        return 1;
-    }
-
     @PostMapping("/orders/checkout")
     @ResponseBody
     public ResponseEntity<?> checkout(@RequestParam Map<String, String> params, HttpSession session) {
@@ -38,6 +33,10 @@ public class orderController {
         }
 
         try {
+            String orderNote = params.get("orderNote");
+            if (orderNote != null) {
+                shippingInfo.put("orderNote", orderNote);
+            }
             // Lấy paymentMethodId từ request params
             String paymentMethodStr = params.get("paymentMethod");
             if (paymentMethodStr == null || paymentMethodStr.isEmpty()) {
@@ -67,7 +66,7 @@ public class orderController {
             }
             Integer userId = customer.getId();
 
-            // === GỌI SERVICE ĐỂ THỰC HIỆN TOÀN BỘ NGHIỆP VỤ ===
+            // GỌI SERVICE ĐỂ THỰC HIỆN TOÀN BỘ NGHIỆP VỤ
             orderService.createOrder(userId, shippingInfo, paymentMethodId, discountId, session);
 
             // Nếu không có lỗi, trả về thành công

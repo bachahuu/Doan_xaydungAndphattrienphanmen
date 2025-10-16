@@ -1,7 +1,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <div th:fragment="content">
     <div class="container">
-        <h1 style="text-align:center; font-family: 'Times New Roman', Times, serif;" >Liệt Kê Đơn Hàng</h1>
+        <h1 style="text-align:center; font-family: 'Times New Roman', Times, serif;" >Đơn hàng hôm nay</h1>
         
         <!-- xuất excel -->
         <form th:action="@{/admin/orders/export-excel}" method="post">
@@ -12,7 +12,7 @@
         
         <table class="table table-striped">
             <thead>
-                <tr style="text-align:center;" >
+                <tr style="text-align:center;">
                     <th>STT</th>
                     <th>Mã đơn hàng</th>
                     <th>Ngày đặt</th>
@@ -31,7 +31,7 @@
                     <td style="min-width: 120px;">
                         <div style="display: flex; gap: 8px; justify-content: center;">
                             <!-- Nút Xem chi tiết đơn hàng -->
-                            <button type="button" 
+                            <!-- <button type="button" 
                                     class="btn btn-primary btn-order-detail" 
                                     th:data-ma-don-hang="${order.maDonHang}"
                                     data-bs-toggle="modal" 
@@ -39,7 +39,7 @@
                                     onclick="showOrderDetail(this.dataset.maDonHang)"
                                     style="width: 40px; height: 40px; padding: 0; display: flex; align-items: center; justify-content: center;">
                                 <i class="fas fa-eye" style="color: white; font-size: 16px;"></i>
-                            </button>
+                            </button> -->
                             
                             <!-- Nút Sửa đơn hàng -->
                             <button type="button" 
@@ -115,7 +115,7 @@
                             </div>
                             <div class="col-md-4">
                                 <label class="form-label">Tiền Ship</label>
-                                <div id="detail-delivery" class="form-control">-</div>
+                                <div id="detail-phi-ship" class="form-control">-</div>
                             </div>
                             <div class="col-md-4">
                                 <label class="form-label">Tổng tiền</label>
@@ -223,8 +223,8 @@
                                         <input type="text" class="form-control" id="edit-ten-khuyen-mai" name="tenKhuyenMai" readonly>
                                     </div>
                                     <div class="col-md-4">
-                                        <label for="edit-phi-ship" class="form-label">phí Vận Chuyển</label>
-                                        <input type="text" class="form-control" id="edit-phi-ship" name="phiship" readonly>
+                                        <label for="edit-phi-ship" class="form-label">Phí vận chuyển</label>
+                                        <input type="text" class="form-control" id="edit-phi-ship" name="phivanchuyen" readonly>
                                     </div>
                                     <div class="col-md-4">
                                         <label for="edit-tong-tien" class="form-label">Tổng tiền</label>

@@ -16,6 +16,9 @@
                     <input type="hidden" id="cartTotalPriceInput" name="cartTotalPrice" th:value="${cartTotalPrice}" />
                     <input type="hidden" id="discountIdInput" name="discountId" value="" />
                     <input type="hidden" id="finalTotalInput" name="finalTotal" value="" />
+                    <!-- măc định phí ship 30k -->
+                    <input type="hidden" id="shippingFeeInput" name="shippingFee" value="30000" />   
+                    
                     
                     <!-- Left Section - Customer Information -->
                     <div class="customer-info-section">
@@ -124,7 +127,7 @@
                                 <td colspan="2">
                                     <div class="price-row">
                                         <span>Phí vận chuyển</span>
-                                        <span class="price-value">30000<sup>đ</sup></span>
+                                        <span class="price-value"><span id="shipping-fee-value">30,000</span><sup>đ</sup></span>
                                     </div>
                                 </td>
                             </tr>

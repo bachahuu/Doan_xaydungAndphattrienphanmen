@@ -3,8 +3,8 @@ package com.example.fruitstore.entity.order;
 import lombok.Data;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
-import java.util.Date;
 import java.util.List;
 
 import com.example.fruitstore.entity.CustomerEntity;
@@ -51,10 +51,12 @@ public class orderEntity {
     @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler", "orders", "sanPhams" })
     private discountEntity discount;
 
+    @Column(name = "phiShip")
+    private BigDecimal phiShip;
     @Column(name = "tongTien")
     private BigDecimal tongTien;
     @Column(name = "ngayTao")
-    private Date ngayTao;
+    private LocalDateTime ngayTao;
     @Enumerated(EnumType.STRING)
     @Column(name = "trangThai")
     private TrangThai trangThai;

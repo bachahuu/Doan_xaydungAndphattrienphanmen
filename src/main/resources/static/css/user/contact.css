@@ -17,6 +17,7 @@ h1 {
     gap: 20px;
     justify-content: center;
     flex-wrap: wrap;
+    margin-top: 112px;
 }
 
 .store {

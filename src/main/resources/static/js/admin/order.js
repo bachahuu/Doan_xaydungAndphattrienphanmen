@@ -32,6 +32,7 @@ function showOrderDetail(ma_don_hang) {
             setText('detail-ngay-tao', new Date(order.ngayTao).toLocaleDateString('vi-VN'));
             setText('detail-khach-hang', order.khachHang?.tenKhachHang || '-');
             setText('detail-email-khach-hang', order.khachHang?.email || '-');
+            setText('detail-delivery', order.phiShip ? order.phiShip.toLocaleString('vi-VN') + ' VNĐ' : '-');
             setText('detail-SDT-khach-hang', order.khachHang?.soDienThoai || '-');
             setText('detail-ten-nguoi-nhan', order.tenNguoiNhan || '-');
             setText('detail-SDT-nguoi-nhan', order.soDienThoaiNguoiNhan || '-');
@@ -84,9 +85,12 @@ function showEditOrder(ma_don_hang) {
             document.getElementById('edit-sdt-nguoi-nhan').value = order.soDienThoaiNguoiNhan || '';
             
             //thong tin don hang
+            document.getElementById('edit-phi-ship').value = order.phiShip ? order.phiShip.toLocaleString('vi-VN') + ' VNĐ' : '';
             document.getElementById('edit-tong-tien').value = order.tongTien ? order.tongTien.toLocaleString('vi-VN') + ' VNĐ' : '';
             document.getElementById('edit-phuong-thuc').value = order.phuongThucThanhToan?.name || '';
+            document.getElementById('edit-phuong-thuc-id').value = order.phuongThucThanhToan?.id || '';
             document.getElementById('edit-ten-khuyen-mai').value = order.discount?.tenKM || '';
+            document.getElementById('edit-ten-khuyen-mai-id').value = order.discount?.id || '';
             document.getElementById('edit-dia-chi').value = order.diaChiGiaoHang || '';
             document.getElementById('edit-ghi-chu').value = order.ghiChu || '';
             document.getElementById('edit-ma-don-hang').value = order.maDonHang || '';
@@ -141,11 +145,10 @@ function handleUpdateOrder() {
             soDienThoaiNguoiNhan: document.getElementById('edit-sdt-nguoi-nhan').value,
             ghiChu: document.getElementById('edit-ghi-chu').value,
             phuongThucThanhToan: { // Gửi object con chứa id
-                id: parseInt(document.getElementById('edit-phuong-thuc').value) || null
+                id: parseInt(document.getElementById('edit-phuong-thuc-id').value) || null
             },
             discount: { // Gửi object con chứa id
-                id: document.getElementById('edit-ten-khuyen-mai').value ? 
-                    parseInt(document.getElementById('edit-ten-khuyen-mai').value) : null
+                id: parseInt(document.getElementById('edit-ten-khuyen-mai-id').value) || null
             }
         };
         

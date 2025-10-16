@@ -1,7 +1,10 @@
 package com.example.fruitstore.service.order;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -21,8 +24,7 @@ import com.example.fruitstore.respository.CustomerRepository;
 import com.example.fruitstore.respository.discountRepository;
 import com.example.fruitstore.respository.phuongThucThanhToanRepository;
 import com.example.fruitstore.service.cartService;
-import com.example.fruitstore.dto.OrderUpdateDTO;
-import java.util.Date;
+
 import java.util.Map;
 
 // import com.example.fruitstore.respository.order.orderDetailRespository; // Sẽ sử dụng sau
@@ -50,6 +52,25 @@ public class orderService {
     // lấy tất cả đơn hàng
     public List<orderEntity> getAllOrders() {
         return orderRespo.findAll();
+    }
+
+    public List<orderEntity> getTodaysOrders() {
+        LocalDate today = LocalDate.now();
+        LocalDateTime startOfDay = today.atStartOfDay();
+        LocalDateTime endOfDay = today.plusDays(1).atStartOfDay().minusNanos(1);
+
+        return orderRespo.findByNgayTaoBetween(startOfDay, endOfDay);
+    }
+
+    // Lấy đơn hàng theo ID khách hàng
+    public List<orderEntity> find(Integer customerId) {
+        return orderRespo.findByKhachHangId(customerId);
+    }
+
+    // lấy đơn hàng theo ID đơn hàng
+    public orderEntity getOrderById(Integer orderId) {
+        return orderRespo.findById(orderId)
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy đơn hàng với ID: " + orderId));
     }
 
     // Lấy đơn hàng theo mã
@@ -116,12 +137,17 @@ public class orderService {
         // 2. Tạo đối tượng Order và set các thông tin cơ bản
         orderEntity order = new orderEntity();
         order.setMaDonHang("DH" + System.currentTimeMillis());
-        order.setNgayTao(new Date());
+        order.setNgayTao(LocalDateTime.now());
         order.setTrangThai(orderEntity.TrangThai.ChoXuLy);
         order.setTenNguoiNhan(shippingInfo.getOrDefault("txtname", ""));
         order.setSoDienThoaiNguoiNhan(shippingInfo.getOrDefault("txtphone", ""));
         order.setDiaChiGiaoHang(shippingInfo.getOrDefault("txtaddress", ""));
         order.setGhiChu(shippingInfo.getOrDefault("orderNote", "")); // Lấy ghi chú đơn hàng
+
+        // THÊM LOGIC LƯU PHÍ SHIP TỪ SESSION
+        String shippingFeeStr = shippingInfo.getOrDefault("shippingFee", "30000"); // Lấy phí ship
+        BigDecimal shippingFee = new BigDecimal(shippingFeeStr.replaceAll("[^0-9\\.-]", ""));
+        order.setPhiShip(shippingFee); // Gán vào đối tượng order
 
         // 3. Set tổng tiền
         String finalTotalStr = shippingInfo.getOrDefault("finalTotal", "0");
@@ -166,6 +192,29 @@ public class orderService {
 
         return savedOrder;
 
+    }
+
+    @Transactional
+    public void cancelOrder(Integer orderId, Integer customerId) {
+        orderEntity order = getOrderById(orderId);
+        // 2. KIỂM TRA: Đảm bảo đơn hàng này thuộc về đúng khách hàng.
+        if (!order.getKhachHang().getId().equals(customerId)) {
+            throw new SecurityException("Bạn không có quyền hủy đơn hàng này.");
+        }
+
+        // 3. KIỂM TRA: Đảm bảo chỉ được hủy khi trạng thái là "Chờ xử lý".
+        if (order.getTrangThai() != orderEntity.TrangThai.ChoXuLy) {
+            throw new IllegalStateException("Không thể hủy khi đơn hàng đã được xử lý.");
+        }
+
+        // 4. CẬP NHẬT TRẠNG THÁI: Đây là dòng quan trọng nhất.
+        // Nó chỉ thay đổi giá trị của cột 'trangThai'.
+        order.setTrangThai(orderEntity.TrangThai.DaHuy);
+
+        // 5. LƯU THAY ĐỔI: Phương thức .save() khi được gọi trên một đối tượng đã tồn
+        // tại
+        // sẽ thực hiện một câu lệnh SQL UPDATE, không phải DELETE.
+        orderRespo.save(order);
     }
 
 }

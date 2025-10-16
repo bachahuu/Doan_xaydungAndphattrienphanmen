@@ -53,6 +53,10 @@ document.addEventListener('DOMContentLoaded', function () {
         const formData = new FormData(checkoutForm);
         formData.set('paymentMethod', selectedPaymentMethod.value); 
 
+        // Lấy giá trị từ textarea ghi chú và thêm vào formData
+        const orderNoteValue = document.getElementById('orderNote').value;
+        formData.append('orderNote', orderNoteValue);
+
         completePayButton.disabled = true;
         completePayButton.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Đang xử lý...';
 

@@ -180,6 +180,32 @@
     margin-top: auto;
 }
 
+.logout-button {
+    display: flex;
+    align-items: center;
+    padding: 12px 20px;
+    margin: 0 -20px 15px -20px; /* Căn lề để chiếm toàn bộ chiều rộng footer */
+    color: #495057;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    border-left: 3px solid transparent;
+}
+
+.logout-button:hover {
+    background-color: #fce8e6; /* Màu nền đỏ nhạt */
+    color: #0d6efd; /* Màu chữ đỏ đậm */
+    border-left-color: #0d6efd; /* Màu viền đỏ */
+}
+
+.logout-button i {
+    width: 20px;
+    margin-right: 12px;
+    font-size: 16px;
+    text-align: center;
+}
+
 .footer-info {
     display: flex;
     align-items: center;
@@ -233,3 +259,4 @@
 .sidebar::-webkit-scrollbar-thumb:hover {
     background: #adb5bd;
 }
+
