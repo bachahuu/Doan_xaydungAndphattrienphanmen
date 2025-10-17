@@ -1,61 +1,20 @@
 <div th:fragment="content" class="news-container">
     <section class="news-list-section">
         <ul class="news-list">
-
-            <!-- Tin 1 -->
-            <li class="news-item-card">
+            <li class="news-item-card" th:each="article : ${articles}">
                 <div class="news-image-wrapper">
-                    <img src="/images/bia-nhap-khau.jpg" alt="Bia Nhập Khẩu" class="news-image">
+                    <img th:src="${article.hinhAnh}" th:alt="${article.tieuDe}" class="news-image">
                 </div>
                 <div class="news-content-wrapper">
                     <h2 class="news-title">
-                        <a href="#">Bia Nhập Khẩu Chính Hãng – Uống Chuẩn Vị, Nhận Ưu Đãi Khủng</a>
+                        <a th:href="@{/news/{id}(id=${article.id})}">
+                            <span th:text="${article.tieuDe}"></span>
+                        </a>
                     </h2>
-                    <div class="news-meta">18 Tháng Tư 2025</div>
-                    <p class="news-excerpt">
-                        Khi đời sống ngày càng nâng cao, người tiêu dùng Việt không chỉ tìm kiếm một loại bia để giải khát, 
-                        mà còn muốn trải nghiệm hương vị – cảm xúc – văn hóa của các quốc gia khác nhau qua từng chai bia. 
-                        Và đó chính là lý do bia nhập khẩu đang trở thành xu hướng được yêu thích trong những năm gần đây.
-                    </p>
+                    <div class="news-meta" th:text="${article.formattedDate}"></div>
+                    <p class="news-excerpt" th:text="${article.excerpt}"></p>
                 </div>
             </li>
-
-            <!-- Tin 2 -->
-            <li class="news-item-card">
-                <div class="news-image-wrapper">
-                    <img src="/images/traicay-nhapkhau.jpg" alt="Trái Cây Nhập Khẩu" class="news-image">
-                </div>
-                <div class="news-content-wrapper">
-                    <h2 class="news-title">
-                        <a href="#">Trái Cây Nhập Khẩu – Bí Quyết Bổ Sung Vitamin Và Tăng Cường Sức khỏe Cho Cả Gia Đình</a>
-                    </h2>
-                    <div class="news-meta">03 Tháng Tư 2025</div>
-                    <p class="news-excerpt">
-                        Thời điểm giao mùa là lúc cơ thể chúng ta dễ bị ảnh hưởng bởi sự thay đổi đột ngột của thời tiết, 
-                        làm gia tăng nguy cơ mắc bệnh. Để phòng tránh và tăng cường sức đề kháng một cách tự nhiên, 
-                        chế độ ăn uống đóng vai trò vô cùng quan trọng. Trong đó, trái cây nhập khẩu đang là lựa chọn hàng đầu 
-                        của nhiều gia đình hiện đại, không chỉ bởi hương vị ngon mà còn chứa hàm lượng vitamin cao.
-                    </p>
-                </div>
-            </li>
-
-            <!-- Tin 3 -->
-            <li class="news-item-card">
-                <div class="news-image-wrapper">
-                    <img src="/images/khaitruong.jpg" alt="CQ Mart Khai Trương" class="news-image">
-                </div>
-                <div class="news-content-wrapper">
-                    <h2 class="news-title">
-                        <a href="#">CQ Mart Khai Trương Cửa Hàng Ngày 22/3 – Sự Kiện Đặc Biệt Với Nhiều Quà Tặng Hấp Dẫn</a>
-                    </h2>
-                    <div class="news-meta">18 Tháng Ba 2025</div>
-                    <p class="news-excerpt">
-                        Chào mừng cửa hàng mới tại số 149, CQ Mart tung ngàn DEAL HỜI dành tặng khách hàng trong ngày 22/03/2025. 
-                        Đến với sự kiện, khách hàng không chỉ được mua sắm hàng hóa nhập khẩu chính hãng mà còn nhận nhiều phần quà hấp dẫn.
-                    </p>
-                </div>
-            </li>
-
         </ul>
     </section>
 </div>

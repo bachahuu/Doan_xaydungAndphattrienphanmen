@@ -1,100 +1,99 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<div th:fragment="content">
-    <div class="container" style="text-align:center">
-        <h1 style="font-family: 'Times New Roman', Times, serif;"><b>Chương trình khuyến mãi</b></h1>
-        
-        <div class="form-row mb-3" style="margin: 30px 0 0 45px;">
-            <!-- Button to Open the Modal - Updated for Bootstrap 5 -->
-            <div class="col">
+<head>
+    <title>Chương trình khuyến mãi</title>
+    <!-- Thêm các thẻ head cần thiết -->
+</head>
+<body>
+    <div th:fragment="content">
+        <div class="container">
+            <h1 style="text-align:center; font-family: 'Times New Roman', Times, serif;">Chương trình khuyến mãi</h1>
+            <div style="text-align:right; margin-right:45px; margin-bottom:10px;">
                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal">
-                    Add
-                </button> 
+                    Thêm khuyến mãi
+                </button>
             </div>
+            <table class="table table-striped" id="discountTable">
+                <thead>
+                    <tr style="text-align:center;">
+                        <th>Mã khuyến mãi</th>
+                        <th>Chương trình</th>
+                        <th>Giảm giá</th>
+                        <th>Ngày bắt đầu</th>
+                        <th>Ngày kết thúc</th>
+                        <th>Trạng thái</th>
+                        <th>Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="text-align:center;" th:each="discount : ${discounts}">
+                        <td th:text="${discount.maKM}"></td>
+                        <td th:text="${discount.tenKM}"></td>
+                        <td th:text="${discount.giaTri}"></td>
+                        <td th:text="${#dates.format(discount.ngayBatDau, 'yyyy-MM-dd')}"></td>
+                        <td th:text="${#dates.format(discount.ngayKetThuc, 'yyyy-MM-dd')}"></td>
+                        <td>
+                            <span th:text="${discount.trangThai == 1 ? 'Đang áp dụng' : 'Hết hiệu lực'}"
+                                  th:classappend="${discount.trangThai == 1 ? 'text-success' : 'text-danger'}"></span>
+                        </td>
+                        <td>
+                            <button class="btn btn-sm btn-info btn-update"
+                                    th:data-id="${discount.id}"
+                                    data-bs-toggle="modal" data-bs-target="#myModal-update">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-sm btn-danger btn-delete"
+                                    th:data-id="${discount.id}">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
-        <br>
-        <table class="table" style="margin: -15px 0 0 -10px; width:100%">
-            <thead class="thead-dark">
-                <tr>
-                    <th>Mã khuyến mãi</th>
-                    <th>Chương trình</th>
-                    <th>Giảm giá</th>
-                    <th>Ngày bắt đầu</th>
-                    <th>Ngày kết thúc</th>
-                    <th>Số lượng</th>
-                    <th>Ngày tạo</th>
-                    <th>Thao tác</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr style="text-align:center;">
-                    <td>KM001</td> 
-                    <td>Chương trình mẫu</td> 
-                    <td>10%</td> 
-                    <td>2025-09-01</td> 
-                    <td>2025-09-30</td>
-                    <td>100</td> 
-                    <td>2025-09-07</td> 
-                    <td>
-                        <button
-                            type="button" 
-                            class="btn btn-success btn-update" 
-                            data-ma_khuyen_mai="KM001"
-                            data-ten_khuyen_mai="Chương trình mẫu"
-                            data-giam_gia="10%"
-                            data-ngay_bat_dau="2025-09-01"
-                            data-ngay_ket_thuc="2025-09-30"
-                            data-so_luong="100"
-                            data-bs-toggle="modal" 
-                            data-bs-target="#myModal-update"
-                            style="margin-right: 10px">
-                            Update
-                        </button>
-                        <a href="#" class="btn btn-danger" 
-                           onclick="return confirm('Bạn có muốn xóa chương trình khuyến mãi này không')" style="margin-right: -15px">Delete</a>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
 
-    <!-- The Modal Thêm - Updated for Bootstrap 5 -->
-    <div class="modal" id="myModal">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <!-- Modal Header -->
-                <div class="modal-header">
-                    <h4 class="modal-title" style="font-family: 'Times New Roman', Times, serif;">Thêm Chương trình khuyến mãi</h4>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <!-- Modal Thêm -->
-                <div class="modal-body">
-                    <form th:action="@{/admin/promotions/add}" method="post">
-                        <div class="form-group mb-3">
-                            <label for="maCTKhuyenMai" class="form-label">Mã khuyến mãi</label>
-                            <input type="text" class="form-control" id="maCTKhuyenMai" name="maKhuyenMai" required>
+        <!-- Hiển thị lỗi thêm -->
+        <div th:if="${addError}" class="alert alert-danger" th:text="${addError}"></div>
+
+        <!-- Modal Thêm -->
+        <div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="addDiscountModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form th:action="@{/admin/discount/add}" method="post">
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="addDiscountModalLabel">Thêm Chương trình khuyến mãi</h4>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <div class="form-group mb-3">
-                            <label for="tenChuongTrinh" class="form-label">Chương trình</label>
-                            <input type="text" class="form-control" id="tenChuongTrinh" name="tenKhuyenMai" required>
+                        <div class="modal-body">
+                            <div class="form-group mb-3">
+                                <label for="maCTKhuyenMai" class="form-label">Mã khuyến mãi</label>
+                                <input type="text" class="form-control" id="maCTKhuyenMai" name="maKM" required>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="tenChuongTrinh" class="form-label">Chương trình</label>
+                                <input type="text" class="form-control" id="tenChuongTrinh" name="tenKM" required>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="giamGia" class="form-label">Giảm giá</label>
+                                <input type="number" class="form-control" id="giamGia" name="giaTri" required step="0.01" min="0">
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="ngayBatDau" class="form-label">Ngày bắt đầu</label>
+                                <input type="date" class="form-control" id="ngayBatDau" name="ngayBatDau" required>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="ngayKetThuc" class="form-label">Ngày kết thúc</label>
+                                <input type="date" class="form-control" id="ngayKetThuc" name="ngayKetThuc" required>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="trangThai" class="form-label">Trạng thái</label>
+                                <select class="form-control" id="trangThai" name="trangThai" required>
+                                    <option value="1">Đang áp dụng</option>
+                                    <option value="0">Hết hiệu lực</option>
+                                </select>
+                            </div>
                         </div>
-                        <div class="form-group mb-3">
-                            <label for="giamGia" class="form-label">Giảm giá</label>
-                            <input type="text" class="form-control" id="giamGia" name="giamGia" required>
-                        </div>
-                        <div class="form-group mb-3">
-                            <label for="ngayBatDau" class="form-label">Ngày bắt đầu</label>
-                            <input type="date" class="form-control" id="ngayBatDau" name="ngayBatDau" required>
-                        </div>
-                        <div class="form-group mb-3">
-                            <label for="ngayKetThuc" class="form-label">Ngày kết thúc</label>
-                            <input type="date" class="form-control" id="ngayKetThuc" name="ngayKetThuc" required>
-                        </div>
-                        <div class="form-group mb-3">
-                            <label for="soLuong" class="form-label">Số lượng</label>
-                            <input type="text" class="form-control" id="soLuong" name="soLuong" required>
-                        </div>
-                        <div class="d-flex justify-content-between">
+                        <div class="modal-footer">
                             <button type="submit" class="btn btn-success">Thêm</button>
                             <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Đóng</button>
                         </div>
@@ -102,52 +101,56 @@
                 </div>
             </div>
         </div>
-    </div>
-    
-    <!-- The Modal Update - Updated for Bootstrap 5 -->
-    <div class="modal" id="myModal-update">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <!-- Modal Header -->
-                <div class="modal-header">
-                    <h4 class="modal-title" style="font-family: 'Times New Roman', Times, serif;">Sửa Chương trình khuyến mãi</h4>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <!-- Modal Sửa -->
-                <div class="modal-body">
-                    <form th:action="@{/admin/promotions/update}" method="post">
-                        <div class="form-group mb-3">
-                            <label for="update_maCTKhuyenMai" class="form-label">Mã khuyến mãi</label>
-                            <input type="text" class="form-control" id="update_maCTKhuyenMai" name="maKhuyenMai" required>
+
+        <!-- Modal Update -->
+        <div class="modal fade" id="myModal-update" tabindex="-1" aria-labelledby="updateDiscountModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <form id="updateDiscountForm">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="updateDiscountModalLabel">Sửa Chương trình khuyến mãi</h4>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <div class="form-group mb-3">
-                            <label for="update_tenChuongTrinh" class="form-label">Chương trình</label>
-                            <input type="text" class="form-control" id="update_tenChuongTrinh" name="tenKhuyenMai" required>
+                        <div class="modal-body">
+                            <input type="hidden" id="update_id" name="id">
+                            <div class="form-group mb-3">
+                                <label for="update_maKM" class="form-label">Mã khuyến mãi</label>
+                                <input type="text" class="form-control" id="update_maKM" name="maKM" required>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="update_tenKM" class="form-label">Chương trình</label>
+                                <input type="text" class="form-control" id="update_tenKM" name="tenKM" required>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="update_giaTri" class="form-label">Giảm giá</label>
+                                <input type="number" class="form-control" id="update_giaTri" name="giaTri" required min="0" max="100" step="0.01">
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="update_ngayBatDau" class="form-label">Ngày bắt đầu</label>
+                                <input type="date" class="form-control" id="update_ngayBatDau" name="ngayBatDau" required>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="update_ngayKetThuc" class="form-label">Ngày kết thúc</label>
+                                <input type="date" class="form-control" id="update_ngayKetThuc" name="ngayKetThuc" required>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="update_trangThai" class="form-label">Trạng thái</label>
+                                <select class="form-control" id="update_trangThai" name="trangThai" required>
+                                    <option value="1">Đang áp dụng</option>
+                                    <option value="0">Hết hiệu lực</option>
+                                </select>
+                            </div>
+                            <div id="updateDiscountError" class="alert alert-danger d-none"></div>
                         </div>
-                        <div class="form-group mb-3">
-                            <label for="update_giamGia" class="form-label">Giảm giá</label>
-                            <input type="text" class="form-control" id="update_giamGia" name="giamGia" required>
-                        </div>
-                        <div class="form-group mb-3">
-                            <label for="update_ngayBatDau" class="form-label">Ngày bắt đầu</label>
-                            <input type="date" class="form-control" id="update_ngayBatDau" name="ngayBatDau" required>
-                        </div>
-                        <div class="form-group mb-3">
-                            <label for="update_ngayKetThuc" class="form-label">Ngày kết thúc</label>
-                            <input type="date" class="form-control" id="update_ngayKetThuc" name="ngayKetThuc" required>
-                        </div>
-                        <div class="form-group mb-3">
-                            <label for="update_soLuong" class="form-label">Số lượng</label>
-                            <input type="text" class="form-control" id="update_soLuong" name="soLuong" required>
-                        </div>
-                        <div class="d-flex justify-content-between">
+                        <div class="modal-footer">
                             <button type="submit" class="btn btn-success">Cập nhật</button>
                             <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Đóng</button>
                         </div>
-                    </form>
-                </div>
+                    </div>
+                </form>
             </div>
         </div>
+        <script th:src="@{/js/admin/discount.js}"></script>
     </div>
-</div>
+</body>
 </html>

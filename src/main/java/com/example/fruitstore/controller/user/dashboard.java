@@ -161,11 +161,4 @@ public class dashboard {
         model.addAttribute("view", "user/products/payment");
         return "user/layout/main";
     }
-
-    @GetMapping("/news")
-    public String showNews(Model model) {
-        model.addAttribute("view", "user/products/news");
-        return "user/layout/main";
-    }
-
 }
