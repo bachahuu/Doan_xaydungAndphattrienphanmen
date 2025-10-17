@@ -1,0 +1,40 @@
+    <div th:fragment="content" class="news-detail-wrapper">
+        <div class="news-detail-container">
+            <!-- Nút quay lại -->
+            <a th:href="@{/news}" class="back-to-news">
+                <i class="fas fa-arrow-left"></i>
+                <span>Quay lại danh sách tin tức</span>
+            </a>
+
+            <!-- Card bài viết -->
+            <article class="news-detail-card">
+                <!-- Header bài viết - Căn giữa -->
+                <header class="news-detail-header">
+                    <h1 class="news-detail-title" th:text="${article.tieuDe}">
+                        Tiêu đề tin tức sẽ hiển thị ở đây
+                    </h1>
+                    
+                    <!-- Ngày đăng -->
+                    <div class="news-detail-meta">
+                        <i class="far fa-calendar-alt"></i>
+                        <span th:text="${article.formattedDate}">16 Tháng 10 2025</span>
+                    </div>
+                </header>
+
+                <!-- Hình ảnh bài viết - Full width -->
+                <div class="news-detail-image-wrapper">
+                    <img th:src="${article.hinhAnh}" 
+                         th:alt="${article.tieuDe}" 
+                         class="news-detail-image">
+                    <div class="news-detail-image-overlay"></div>
+                </div>
+
+                <!-- Nội dung bài viết - Căn đều 2 bên -->
+                <div class="news-detail-content">
+                    <div th:utext="${article.noiDung}">
+                        <p>Nội dung chi tiết của bài viết sẽ được hiển thị ở đây. Văn bản sẽ được căn đều hai bên để dễ đọc hơn.</p>
+                    </div>
+                </div>
+            </article>
+        </div>
+    </div>
