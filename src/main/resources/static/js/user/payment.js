@@ -103,7 +103,8 @@ document.addEventListener('DOMContentLoaded', function () {
             .then(data => {
                 // Hiển thị thông báo thành công đơn giản
                 console.log('Success:', data.message);
-                alert('Đặt hàng thành công! Chúng tôi sẽ xác nhận và gửi hàng đến bạn sớm nhất.');
+                const orderCode = data.maDonHang ? ` Mã đơn hàng của bạn là: ${data.maDonHang}.` : '';
+                alert(`Đặt hàng thành công!${orderCode} Chúng tôi sẽ xác nhận và gửi hàng đến bạn sớm nhất.`);
                 // Chuyển về trang chủ sau khi đóng alert
                 window.location.href = '/home-static';
             })

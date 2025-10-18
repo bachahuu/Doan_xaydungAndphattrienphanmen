@@ -12,8 +12,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.fruitstore.entity.CustomerEntity;
 import com.example.fruitstore.entity.loginCustomerEntity;
+import com.example.fruitstore.entity.order.orderEntity;
 import com.example.fruitstore.service.order.orderService;
 import java.util.Collections;
+import java.util.HashMap;
+
 import jakarta.servlet.http.HttpSession;
 
 @Controller
@@ -66,11 +69,16 @@ public class orderController {
             }
             Integer userId = customer.getId();
 
-            // GỌI SERVICE ĐỂ THỰC HIỆN TOÀN BỘ NGHIỆP VỤ
-            orderService.createOrder(userId, shippingInfo, paymentMethodId, discountId, session);
+            // "Hứng" đối tượng order trả về ---
+            orderEntity newOrder = orderService.createOrder(userId, shippingInfo, paymentMethodId, discountId, session);
+
+            // Tạo response body và thêm mã đơn hàng vào ---
+            Map<String, Object> responseBody = new HashMap<>();
+            responseBody.put("message", "Đặt hàng thành công!");
+            responseBody.put("maDonHang", newOrder.getMaDonHang()); // Đây chính là thứ JS cần
 
             // Nếu không có lỗi, trả về thành công
-            return new ResponseEntity<>(Collections.singletonMap("message", "Đặt hàng thành công!"), HttpStatus.OK);
+            return new ResponseEntity<>(responseBody, HttpStatus.OK);
 
         } catch (IllegalStateException e) {
             // Bắt các lỗi nghiệp vụ
