@@ -13,12 +13,17 @@
                     Thêm khuyến mãi
                 </button>
             </div>
+            <!-- Hiển thị thông báo thành công -->
+            <div th:if="${addSuccess}" class="alert alert-success" th:text="${addSuccess}"></div>
+            <!-- Hiển thị lỗi thêm -->
+            <div th:if="${addError}" class="alert alert-danger" th:text="${addError}"></div>
             <table class="table table-striped" id="discountTable">
                 <thead>
                     <tr style="text-align:center;">
                         <th>Mã khuyến mãi</th>
                         <th>Chương trình</th>
                         <th>Giảm giá</th>
+                        <th>Đơn hàng tối thiểu</th> <!-- Thêm cột mới -->
                         <th>Ngày bắt đầu</th>
                         <th>Ngày kết thúc</th>
                         <th>Trạng thái</th>
@@ -30,11 +35,12 @@
                         <td th:text="${discount.maKM}"></td>
                         <td th:text="${discount.tenKM}"></td>
                         <td th:text="${discount.giaTri}"></td>
+                        <td th:text="${discount.giaTriDonHangToiThieu}"></td> <!-- Thêm dữ liệu mới -->
                         <td th:text="${#dates.format(discount.ngayBatDau, 'yyyy-MM-dd')}"></td>
                         <td th:text="${#dates.format(discount.ngayKetThuc, 'yyyy-MM-dd')}"></td>
                         <td>
                             <span th:text="${discount.trangThai == 1 ? 'Đang áp dụng' : 'Hết hiệu lực'}"
-                                  th:classappend="${discount.trangThai == 1 ? 'text-success' : 'text-danger'}"></span>
+                                th:classappend="${discount.trangThai == 1 ? 'text-success' : 'text-danger'}"></span>
                         </td>
                         <td>
                             <button class="btn btn-sm btn-info btn-update"
@@ -51,9 +57,6 @@
                 </tbody>
             </table>
         </div>
-
-        <!-- Hiển thị lỗi thêm -->
-        <div th:if="${addError}" class="alert alert-danger" th:text="${addError}"></div>
 
         <!-- Modal Thêm -->
         <div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="addDiscountModalLabel" aria-hidden="true">
@@ -76,6 +79,14 @@
                             <div class="form-group mb-3">
                                 <label for="giamGia" class="form-label">Giảm giá</label>
                                 <input type="number" class="form-control" id="giamGia" name="giaTri" required step="0.01" min="0">
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="giaTriDonHangToiThieu" class="form-label">Giá trị đơn hàng tối thiểu</label>
+                                <input type="number" class="form-control" id="giaTriDonHangToiThieu" name="giaTriDonHangToiThieu" 
+                                    required step="0.01" min="0" max="99999999.99" 
+                                    value="0"
+                                    oninput="if(this.value > 99999999.99) this.value = 99999999.99;">
+                                <small class="form-text text-muted">Tối đa: 99,999,999.99 VNĐ</small>
                             </div>
                             <div class="form-group mb-3">
                                 <label for="ngayBatDau" class="form-label">Ngày bắt đầu</label>
@@ -124,6 +135,13 @@
                             <div class="form-group mb-3">
                                 <label for="update_giaTri" class="form-label">Giảm giá</label>
                                 <input type="number" class="form-control" id="update_giaTri" name="giaTri" required min="0" max="100" step="0.01">
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="update_giaTriDonHangToiThieu" class="form-label">Giá trị đơn hàng tối thiểu</label>
+                                <input type="number" class="form-control" id="update_giaTriDonHangToiThieu" name="giaTriDonHangToiThieu" 
+                                    required min="0" step="0.01" max="99999999.99"
+                                    oninput="if(this.value > 99999999.99) this.value = 99999999.99;">
+                                <small class="form-text text-muted">Tối đa: 99,999,999.99 VNĐ</small>
                             </div>
                             <div class="form-group mb-3">
                                 <label for="update_ngayBatDau" class="form-label">Ngày bắt đầu</label>
