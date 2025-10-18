@@ -1,139 +1,113 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Xử lý mở modal sửa bài viết
-    document.querySelectorAll('.btn-info').forEach(btn => {
+    // Xử lý mở modal sửa khuyến mãi
+    document.querySelectorAll('.btn-update').forEach(btn => {
         btn.addEventListener('click', function() {
-            const id = this.getAttribute('data-article-id');
+            const id = this.getAttribute('data-id');
             console.log('Edit button clicked, ID:', id);
             
             if (!id || id === 'undefined' || id === 'null') {
-                alert('ID bài viết không hợp lệ!');
+                alert('ID khuyến mãi không hợp lệ!');
                 return;
             }
             
-            fetch(`/admin/posts/${id}`)
+            fetch(`/admin/discount/api/get/${id}`)
                 .then(res => {
                     if (!res.ok) {
-                        throw new Error('Không tìm thấy bài viết!');
+                        throw new Error('Không tìm thấy khuyến mãi!');
                     }
                     return res.json();
                 })
                 .then(data => {
-                    console.log('Article data:', data);
-                    document.getElementById('edit_id').value = data.id || '';
-                    document.getElementById('edit_maBaiViet').value = data.maBaiViet || '';
-                    document.getElementById('edit_tieuDe').value = data.tieuDe || '';
-                    document.getElementById('edit_noiDung').value = data.noiDung || '';
-                    document.getElementById('edit_ngayDang').value = data.ngayDang ? data.ngayDang.split('T')[0] : '';
-                    document.getElementById('edit_nhanVienId').value = data.nhanVienId || '';
-                    // Reset file input
-                    document.getElementById('edit_hinhAnh').value = '';
+                    console.log('Discount data:', data);
+                    document.getElementById('update_id').value = data.id || '';
+                    document.getElementById('update_maKM').value = data.maKM || '';
+                    document.getElementById('update_tenKM').value = data.tenKM || '';
+                    document.getElementById('update_giaTri').value = data.giaTri || 0;
+                    document.getElementById('update_giaTriDonHangToiThieu').value = data.giaTriDonHangToiThieu || 0;
+                    document.getElementById('update_ngayBatDau').value = data.ngayBatDau ? data.ngayBatDau.split('T')[0] : '';
+                    document.getElementById('update_ngayKetThuc').value = data.ngayKetThuc ? data.ngayKetThuc.split('T')[0] : '';
+                    document.getElementById('update_trangThai').value = data.trangThai || 1;
+                    
+                    // Ẩn thông báo lỗi nếu có
+                    document.getElementById('updateDiscountError').classList.add('d-none');
                 })
                 .catch(error => {
-                    console.error('Error fetching article:', error);
+                    console.error('Error fetching discount:', error);
                     alert(error.message || 'Đã xảy ra lỗi khi lấy dữ liệu!');
                 });
         });
     });
 
-    // Xử lý click nút Lưu thay đổi
-    document.getElementById('saveUpdateArticleBtn')?.addEventListener('click', function() {
-        const id = document.getElementById('edit_id').value;
+    // Xử lý submit form cập nhật khuyến mãi
+    document.getElementById('updateDiscountForm')?.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const id = document.getElementById('update_id').value;
         console.log('Save update button clicked, ID:', id);
         
         if (!id || id === 'undefined' || id === 'null' || id === '') {
-            alert('ID bài viết không hợp lệ!');
+            alert('ID khuyến mãi không hợp lệ!');
             return;
         }
         
-        const formData = new FormData();
-        formData.append('id', id);
-        formData.append('maBaiViet', document.getElementById('edit_maBaiViet').value);
-        formData.append('tieuDe', document.getElementById('edit_tieuDe').value);
-        formData.append('noiDung', document.getElementById('edit_noiDung').value);
-        formData.append('ngayDang', document.getElementById('edit_ngayDang').value);
-        formData.append('nhanVienId', document.getElementById('edit_nhanVienId').value);
-        
-        const fileInput = document.getElementById('edit_hinhAnh');
-        if (fileInput && fileInput.files.length > 0) {
-            formData.append('hinhAnh', fileInput.files[0]);
-            console.log('File selected:', fileInput.files[0].name);
-        }
+        const discountData = {
+            maKM: document.getElementById('update_maKM').value,
+            tenKM: document.getElementById('update_tenKM').value,
+            giaTri: parseFloat(document.getElementById('update_giaTri').value),
+            giaTriDonHangToiThieu: parseFloat(document.getElementById('update_giaTriDonHangToiThieu').value),
+            ngayBatDau: document.getElementById('update_ngayBatDau').value,
+            ngayKetThuc: document.getElementById('update_ngayKetThuc').value,
+            trangThai: parseInt(document.getElementById('update_trangThai').value)
+        };
 
-        fetch('/admin/posts/update', {
+        fetch(`/admin/discount/api/update/${id}`, {
             method: 'PUT',
-            body: formData
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(discountData)
         })
         .then(res => {
             if (res.ok) {
-                alert('Cập nhật bài viết thành công!');
+                alert('Cập nhật khuyến mãi thành công!');
                 location.reload();
             } else {
-                return res.text().then(msg => { throw new Error(msg); });
+                return res.text().then(msg => { 
+                    document.getElementById('updateDiscountError').textContent = msg;
+                    document.getElementById('updateDiscountError').classList.remove('d-none');
+                    throw new Error(msg); 
+                });
             }
         })
         .catch(error => {
-            console.error('Error updating article:', error);
-            alert(error.message || 'Đã xảy ra lỗi khi cập nhật!');
+            console.error('Error updating discount:', error);
         });
     });
 
-    // Xử lý click nút Lưu bài viết mới
-    document.getElementById('saveNewArticleBtn')?.addEventListener('click', function() {
-        const formData = new FormData();
-        formData.append('maBaiViet', document.getElementById('add_maBaiViet').value);
-        formData.append('tieuDe', document.getElementById('add_tieuDe').value);
-        formData.append('noiDung', document.getElementById('add_noiDung').value);
-        formData.append('ngayDang', document.getElementById('add_ngayDang').value);
-        formData.append('nhanVienId', document.getElementById('add_nhanVienId').value);
-        
-        const fileInput = document.getElementById('add_hinhAnh');
-        if (fileInput && fileInput.files.length > 0) {
-            formData.append('hinhAnh', fileInput.files[0]);
-            console.log('File selected:', fileInput.files[0].name);
-        }
-
-        fetch('/admin/posts/add', {
-            method: 'POST',
-            body: formData
-        })
-        .then(res => {
-            if (res.ok) {
-                alert('Thêm bài viết thành công!');
-                location.reload();
-            } else {
-                return res.text().then(msg => { throw new Error(msg); });
-            }
-        })
-        .catch(error => {
-            console.error('Error adding article:', error);
-            alert(error.message || 'Đã xảy ra lỗi khi thêm!');
-        });
-    });
-
-    // Xử lý xóa bài viết
-    document.querySelectorAll('.btn-danger').forEach(btn => {
+    // Xử lý xóa khuyến mãi
+    document.querySelectorAll('.btn-delete').forEach(btn => {
         btn.addEventListener('click', function() {
-            const id = this.getAttribute('data-article-id');
+            const id = this.getAttribute('data-id');
             
             if (!id || id === 'undefined' || id === 'null') {
-                alert('Không tìm thấy ID bài viết!');
+                alert('Không tìm thấy ID khuyến mãi!');
                 return;
             }
             
-            if (confirm('Bạn có chắc muốn xóa bài viết này?')) {
-                fetch(`/admin/posts/delete/${id}`, {
+            if (confirm('Bạn có chắc muốn xóa khuyến mãi này?')) {
+                fetch(`/admin/discount/api/delete/${id}`, {
                     method: 'DELETE'
                 })
                 .then(res => {
                     if (res.ok) {
-                        alert('Xóa bài viết thành công!');
+                        alert('Xóa khuyến mãi thành công!');
                         location.reload();
                     } else {
                         return res.text().then(msg => { throw new Error(msg); });
                     }
                 })
                 .catch(error => {
-                    console.error('Error deleting article:', error);
+                    console.error('Error deleting discount:', error);
                     alert(error.message || 'Đã xảy ra lỗi khi xóa!');
                 });
             }
