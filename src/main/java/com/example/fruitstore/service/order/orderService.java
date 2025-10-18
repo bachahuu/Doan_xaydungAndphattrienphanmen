@@ -9,6 +9,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 import com.example.fruitstore.respository.order.orderRespository;
+import org.springframework.util.StringUtils;
 
 import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
@@ -25,7 +26,7 @@ import com.example.fruitstore.respository.CustomerRepository;
 import com.example.fruitstore.respository.discountRepository;
 import com.example.fruitstore.respository.phuongThucThanhToanRepository;
 import com.example.fruitstore.service.cartService;
-
+import java.util.HashMap;
 import java.util.Map;
 
 // import com.example.fruitstore.respository.order.orderDetailRespository; // Sẽ sử dụng sau
@@ -53,6 +54,15 @@ public class orderService {
     // lấy tất cả đơn hàng
     public List<orderEntity> getAllOrders() {
         return orderRespo.findAll();
+    }
+
+    // tìm kiếm đơn hàng
+    public List<orderEntity> searchOrders(String keyword) {
+        // kiểm tra xem input có rỗng hay không
+        if (!StringUtils.hasText(keyword)) {
+            return getAllOrders(); // nếu rỗng thì trả về tất cả đơn hàng
+        }
+        return orderRespo.findByMaDonHangContaining(keyword);
     }
 
     public List<orderEntity> getTodaysOrders() {

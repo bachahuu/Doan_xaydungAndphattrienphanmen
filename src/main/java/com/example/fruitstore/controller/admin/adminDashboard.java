@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.fruitstore.entity.CustomerEntity;
 import com.example.fruitstore.entity.EmployeeEntity; // Lớp entity cho nhân viên
@@ -22,13 +23,17 @@ public class adminDashboard {
     @Autowired
     private orderService orderService;
 
-    @GetMapping("/admin/order")
-    public String showorder(Model model) {
-        List<orderEntity> orders = orderService.getAllOrders();
+    @GetMapping("/admin/orders")
+    public String showorder(@RequestParam(value = "keyword", required = false) String keyword,
+            Model model) {
+        List<orderEntity> orders = orderService.searchOrders(keyword);
+        model.addAttribute("keyword", keyword); // THÊM keyword vào model để giữ giá trị trên ô tìm kiếm
         model.addAttribute("orders", orders);
         model.addAttribute("view", "admin/products/manage_order");
         return "admin/layout/main";
     }
+
+    // tìm
 
     @GetMapping("/admin/product")
     public String showproduct(Model model) {

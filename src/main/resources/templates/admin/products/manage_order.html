@@ -3,12 +3,22 @@
     <div class="container">
         <h1 style="text-align:center; font-family: 'Times New Roman', Times, serif;" >Liệt Kê Đơn Hàng</h1>
         
-        <!-- xuất excel -->
-        <form th:action="@{/admin/orders/export-excel}" method="post">
-            <div style="text-align:right; margin-right:45px;margin-bottom:10px;">
-                <button type="submit" name="btn_excel" class="btn btn-danger">xuất Excel</button>
-            </div>
-        </form>
+        <!-- tìm kiếm theo mã đơn hàng  -->
+        <div class="d-flex justify-content-end mb-3">
+            <form th:action="@{/admin/orders}" method="get" style="width: 300px;">
+                <div class="input-group">
+                    <input type="text" 
+                        name="keyword" 
+                        class="form-control" 
+                        placeholder="Tìm theo mã đơn hàng..." 
+                        th:value="${param.keyword}"/>
+                    
+                    <button type="subm  " class="btn btn-primary">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
         
         <table class="table table-striped">
             <thead>
