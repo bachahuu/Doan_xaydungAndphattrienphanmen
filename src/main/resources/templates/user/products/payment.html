@@ -64,13 +64,18 @@
             <div class="payment-method card p-3">
                 <h5>Chọn hình thức thanh toán</h5>
 
-                <div th:if="${paymentMethods != null and !#lists.isEmpty(paymentMethods)}">
-                    <div th:each="pm : ${paymentMethods}" class="form-check">
-                        <input class="form-check-input" type="radio" name="paymentMethod" th:id="${'pm-' + pm.id}"
-                            th:value="${pm.id}" />
-                        <label class="form-check-label" th:for="${'pm-' + pm.id}" th:text="${pm.name}">Phương thức</label>
+               <div th:if="${paymentMethods != null and !#lists.isEmpty(paymentMethods)}">
+                    <div class="btn-group-vertical w-100" role="group">
+                        <div th:each="pm : ${paymentMethods}">
+                            <input type="radio" class="btn-check" name="paymentMethod"
+                                th:id="${'pm-' + pm.id}" th:value="${pm.id}" th:attr="data-payment-type=${#strings.containsIgnoreCase(pm.name, 'momo') ? 'momo' : 'cod'}" autocomplete="off">
+                            <label class="btn btn-outline-primary w-100"
+                                th:for="${'pm-' + pm.id}"
+                                th:text="${pm.name}">Phương thức</label>
+                        </div>
                     </div>
                 </div>
+
 
                 <div th:if="${paymentMethods == null or #lists.isEmpty(paymentMethods)}">
                     <p class="text-muted">Không có phương thức thanh toán nào khả dụng.</p>
@@ -126,8 +131,11 @@
                     <form id="checkoutForm" th:action="@{/orders/checkout}" method="post">
                         <!-- Lấy discountId từ session -->
                         <input type="hidden" name="discountId" th:value="${shippingInfo?.get('discountId') ?: ''}" />
-                        <button class="btn btn-primary" id="complete_pay" type="button">Xác nhận thanh toán</button>
-                        <a class="btn btn-secondary ms-2" th:href="@{/home}">Home</a>
+                        <input type="hidden" name="orderNote" id="hiddenOrderNote" />
+                        <input type="hidden" name="finalTotal" th:value="${finalTotal}" />
+                        <input type="hidden" name="selectedPaymentMethod" id="selectedPaymentMethod" />
+                        <button class="btn btn-primary w-100" id="complete_pay" type="button">Xác nhận thanh toán</button>
+                        <a class="btn btn-secondary w-100 mt-2" th:href="@{/home}">Home</a>
                     </form>
                 </div>
             </div>

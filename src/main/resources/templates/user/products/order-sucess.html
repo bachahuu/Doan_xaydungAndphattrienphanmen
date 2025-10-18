@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<div th:fragment="content">
+    <!-- Link to the specific CSS for this page -->
+    <link rel="stylesheet" th:href="@{/css/user/order-success.css}" />
+
+    <div class="success-container">
+        <div class="success-card">
+            
+            <!-- Animated Checkmark Icon -->
+            <div class="checkmark-wrapper">
+                <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                    <circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none"/>
+                    <path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+                </svg>
+            </div>
+
+            <!-- Content -->
+            <h1 th:text="${titleMessage} ?: 'Đặt hàng thành công!'">Đặt hàng thành công!</h1>
+            <p class="subtitle" th:text="${detailMessage} ?: 'Cảm ơn bạn đã tin tưởng và mua sắm tại cửa hàng của chúng tôi.'">
+                Cảm ơn bạn đã tin tưởng và mua sắm tại cửa hàng của chúng tôi.
+            </p>
+            
+            <!-- Order Details -->
+            <div class="order-details" th:if="${order != null}">
+                <p>Mã đơn hàng của bạn là: <strong th:text="${order.maDonHang}">DH123456789</strong></p>
+                <p>Chúng tôi sẽ sớm xác nhận và gửi hàng đến bạn.</p>
+            </div>
+            
+            <!-- Action Buttons -->
+            <div class="action-buttons">
+                <a th:href="@{/home}" class="btn btn-primary">Tiếp tục mua sắm</a>
+                <!-- <a th:href="@{/order-history}" class="btn btn-outline-secondary">Xem lịch sử đơn hàng</a> -->
+            </div>
+
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

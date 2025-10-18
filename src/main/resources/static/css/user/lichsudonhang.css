@@ -92,3 +92,15 @@
     font-weight: 700;
     color: #e44d26; /* Một màu cam/đỏ nổi bật */
 }
+
+.scrollable-order-list {
+    /* Giới hạn chiều cao tối đa của khung. Bạn có thể thay đổi giá trị này */
+    /* 65vh nghĩa là 65% chiều cao của màn hình trình duyệt */
+    max-height: 65vh; 
+    
+    /* Tự động hiển thị thanh cuộn dọc KHI cần thiết */
+    overflow-y: auto; 
+    
+    /* (Tùy chọn) Thêm một khoảng đệm nhỏ bên phải để thanh cuộn không dính vào nội dung */
+    padding-right: 10px;
+}

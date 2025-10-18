@@ -38,10 +38,10 @@
                         <p><strong>Phương thức thanh toán:</strong>
                             <span th:text="*{phuongThucThanhToan.name}">COD</span>
                         </p>
-                        <p th:if="${order.discount.giaTri != null}">
+                        <p >
                             <strong>Giá khuyến mãi:</strong>
                             <span class="text-success"
-                                  th:text="${#numbers.formatDecimal(order.discount.giaTri, 0, 'COMMA', 0, 'POINT')} + 'đ'">0đ</span>
+                                  th:text="${order.discount != null ? #numbers.formatDecimal(order.discount.giaTri, 0, 'COMMA', 0, 'POINT') + 'đ' : '0đ'}">0đ</span>
                         </p>
                         <p><strong>phí vận chuyển:</strong>
                             <span th:text="${#numbers.formatDecimal(order.phiShip, 0, 'COMMA', 0, 'POINT')} + 'đ'">-</span>
