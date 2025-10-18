@@ -74,7 +74,8 @@ public class orderEntity {
         XacNhan,
         DangGiao,
         HoanThanh,
-        DaHuy
+        DaHuy,
+        CHO_THANH_TOAN
     }
 
     public String getTrangThaiDisplay() {
@@ -89,6 +90,8 @@ public class orderEntity {
                 return "Hoàn tất";
             case DaHuy:
                 return "Đã hủy";
+            case CHO_THANH_TOAN:
+                return "Chờ thanh toán";
             default:
                 return "Không xác định";
         }

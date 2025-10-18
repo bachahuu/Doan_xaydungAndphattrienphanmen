@@ -50,52 +50,77 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
         }
 
+        const paymentType = selectedPaymentMethod.getAttribute('data-payment-type');
         const formData = new FormData(checkoutForm);
-        formData.set('paymentMethod', selectedPaymentMethod.value); 
+        formData.set('paymentMethod', selectedPaymentMethod.value);
 
         // Lấy giá trị từ textarea ghi chú và thêm vào formData
         const orderNoteValue = document.getElementById('orderNote').value;
         formData.append('orderNote', orderNoteValue);
 
+        // Vô hiệu hóa nút bấm
         completePayButton.disabled = true;
         completePayButton.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Đang xử lý...';
 
-        
-        fetch("/orders/checkout", {
-            method: 'POST',
-            body: new URLSearchParams(formData)
-        })
-        .then(response => {
-            // Chuyển response thành JSON để đọc nội dung message
-            return response.json().then(data => {
-                // Nếu response không phải là 2xx (ví dụ 400, 500), ném ra lỗi
-                if (!response.ok) {
-                    throw new Error(data.message || 'Có lỗi xảy ra, vui lòng thử lại.');
+        if(paymentType === 'momo'){
+            // gọi api thanh toan momo
+            fetch("/payment/momo/create",{
+                method: 'POST',
+                body: new URLSearchParams(formData)
+            })
+            .then(response => response.json().then(data => ({ ok: response.ok, data })))
+            .then(({ ok, data }) => {
+                if (!ok) {
+                    throw new Error(data.message || 'Có lỗi xảy ra trong quá trình tạo đơn hàng MoMo.');
                 }
-                // Nếu thành công, trả về dữ liệu (dù có thể không dùng)
-                return data;
-            });
-        })
-        .then(data => {
-            // Hiển thị thông báo thành công đơn giản
-            console.log('Success:', data.message);
-            alert('Đặt hàng thành công! Chúng tôi sẽ xác nhận và gửi hàng đến bạn sớm nhất.');
-            // Chuyển về trang chủ sau khi đóng alert
-            window.location.href = '/home-static';
-        })
-        .catch(error => {
-            // Xử lý khi có lỗi mạng hoặc lỗi từ server
+            // Chuyển hướng đến trang thanh toán của MoMo
+            window.location.href = data.payUrl;
+            })
+            .catch(error => {
             console.error('Error:', error);
             alert('Lỗi: ' + error.message);
-        })
-        .finally(() => {
-            // Luôn luôn kích hoạt lại nút bấm sau khi hoàn tất
+            // Kích hoạt lại nút
             completePayButton.disabled = false;
             completePayButton.textContent = 'Xác nhận thanh toán';
-        });
+            })
+        }else{
+            // Xử lý thanh toán COD
+            fetch("/orders/checkout", {
+            method: 'POST',
+            body: new URLSearchParams(formData)
+            })
+            .then(response => {
+                // Chuyển response thành JSON để đọc nội dung message
+                return response.json().then(data => {
+                    // Nếu response không phải là 2xx (ví dụ 400, 500), ném ra lỗi
+                    if (!response.ok) {
+                        throw new Error(data.message || 'Có lỗi xảy ra, vui lòng thử lại.');
+                    }
+                    // Nếu thành công, trả về dữ liệu (dù có thể không dùng)
+                    return data;
+                });
+            })
+            .then(data => {
+                // Hiển thị thông báo thành công đơn giản
+                console.log('Success:', data.message);
+                alert('Đặt hàng thành công! Chúng tôi sẽ xác nhận và gửi hàng đến bạn sớm nhất.');
+                // Chuyển về trang chủ sau khi đóng alert
+                window.location.href = '/home-static';
+            })
+            .catch(error => {
+                // Xử lý khi có lỗi mạng hoặc lỗi từ server
+                console.error('Error:', error);
+                alert('Lỗi: ' + error.message);
+            })
+            .finally(() => {
+                // Luôn luôn kích hoạt lại nút bấm sau khi hoàn tất
+                completePayButton.disabled = false;
+                completePayButton.textContent = 'Xác nhận thanh toán';
+            });
+        }
+  
     }
 
- 
 
     
 });
