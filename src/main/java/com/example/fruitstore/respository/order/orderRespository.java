@@ -16,4 +16,7 @@ public interface orderRespository extends JpaRepository<orderEntity, Integer> {
 
     List<orderEntity> findByNgayTaoBetween(LocalDateTime start, LocalDateTime end);
 
+    // Tự động tạo câu lệnh SQL: WHERE maDonHang LIKE %maDonHang%
+    List<orderEntity> findByMaDonHangContaining(String maDonHang);
+
 }

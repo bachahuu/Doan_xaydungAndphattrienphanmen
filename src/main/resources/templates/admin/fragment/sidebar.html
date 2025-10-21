@@ -1,9 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <body>
-<!-- Sidebar Fragment -->
 <div th:fragment="sidebar" class="sidebar" id="sidebar">
-    <!-- Header với thông tin user -->
     <div class="sidebar-header">
         <div class="user-info">
             <div class="user-avatar">
@@ -16,19 +14,15 @@
         </div>
     </div>
 
-    <!-- Navigation Menu -->
     <nav class="sidebar-nav">
         <ul class="nav-list">
-            <!-- Estados de cuenta -->
             <li class="nav-item">
-                <a href="#" class="nav-link" data-bs-toggle="collapse" data-bs-target="#promotions">
-                    <i class="fas fa-gift"></i>
+                <a href="#" class="nav-link"> <i class="fas fa-gift"></i>
                     <span>đơn hàng</span>
                     <i class="lni lni-chevron-right arrow"></i>
                 </a>
-                <ul class="collapse sub-menu" id="promotions">
-                    <li class="sub-nav-item">
-                        <a href="/admin/order" class="sub-nav-link">
+                <ul class="collapse sub-menu" id="orders-menu"> <li class="sub-nav-item">
+                        <a href="/admin/orders" class="sub-nav-link">
                             <i class="fas fa-user-shield"></i>
                             <span>Quản lý đơn hàng</span>
                         </a>
@@ -41,13 +35,10 @@
                     </li>
                 </ul>
             </li>
-            <!-- Catálogos -->
             <li class="nav-item">
-                <a href="#" class="nav-link active" data-bs-toggle="collapse" data-bs-target="#catalogos">
-                    <i class="lni lni-grid-alt"></i>
+                <a href="#" class="nav-link active"> <i class="lni lni-grid-alt"></i>
                     <span>Danh mục</span>
-                    <i class="lni lni-chevron-down arrow"></i>
-                </a>
+                    <i class="lni lni-chevron-right arrow"></i> </a>
                 <ul class="collapse show sub-menu" id="catalogos">
                     <li class="sub-nav-item">
                         <a href="/admin/product" class="sub-nav-link active">
@@ -70,11 +61,9 @@
                 </ul>
             </li>
 
-            <!-- Consultas -->
             <li class="nav-item">
-                <a href="#" class="nav-link" data-bs-toggle="collapse" data-bs-target="#consultas">
-                    <i class="lni lni-search-alt"></i>
-                    <span>Thông tin</span>
+                <a href="#" class="nav-link"> <i class="lni lni-search-alt"></i>
+                    <span>Thông tin người dùng</span>
                     <i class="lni lni-chevron-right arrow"></i>
                 </a>
                 <ul class="collapse sub-menu" id="consultas">
@@ -99,15 +88,12 @@
                 </ul>
             </li>
 
-            <!-- Khuyến mãi -->
             <li class="nav-item">
-                <a href="#" class="nav-link" data-bs-toggle="collapse" data-bs-target="#promotions">
-                    <i class="fas fa-gift"></i>
+                <a href="#" class="nav-link"> <i class="fas fa-gift"></i>
                     <span>Chương trình khuyến mãi</span>
                     <i class="lni lni-chevron-right arrow"></i>
                 </a>
-                <ul class="collapse sub-menu" id="promotions">
-                    <li class="sub-nav-item">
+                <ul class="collapse sub-menu" id="discounts-menu"> <li class="sub-nav-item">
                         <a href="/admin/discount" class="sub-nav-link">
                             <i class="fas fa-tags"></i>
                             <span>Quản lý khuyến mãi</span>
@@ -116,10 +102,8 @@
                 </ul>
             </li>
 
-            <!-- Thanh toán -->
-            <li class="nav-item">
-                <a href="#" class="nav-link" data-bs-toggle="collapse" data-bs-target="#payments">
-                    <i class="fas fa-credit-card"></i>
+            <!-- <li class="nav-item">
+                <a href="#" class="nav-link"> <i class="fas fa-credit-card"></i>
                     <span>Phương thức thanh toán</span>
                     <i class="lni lni-chevron-right arrow"></i>
                 </a>
@@ -131,12 +115,10 @@
                         </a>
                     </li>
                 </ul>
-            </li>
+            </li> -->
 
-            <!-- Bài viết & Quảng cáo -->
             <li class="nav-item">
-                <a href="#" class="nav-link" data-bs-toggle="collapse" data-bs-target="#content">
-                    <i class="fas fa-newspaper"></i>
+                <a href="#" class="nav-link"> <i class="fas fa-newspaper"></i>
                     <span>Bài viết & Quảng cáo</span>
                     <i class="lni lni-chevron-right arrow"></i>
                 </a>
@@ -150,10 +132,8 @@
                 </ul>
             </li>
 
-            <!-- Báo cáo - Thống kê -->
             <li class="nav-item">
-                <a href="#" class="nav-link" data-bs-toggle="collapse" data-bs-target="#reports">
-                    <i class="fas fa-chart-bar"></i>
+                <a href="#" class="nav-link"> <i class="fas fa-chart-bar"></i>
                     <span>Báo cáo - Thống kê</span>
                     <i class="lni lni-chevron-right arrow"></i>
                 </a>
@@ -175,7 +155,6 @@
         </ul>
     </nav>
 
-    <!-- Footer -->
     <div class="sidebar-footer">
         <a th:href="@{/logout}" class="logout-button">
             <i class="fas fa-sign-out-alt"></i>

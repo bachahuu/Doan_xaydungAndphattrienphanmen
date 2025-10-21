@@ -44,6 +44,50 @@ document.addEventListener("DOMContentLoaded", function () {
           applyDiscount();
       });
     }
+
+    // --- LOGIC VALIDATE FORM MỚI THÊM VÀO ---
+    const shippingForm = document.getElementById("shippingForm");
+    if (shippingForm) {
+        shippingForm.addEventListener("submit", function (event) {
+            // Lấy giá trị từ các trường input
+            const name = document.getElementById("name").value.trim();
+            const phone = document.getElementById("phone").value.trim();
+            const address = document.getElementById("address").value.trim();
+            const isPickup = document.getElementById("ckbstore").checked;
+
+            let errors = [];
+            
+            // 1. Kiểm tra Họ và Tên
+            if (name === "") {
+                errors.push("Vui lòng nhập Họ và Tên.");
+            }
+
+            // 2. Kiểm tra Số điện thoại
+            const phoneRegex = /^(0\d{9})$/; // Regex: Bắt đầu bằng 0, theo sau là 9 số (tổng 10 số)
+            if (phone === "") {
+                errors.push("Vui lòng nhập Số điện thoại.");
+            } else if (!phoneRegex.test(phone)) {
+                errors.push("Số điện thoại không hợp lệ (phải là 10 số, bắt đầu bằng 0).");
+            }
+
+            // 3. Kiểm tra Địa chỉ (chỉ khi không nhận tại cửa hàng)
+            if (!isPickup) {
+                if (address === "") {
+                    errors.push("Vui lòng nhập Địa chỉ.");
+                }
+            }
+
+            // 4. Kiểm tra nếu có lỗi
+            if (errors.length > 0) {
+                // Ngăn form gửi đi
+                event.preventDefault(); 
+                
+                // Hiển thị tất cả lỗi cho người dùng
+                alert(errors.join("\n"));
+            }
+            // Nếu không có lỗi, form sẽ tự động submit
+        });
+    }
 });
   
 function pay() {window.location.href = "/payment";}
@@ -58,6 +102,7 @@ function updateCartTotalFromServer() {
   const totalEl = document.getElementById('total-value');
   // MỚI: Lấy phần tử hiển thị phí ship
   const shippingFeeDisplay = document.getElementById("shipping-fee-value");
+  
   const shippingFeeInput = document.getElementById('shippingFeeInput'); // Lấy thẻ input ẩn
   
   const isPickupAtStore = document.getElementById("ckbstore").checked;
