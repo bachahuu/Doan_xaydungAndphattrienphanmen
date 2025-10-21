@@ -144,7 +144,7 @@ public class discountService {
         discount.setGiaTriDonHangToiThieu(update.getGiaTriDonHangToiThieu());
         discount.setNgayBatDau(update.getNgayBatDau());
         discount.setNgayKetThuc(update.getNgayKetThuc());
-        discount.setTrangThai(update.getTrangThai());
+        // discount.setTrangThai(update.getTrangThai());
 
         return discountRepository.save(discount);
     }
