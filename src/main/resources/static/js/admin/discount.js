@@ -1,4 +1,38 @@
 document.addEventListener('DOMContentLoaded', function() {
+    // **TỰ ĐỘNG REFRESH TRẠNG THÁI MỖI 30 GIÂY**
+    setInterval(function() {
+        location.reload();
+    }, 30000);
+
+    // Xử lý mở modal sửa khuyến mãi
+    document.querySelectorAll('.btn-update').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const id = this.getAttribute('data-id');
+            
+            fetch(`/admin/discount/api/get/${id}`)
+                .then(res => {
+                    if (!res.ok) throw new Error('Không tìm thấy khuyến mãi!');
+                    return res.json();
+                })
+                .then(data => {
+                    // **TỰ ĐỘNG HIỂN THỊ TRẠNG THÁI HIỆN TẠI**
+                    document.getElementById('update_id').value = data.id || '';
+                    document.getElementById('update_maKM').value = data.maKM || '';
+                    document.getElementById('update_tenKM').value = data.tenKM || '';
+                    document.getElementById('update_giaTri').value = data.giaTri || 0;
+                    document.getElementById('update_giaTriDonHangToiThieu').value = data.giaTriDonHangToiThieu || 0;
+                    document.getElementById('update_ngayBatDau').value = data.ngayBatDau ? data.ngayBatDau.split('T')[0] : '';
+                    document.getElementById('update_ngayKetThuc').value = data.ngayKetThuc ? data.ngayKetThuc.split('T')[0] : '';
+                    document.getElementById('update_trangThai').value = data.trangThai || 2;
+                    
+                    document.getElementById('updateDiscountError').classList.add('d-none');
+                })
+                .catch(error => {
+                    console.error('Error fetching discount:', error);
+                    alert(error.message || 'Đã xảy ra lỗi khi lấy dữ liệu!');
+                });
+        });
+    });
     // Xử lý mở modal sửa khuyến mãi
     document.querySelectorAll('.btn-update').forEach(btn => {
         btn.addEventListener('click', function() {
@@ -26,7 +60,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     document.getElementById('update_giaTriDonHangToiThieu').value = data.giaTriDonHangToiThieu || 0;
                     document.getElementById('update_ngayBatDau').value = data.ngayBatDau ? data.ngayBatDau.split('T')[0] : '';
                     document.getElementById('update_ngayKetThuc').value = data.ngayKetThuc ? data.ngayKetThuc.split('T')[0] : '';
-                    document.getElementById('update_trangThai').value = data.trangThai || 1;
+                    document.getElementById('update_trangThai').value = data.trangThai || 2; // Mặc định là 2 (Chưa áp dụng)
                     
                     // Ẩn thông báo lỗi nếu có
                     document.getElementById('updateDiscountError').classList.add('d-none');
