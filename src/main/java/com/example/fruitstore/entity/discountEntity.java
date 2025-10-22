@@ -33,13 +33,13 @@ public class discountEntity {
     @Column(name = "ngayKetThuc")
     private java.sql.Date ngayKetThuc;
 
-    @Column(name = "moTa", columnDefinition = "TEXT") // Bổ sung trường còn thiếu
+    @Column(name = "moTa", columnDefinition = "TEXT")
     private String moTa;
 
     @Column(name = "trangThai")
-    private Integer trangThai;
+    private Integer trangThai; // 0 = Hết hiệu lực, 1 = Đang áp dụng, 2 = Chưa áp dụng
 
-    // moi quan he
+    // Mối quan hệ
     @OneToMany(mappedBy = "discount", fetch = FetchType.LAZY)
     private List<orderEntity> orders;
 

@@ -18,10 +18,11 @@ public class adminDiscountController {
     private discountService discountService;
     
     @Autowired
-    private discountRepository repository;  // Đổi tên để tránh trùng với class
+    private discountRepository repository;
 
     @GetMapping
     public String showDiscounts(Model model) {
+        // **TỰ ĐỘNG CẬP NHẬT TẤT CẢ TRẠNG THÁI TRƯỚC KHI HIỂN THỊ**
         List<discountEntity> discounts = discountService.getAllDiscounts();
         model.addAttribute("discounts", discounts);
         model.addAttribute("view", "admin/products/manage_discount");
@@ -31,54 +32,12 @@ public class adminDiscountController {
     @PostMapping("/add")
     public String addDiscount(@ModelAttribute discountEntity discount, Model model) {
         try {
-            // Kiểm tra mã khuyến mãi đã tồn tại
-            if (repository.existsByMaKM(discount.getMaKM())) {
-                model.addAttribute("addError", "Mã khuyến mãi đã tồn tại!");
-                model.addAttribute("discounts", discountService.getAllDiscounts());
-                model.addAttribute("view", "admin/products/manage_discount");
-                return "admin/layout/main";
-            }
-            
-            // Validation
-            if (discount.getGiaTri() < 0 || discount.getGiaTri() > 100) {
-                model.addAttribute("addError", "Giá trị giảm giá chỉ được từ 0 đến 100!");
-                model.addAttribute("discounts", discountService.getAllDiscounts());
-                model.addAttribute("view", "admin/products/manage_discount");
-                return "admin/layout/main";
-            }
-            
-            if (discount.getGiaTriDonHangToiThieu() == null || discount.getGiaTriDonHangToiThieu() < 0) {
-                model.addAttribute("addError", "Giá trị đơn hàng tối thiểu không được âm!");
-                model.addAttribute("discounts", discountService.getAllDiscounts());
-                model.addAttribute("view", "admin/products/manage_discount");
-                return "admin/layout/main";
-            }
-            
-            java.sql.Date today = new java.sql.Date(System.currentTimeMillis());
-            if (discount.getNgayBatDau().before(today)) {
-                model.addAttribute("addError", "Ngày bắt đầu không được trước ngày hiện tại!");
-                model.addAttribute("discounts", discountService.getAllDiscounts());
-                model.addAttribute("view", "admin/products/manage_discount");
-                return "admin/layout/main";
-            }
-            
-            if (discount.getNgayKetThuc().before(today)) {
-                model.addAttribute("addError", "Ngày kết thúc không được trước ngày hiện tại!");
-                model.addAttribute("discounts", discountService.getAllDiscounts());
-                model.addAttribute("view", "admin/products/manage_discount");
-                return "admin/layout/main";
-            }
-            
-            if (discount.getNgayKetThuc().before(discount.getNgayBatDau())) {
-                model.addAttribute("addError", "Ngày kết thúc không được trước ngày bắt đầu!");
-                model.addAttribute("discounts", discountService.getAllDiscounts());
-                model.addAttribute("view", "admin/products/manage_discount");
-                return "admin/layout/main";
-            }
-            
-            // Lưu khuyến mãi
-            repository.save(discount);
-            return "redirect:/admin/discount";
+            // **TỰ ĐỘNG CẬP NHẬT TRẠNG THÁI TRONG SERVICE**
+            discountService.addDiscount(discount);
+            model.addAttribute("addSuccess", "Thêm khuyến mãi thành công!");
+            model.addAttribute("discounts", discountService.getAllDiscounts());
+            model.addAttribute("view", "admin/products/manage_discount");
+            return "admin/layout/main";
         } catch (Exception e) {
             model.addAttribute("addError", e.getMessage());
             model.addAttribute("discounts", discountService.getAllDiscounts());
@@ -87,7 +46,7 @@ public class adminDiscountController {
         }
     }
 
-    // API lấy thông tin khuyến mãi theo id (AJAX)
+    // API lấy thông tin khuyến mãi theo id (AJAX) - **TỰ ĐỘNG CẬP NHẬT**
     @GetMapping("/api/get/{id}")
     @ResponseBody
     public ResponseEntity<discountEntity> getDiscountById(@PathVariable Integer id) {
@@ -96,11 +55,12 @@ public class adminDiscountController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    // API cập nhật khuyến mãi theo id (AJAX)
+    // API cập nhật khuyến mãi theo id (AJAX) - **TỰ ĐỘNG CẬP NHẬT**
     @PutMapping("/api/update/{id}")
     @ResponseBody
     public ResponseEntity<?> updateDiscount(@PathVariable Integer id, @RequestBody discountEntity update) {
         try {
+            // **TỰ ĐỘNG CẬP NHẬT TRẠNG THÁI TRONG SERVICE**
             discountEntity updated = discountService.updateDiscount(id, update);
             return ResponseEntity.ok(updated);
         } catch (Exception e) {

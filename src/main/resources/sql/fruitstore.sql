@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Oct 18, 2025 at 01:27 PM
--- Server version: 10.4.32-MariaDB
--- PHP Version: 8.2.12
+-- Máy chủ: 127.0.0.1
+-- Thời gian đã tạo: Th10 18, 2025 lúc 04:40 AM
+-- Phiên bản máy phục vụ: 10.4.32-MariaDB
+-- Phiên bản PHP: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -278,7 +278,7 @@ CREATE TABLE `khuyenmai` (
   `ngayBatDau` date NOT NULL,
   `ngayKetThuc` date NOT NULL,
   `moTa` text DEFAULT NULL,
-  `trangThai` tinyint(1) NOT NULL DEFAULT 1 COMMENT '0 = Het hieu luc, 1 = Dang ap dung',
+  `trangThai` tinyint(1) NOT NULL DEFAULT 1 COMMENT '0 = Het hieu luc, 1 = Dang ap dung, 2 = Chua ap dung',
   `giaTriDonHangToiThieu` decimal(10,2) NOT NULL DEFAULT 0.00 COMMENT 'Giá trị đơn hàng tối thiểu để áp dụng khuyến mãi. Mặc định là 0 (không có điều kiện).'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -287,8 +287,8 @@ CREATE TABLE `khuyenmai` (
 --
 
 INSERT INTO `khuyenmai` (`id`, `maKM`, `tenKM`, `giaTri`, `ngayBatDau`, `ngayKetThuc`, `moTa`, `trangThai`, `giaTriDonHangToiThieu`) VALUES
-(1, 'KM01', 'Sale Tet', 20000.00, '2025-01-01', '2025-02-01', 'Giam gia Tet', 1, 50000.00),
-(2, 'KM02', 'Sale He', 10000.00, '2025-06-01', '2025-07-01', 'Giam gia mua he', 1, 20000.00);
+(1, 'KM01', 'Sale Tet', 10.00, '2025-01-01', '2025-02-01', 'Giam gia Tet', 1, 0.00),
+(2, 'KM02', 'Sale He', 5.00, '2025-06-01', '2025-07-01', 'Giam gia mua he', 1, 0.00);
 
 -- --------------------------------------------------------
 
@@ -664,7 +664,7 @@ ALTER TABLE `khachhang`
 -- AUTO_INCREMENT for table `khuyenmai`
 --
 ALTER TABLE `khuyenmai`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `nhacungcap`
