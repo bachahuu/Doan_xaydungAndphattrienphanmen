@@ -37,8 +37,9 @@ public class loginController {
         }
         if (user instanceof com.example.fruitstore.entity.loginShopEntity) {
             com.example.fruitstore.entity.loginShopEntity shop = (com.example.fruitstore.entity.loginShopEntity) user;
+            session.setAttribute("shopUser", shop);  // Lưu toàn bộ entity vào session để truy cập role
             if (shop.getRole() != null && !shop.getRole().isEmpty()) {
-                return new ModelAndView("redirect:/admin/account");
+                return new ModelAndView("redirect:/admin/account");  // Redirect đến dashboard chung
             }
         }
         if (user instanceof com.example.fruitstore.entity.loginCustomerEntity) {
@@ -54,6 +55,12 @@ public class loginController {
     public String logout(HttpSession session) {
         session.invalidate();
         return "redirect:/home-static";
+    }
+
+    @RequestMapping(value = "/logout-shop", method = RequestMethod.GET)
+    public String logoutShop(HttpSession session) {
+        session.invalidate();
+        return "redirect:/login";
     }
 
     @RequestMapping(value = "/user-info", method = RequestMethod.GET)
@@ -73,10 +80,7 @@ public class loginController {
         if (customer == null) {
             return new ModelAndView("redirect:/login");
         }
-        // main.html nằm trong /user/layout/
         ModelAndView mav = new ModelAndView("user/layout/main");
-
-        // my-account.html nằm trong /user/products/
         mav.addObject("view", "user/products/my-account");
 
         mav.addObject("customer", customer);
@@ -89,8 +93,6 @@ public class loginController {
         if (customer == null) {
             return new ModelAndView("redirect:/login");
         }
-        // Assume you need to fetch addresses from CustomerEntity based on taiKhoanId
-        // This requires a repository method to join taikhoankhachhang with khachhang
         ModelAndView mav = new ModelAndView("user/addresses");
         mav.addObject("customer", customer);
         return mav;
