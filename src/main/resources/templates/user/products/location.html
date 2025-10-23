@@ -96,6 +96,7 @@
                                         <select id="voucher" name="voucher">
                                             <option value="">Mã free Ship/Mã giảm giá</option>
                                             <option th:each="km : ${discounts}" 
+                                            th:if="${km.trangThai == 1}"
                                                     th:value="${km.id}" 
                                                     th:text="${km.tenKM}"
                                                     th:attr="data-value=${km.giaTri}, data-condition-value=${km.giaTriDonHangToiThieu}">

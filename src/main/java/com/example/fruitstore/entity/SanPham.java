@@ -1,5 +1,7 @@
 package com.example.fruitstore.entity;
 
+import java.time.LocalDateTime;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.Column;
@@ -14,7 +16,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "sanpham")
-@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler", "discount" })
 public class SanPham {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,17 +40,35 @@ public class SanPham {
     @Column(name = "soLuongTon")
     private Integer soLuongTon;
 
+    @Column(name = "ngayNhap")
+    private LocalDateTime ngayNhap;
+
+    @Column(name = "hanSuDung")
+    private LocalDateTime hanSuDung;
+
+    // --- Mối quan hệ với Nhà Cung Cấp ---
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "nhaCungCapId")
     @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
-    private NhaCungCap nhaCungCap;
+    private supplierEntity nhaCungCap;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "khuyenMaiId")
-    @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler", "orders", "sanPhams" })
-    private discountEntity discount;
+    @JoinColumn(name = "danhMucId")
+    @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+    private DanhMuc danhMuc;
 
-    // Getter & Setter
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "khuyenmaiId")
+    @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+    private discountEntity khuyenMai;
+
+    public SanPham() {
+        this.ngayNhap = LocalDateTime.now();
+    }
+
+    // ==========================================================
+    // BỔ SUNG: GETTERS VÀ SETTERS ĐẦY ĐỦ CHO TẤT CẢ CÁC THUỘC TÍNH
+    // ==========================================================
     public Integer getId() {
         return id;
     }
@@ -65,6 +85,7 @@ public class SanPham {
         this.maSanPham = maSanPham;
     }
 
+    // SỬA LỖI: Bổ sung getter/setter cho tenSanPham
     public String getTenSanPham() {
         return tenSanPham;
     }
@@ -73,6 +94,7 @@ public class SanPham {
         this.tenSanPham = tenSanPham;
     }
 
+    // SỬA LỖI: Bổ sung getter/setter cho gia
     public Double getGia() {
         return gia;
     }
@@ -81,6 +103,7 @@ public class SanPham {
         this.gia = gia;
     }
 
+    // SỬA LỖI: Bổ sung getter/setter cho moTa
     public String getMoTa() {
         return moTa;
     }
@@ -89,6 +112,7 @@ public class SanPham {
         this.moTa = moTa;
     }
 
+    // SỬA LỖI: Bổ sung getter/setter cho hinhAnh
     public String getHinhAnh() {
         return hinhAnh;
     }
@@ -97,6 +121,7 @@ public class SanPham {
         this.hinhAnh = hinhAnh;
     }
 
+    // SỬA LỖI: Bổ sung getter/setter cho soLuongTon
     public Integer getSoLuongTon() {
         return soLuongTon;
     }
@@ -105,19 +130,46 @@ public class SanPham {
         this.soLuongTon = soLuongTon;
     }
 
-    public NhaCungCap getNhaCungCap() {
+    // SỬA LỖI: Bổ sung getter/setter cho ngayNhap
+    public LocalDateTime getNgayNhap() {
+        return ngayNhap;
+    }
+
+    public void setNgayNhap(LocalDateTime ngayNhap) {
+        this.ngayNhap = ngayNhap;
+    }
+
+    // SỬA LỖI: Bổ sung getter/setter cho hanSuDung
+    public LocalDateTime getHanSuDung() {
+        return hanSuDung;
+    }
+
+    public void setHanSuDung(LocalDateTime hanSuDung) {
+        this.hanSuDung = hanSuDung;
+    }
+
+    // Getters/Setters cho mối quan hệ
+    public supplierEntity getNhaCungCap() {
         return nhaCungCap;
     }
 
-    public void setNhaCungCap(NhaCungCap nhaCungCap) {
+    public void setNhaCungCap(supplierEntity nhaCungCap) {
         this.nhaCungCap = nhaCungCap;
     }
 
-    public discountEntity getDiscount() {
-        return discount;
+    public DanhMuc getDanhMuc() {
+        return danhMuc;
     }
 
-    public void setDiscount(discountEntity discount) {
-        this.discount = discount;
+    public void setDanhMuc(DanhMuc danhMuc) {
+        this.danhMuc = danhMuc;
+    }
+
+    public discountEntity getKhuyenMai() {
+        return khuyenMai;
+    }
+
+    public void setKhuyenMai(discountEntity khuyenMai) {
+        this.khuyenMai = khuyenMai;
     }
 }

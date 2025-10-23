@@ -11,6 +11,7 @@ import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
+import java.text.NumberFormat;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -141,24 +142,71 @@ public class ReportController {
         List<ReportEntity> reports = reportService.getAllReports();
 
         response.setContentType("application/vnd.openxmlformats-officedocument.wordprocessingml.document");
-        response.setHeader("Content-Disposition", "attachment; filename=baocao.docx");
+        response.setHeader("Content-Disposition", "attachment; filename=baocao_chitiet.docx");
 
         try (org.apache.poi.xwpf.usermodel.XWPFDocument doc = new org.apache.poi.xwpf.usermodel.XWPFDocument()) {
+
+            // Tiêu đề chính của tài liệu
             org.apache.poi.xwpf.usermodel.XWPFParagraph title = doc.createParagraph();
             org.apache.poi.xwpf.usermodel.XWPFRun run = title.createRun();
-            run.setText("Danh sách báo cáo");
+            run.setText("Chi Tiết Danh Sách Báo Cáo");
             run.setBold(true);
-            run.setFontSize(16);
+            run.setFontSize(18);
+            title.setAlignment(org.apache.poi.xwpf.usermodel.ParagraphAlignment.CENTER);
+            run.addBreak(); // Thêm một dòng ngắt
 
+            // Định dạng ngày và tiền tệ
             DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            Locale vnLocale = new Locale("vi", "VN");
+            NumberFormat currencyFormat = NumberFormat.getCurrencyInstance(vnLocale);
+
+            // Lặp qua từng báo cáo và in TẤT CẢ các trường
             for (ReportEntity r : reports) {
-                XWPFParagraph p = doc.createParagraph();
-                XWPFRun text = p.createRun();
-                String ngay = r.getNgayTao() != null ? r.getNgayTao().format(fmt) : "";
-                text.setText("• " + r.getLoaiBaoCao() + " - " + r.getNguoiLap() +
-                        " (" + ngay + ")" +
-                        (r.getGhiChu() != null ? " — " + r.getGhiChu() : ""));
+
+                // Tiêu đề cho mỗi báo cáo
+                XWPFParagraph pTitle = doc.createParagraph();
+                XWPFRun rTitle = pTitle.createRun();
+                rTitle.setText("BÁO CÁO #" + r.getMaBaoCao());
+                rTitle.setBold(true);
+                rTitle.setFontSize(14);
+                rTitle.setUnderline(org.apache.poi.xwpf.usermodel.UnderlinePatterns.SINGLE);
+
+                // Chi tiết báo cáo
+                XWPFParagraph pDetails = doc.createParagraph();
+                XWPFRun rDetails = pDetails.createRun();
+
+                // Lấy tất cả các trường từ ReportEntity
+                rDetails.setText("• Mã Báo Cáo: " + r.getMaBaoCao());
+                rDetails.addBreak();
+                rDetails.setText("• Loại Báo Cáo: " + (r.getLoaiBaoCao() != null ? r.getLoaiBaoCao() : "N/A"));
+                rDetails.addBreak();
+                rDetails.setText("• Người Lập: " + (r.getNguoiLap() != null ? r.getNguoiLap() : "N/A"));
+                rDetails.addBreak();
+                rDetails.setText("• Ngày Tạo: " + (r.getNgayTao() != null ? r.getNgayTao().format(fmt) : "N/A"));
+                rDetails.addBreak();
+                rDetails.setText("• Thời Gian Báo Cáo (Chuỗi): "
+                        + (r.getThoiGianBaoCao() != null ? r.getThoiGianBaoCao() : "N/A"));
+                rDetails.addBreak();
+
+                // Định dạng các số liệu
+                Double doanhThu = r.getTongDoanhThu() != null ? r.getTongDoanhThu() : 0.0;
+                Integer donHang = r.getTongDonHang() != null ? r.getTongDonHang() : 0;
+                Integer tonKho = r.getTongSanPhamTon() != null ? r.getTongSanPhamTon() : 0;
+
+                rDetails.setText("• Tổng Doanh Thu: " + currencyFormat.format(doanhThu));
+                rDetails.addBreak();
+                rDetails.setText("• Tổng Đơn Hàng: " + donHang);
+                rDetails.addBreak();
+                rDetails.setText("• Tổng Tồn Kho: " + tonKho);
+                rDetails.addBreak();
+
+                rDetails.setText("• Ghi Chú: "
+                        + (r.getGhiChu() != null && !r.getGhiChu().isEmpty() ? r.getGhiChu() : "Không có"));
+
+                // Thêm một dòng trống để ngăn cách các báo cáo
+                doc.createParagraph();
             }
+
             doc.write(response.getOutputStream());
         }
     }

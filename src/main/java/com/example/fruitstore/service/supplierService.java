@@ -15,6 +15,10 @@ public class supplierService {
         return suppilerRespository.findAll();
     }
 
+    public supplierEntity getSupplierById(Integer id) { // <-- THÊM MỚI
+        return suppilerRespository.findById(id).orElse(null);
+    }
+
     public supplierEntity getSupplierByMaNCC(String maNCC) {
         return suppilerRespository.findByMaNCC(maNCC)
                 .orElseThrow(() -> new RuntimeException("Không tìm thấy nhà cung cấp với mã: " + maNCC));

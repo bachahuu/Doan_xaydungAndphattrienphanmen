@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="content">
+    <div class="container">
+        <h1 style="text-align:center; font-family: 'Times New Roman', Times, serif;">Quản Lý Danh Mục</h1>
+        <div style="text-align:right; margin-right:45px; margin-bottom:10px;">
+            <button id="btnAddDanhMuc" type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addDanhMucModal">
+                Thêm Danh Mục
+            </button>
+        </div>
+        <table class="table table-striped" id="danhMucTable">
+            <thead>
+                <tr style="text-align:center;">
+                    <th>STT</th>
+                    <th>Mã DM</th>
+                    <th>Tên Danh Mục</th>
+                    <th>Mô Tả</th>
+                    <th>Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr style="text-align:center;" th:each="dm, stt : ${danhmucs}">
+                    <td th:text="${stt.index + 1}">1</td>
+                    <td th:text="${dm.maDanhMuc}">DM01</td>
+                    <td th:text="${dm.tenDanhMuc}">Trái cây</td>
+                    <td th:text="${dm.moTa}">Mô tả</td>
+                    <td>
+                        <div class="btn-group">
+                            <button class="btn btn-sm btn-info" 
+                                    data-bs-toggle="modal" 
+                                    data-bs-target="#editDanhMucModal"
+                                    th:attr="data-madanhmuc=${dm.maDanhMuc},data-tendanhmuc=${dm.tenDanhMuc},data-mota=${dm.moTa}">
+                                Sửa
+                            </button>
+                            <button class="btn btn-sm btn-danger" 
+                                    th:attr="data-madanhmuc=${dm.maDanhMuc}">
+                                Xóa
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Edit Modal -->
+    <div class="modal fade" id="editDanhMucModal" tabindex="-1" aria-labelledby="editDanhMucModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editDanhMucModalLabel">Sửa Danh Mục</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editDanhMucForm">
+                        <div class="mb-3">
+                            <label for="maDanhMuc" class="form-label">Mã Danh Mục</label>
+                            <input type="text" class="form-control" id="maDanhMuc" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label for="tenDanhMuc" class="form-label">Tên Danh Mục</label>
+                            <input type="text" class="form-control" id="tenDanhMuc" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="moTa" class="form-label">Mô Tả</label>
+                            <textarea class="form-control" id="moTa" rows="3"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                    <button type="button" class="btn btn-primary" id="saveDanhMucBtn">Lưu Thay Đổi</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Modal -->
+    <div class="modal fade" id="addDanhMucModal" tabindex="-1" aria-labelledby="addDanhMucModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addDanhMucModalLabel">Thêm Danh Mục Mới</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addDanhMucForm" class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Mã danh mục *</label>
+                            <input type="text" class="form-control" id="addMaDanhMuc" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Tên danh mục *</label>
+                            <input type="text" class="form-control" id="addTenDanhMuc" required>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label">Mô tả</label>
+                            <textarea class="form-control" id="addMoTa" rows="3"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                    <button type="button" class="btn btn-primary" id="saveNewDanhMucBtn">Lưu danh mục</button>
+                </div>
+            </div>
+        </div>
+    </div>
+<!-- <script th:src="@{/js/admin/manage_danhmuc.js}"></script> -->
+</div>
+</html>
+

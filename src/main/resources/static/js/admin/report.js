@@ -1,5 +1,5 @@
 // ===============================
-// 📊 ADMIN REPORT MANAGEMENT JS
+//  ADMIN REPORT MANAGEMENT JS
 // ===============================
 
 // Hiển thị / ẩn input ngày - tháng - năm
@@ -13,7 +13,7 @@ function toggleInputs() {
   if (mode === "year") document.getElementById("inputYear").classList.remove("d-none");
 }
 
-// 🧾 Tạo báo cáo
+//  Tạo báo cáo
 function createReport() {
   const type = document.getElementById("reportType").value;
   const creator = document.getElementById("reportCreator").value.trim();
@@ -50,7 +50,7 @@ function createReport() {
     .catch(() => alert("❌ Lỗi khi tạo báo cáo!"));
 }
 
-// 🧹 Reset form nhập liệu
+//  Reset form nhập liệu
 function resetReportForm() {
   ["reportCreator", "reportNote", "reportRevenue", "reportOrders", "reportStock"].forEach(id => {
     document.getElementById(id).value = "";
@@ -62,7 +62,7 @@ function resetReportForm() {
   document.getElementById("cancelBtn").classList.add("d-none");
 }
 
-// 📋 Tải danh sách báo cáo
+//  Tải danh sách báo cáo
 function loadReports() {
   fetch("/admin/report/list")
     .then(res => res.json())
@@ -119,7 +119,7 @@ function loadReports() {
     });
 }
 
-// 💾 Cập nhật báo cáo
+//  Cập nhật báo cáo
 function updateReport() {
   const id = document.getElementById("reportId").value;
   if (!id) return alert("⚠️ Chưa chọn báo cáo để cập nhật!");
@@ -150,7 +150,7 @@ function updateReport() {
     .catch(() => alert("❌ Lỗi khi cập nhật báo cáo!"));
 }
 
-// ✏️ Chọn báo cáo để sửa
+//  Chọn báo cáo để sửa
 function selectReport(report) {
   document.getElementById("reportType").value = report.loaiBaoCao;
   document.getElementById("reportCreator").value = report.nguoiLap;
@@ -165,7 +165,7 @@ function selectReport(report) {
   document.getElementById("cancelBtn").classList.remove("d-none");
 }
 
-// 🗑️ Xoá báo cáo
+//  Xoá báo cáo
 function deleteReport(id) {
   if (!confirm("Bạn có chắc muốn xoá báo cáo này?")) return;
   fetch(`/admin/report/delete/${id}`, { method: "DELETE" })
@@ -177,14 +177,17 @@ function deleteReport(id) {
     .catch(() => alert("❌ Lỗi khi xoá báo cáo!"));
 }
 
-// 🔄 Huỷ chỉnh sửa
+//  Huỷ chỉnh sửa
 function cancelEdit() {
   resetReportForm();
 }
 
-// ===============================
-// PHẦN THỐNG KÊ
-// ===============================
+function exportReportWord() {
+  console.log("🚀 Bắt đầu xuất Word...");
+  window.location.href = '/admin/report/export/word';
+}
+
+
 function getModeParams() {
   const mode = document.getElementById("modeSelect").value;
   if (mode === "day") return { mode, query: `?date=${document.getElementById("reportDate").value}` };

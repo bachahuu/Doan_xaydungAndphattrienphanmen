@@ -3,10 +3,61 @@
 <body>
     <div class="menu" id="Menu" th:fragment="content">
         <h1><span>MENU</span></h1>
-        <div class="menu_box">
-            <div th:each="sp,iterStat : ${sanPhamList}" class="menu_card" th:attr="data-index=${iterStat.index}" th:onclick="|window.location.href='/product/' + ${sp.id}|" style="cursor:pointer;">
+        <style>
+            /* Filter bar styling */
+            .menu_filter { max-width: 1200px; margin: 12px auto 22px; padding: 10px 14px; }
+            .menu_filter .form-inline { display:flex; align-items:center; gap:12px; width:100%; }
+            .menu_filter label { font-weight:600; color:#333; min-width:140px; }
+            /* Use fonts that render Vietnamese well; fallbacks included */
+            .menu_filter select, .menu_filter .form-control {
+                font-family: "Noto Sans", "Segoe UI", Roboto, "Helvetica Neue", Arial, "Tahoma", sans-serif;
+                font-size: 1rem;
+                color: #333;
+                padding: 12px 14px;
+                border-radius: 10px;
+                border: 1px solid #ced4da;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+                background: #fff;
+                -webkit-appearance: none; -moz-appearance: none; appearance: none;
+            }
+            /* Make button align to the select and use white text */
+            .menu_filter .btn { padding: 12px 20px; border-radius: 8px; background:#fac031; color:#fff; border:1px solid rgba(0,0,0,0.08); font-weight:700; box-shadow:0 6px 18px rgba(250,192,49,0.12); transition:transform .12s ease, box-shadow .12s ease; display:inline-flex; align-items:center; justify-content:center; height:48px; }
+            .menu_filter .btn:hover { transform:translateY(-2px); box-shadow:0 10px 26px rgba(250,192,49,0.18); }
+            .menu_filter .btn:active { transform:translateY(0); box-shadow:0 6px 18px rgba(250,192,49,0.12); }
+            /* make select visually large and full width on larger screens */
+            .menu_filter select { flex:1 1 420px; max-width:720px; height:48px; }
+            /* small screens: stack vertically */
+            @media (max-width: 768px) {
+                .menu_filter .form-inline { flex-direction:column; align-items:stretch; gap:8px; }
+                .menu_filter label { min-width:unset; }
+                .menu_filter select { width:100%; max-width:none; height:auto; }
+                .menu_filter .btn { width:100%; height:auto; }
+            }
+        </style>
+        <div class="menu_filter mb-3">
+            <form method="get" action="/menu" class="form-inline">
+                <label class="mr-2 font-weight-bold">Lọc theo danh mục:</label>
+                <select name="danhMucId" class="form-control mr-2">
+            <option value="" th:selected="${selectedDanhMucId == null}">Tất cả</option>
+            <option th:each="dm : ${danhMucList}"
+                th:value="${dm.id}"
+                th:selected="${dm.id == selectedDanhMucId}"
+                th:text="${dm.tenDanhMuc == 'Trai cay noi dia' ? 'Trái cây nội địa' : (dm.tenDanhMuc == 'Trai cay nhap khau' ? 'Trái cây nhập khẩu' : dm.tenDanhMuc)}">
+            </option>
+                </select>
+                <button type="submit" class="btn btn-outline-primary">Lọc</button>
+            </form>
+        </div>
+
+        <div class="menu_box" id="productGrid">
+            <div th:each="sp : ${sanPhamList}" class="menu_card" style="cursor:pointer; position:relative;">
                 <div class="menu_image">
                     <img th:src="@{'/images/' + ${sp.hinhAnh}}" th:alt="${sp.tenSanPham}" />
+                    <!-- Show a SALE badge with percent when product has a promotion -->
+                    <div th:if="${sp.khuyenMai != null and sp.khuyenMai.giaTri != null}" class="badge-discount">
+                        <span class="sale-label">SALE</span>
+                    </div>
+                    <div th:if="${sp.soLuongTon != null and sp.soLuongTon == 0}" class="badge-soldout">HẾT HÀNG</div>
                 </div>
                 <div class="menu_info">
                     <h2 th:text="${sp.tenSanPham}"></h2>
@@ -14,16 +65,16 @@
                     <h3 th:text="${#numbers.formatInteger(sp.gia, 1, 'COMMA') + ' VNĐ'}"></h3>
                 </div>
                 <a th:href="@{'/product/' + ${sp.id}}" class="menu_btn">Xem chi tiết</a>
-                <!-- Ẩn dữ liệu chi tiết để JS lấy khi click -->
-                <div class="product-data" style="display:none;"
-                    th:data-id="${sp.id}"
-                    th:data-name="${sp.tenSanPham}"
-                    th:data-img="${sp.hinhAnh}"
-                    th:data-price="${#numbers.formatInteger(sp.gia, 1, 'COMMA')}"
-                    th:data-desc="${sp.moTa}">
-                </div>
             </div>
         </div>
+
+        <script th:src="@{/js/user/menu.js}"></script>
+        <style>
+            .badge-discount { position: absolute; left: 8px; top: 8px; background:#e74c3c; color:#fff; padding:6px 10px; border-radius:6px; font-weight:800; z-index:2; display:flex; gap:8px; align-items:center; }
+            .badge-discount .sale-label { font-weight:900; letter-spacing:1px; font-size:0.9rem; }
+            .badge-soldout { position: absolute; right: 8px; top: 8px; background:#6c757d; color:#fff; padding:6px 10px; border-radius:6px; font-weight:700; z-index:2; }
+            .menu_card .menu_image { position:relative; }
+        </style>
     </div>
 </body>
 </html>

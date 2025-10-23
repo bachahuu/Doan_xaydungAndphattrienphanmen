@@ -3,23 +3,31 @@
 <div class="container mt-4 mb-5">
     <div class="row">
         <div class="col-md-6">
-            <div class="border rounded p-3 bg-white text-center">
+            <div class="border rounded p-3 bg-white text-center" style="position:relative;">
                 <img th:src="@{'/images/' + ${product.hinhAnh}}" th:alt="${product.tenSanPham}" class="img-fluid rounded product-main-img" style="max-height:320px;object-fit:contain;box-shadow:0 2px 12px rgba(0,0,0,0.10);background:#fafafa;" />
+                <!-- Show SALE badge when product has promotion (fixed typo: khuyenMai) -->
+                <div th:if="${product.khuyenMai != null and product.khuyenMai.giaTri != null}" class="badge-discount" style="position:absolute; left:12px; top:12px;">SALE</div>
+                <div th:if="${product.soLuongTon != null and product.soLuongTon == 0}" class="badge-soldout" style="position:absolute; right:12px; top:12px;">HẾT HÀNG</div>
             </div>
         </div>
         <div class="col-md-6">
             <div class="border rounded p-4 bg-white h-100 d-flex flex-column justify-content-between">
                 <div>
                     <h2 class="text-primary font-weight-bold mb-2" th:text="${product.tenSanPham}"></h2>
-                    <h4 class="text-warning mb-3" th:text="${#numbers.formatInteger(product.gia, 1, 'COMMA') + ' VNĐ/KG'}"></h4>
+                    <!-- Show a generic selling label instead of exact numeric price -->
+                    <h4 class="text-warning mb-3">Đang bán</h4>
                     <p class="text-muted mb-3" th:text="${product.moTa}"></p>
                 </div>
-                    <form method="post" id="addToCartForm" onsubmit="try{addToCart(event);}catch(e){/*ignore*/} return false;" class="form-inline align-items-center mt-3">
-                    <input type="hidden" name="productId" th:value="${product.id}" />
-                    <label class="mr-2 font-weight-bold">Số lượng:</label>
-                    <input type="number" name="quantity" value="1" min="1" class="form-control mr-3" style="width:80px;" />
-                    <button type="submit" class="btn btn-warning font-weight-bold px-4">Thêm vào giỏ hàng <i class="fa fa-shopping-cart ml-1"></i></button>
-                </form>
+                    <form method="post" id="addToCartForm" th:onsubmit="${product.soLuongTon != null and product.soLuongTon == 0} ? 'return false;' : 'try{addToCart(event);}catch(e){} return false;'" class="mt-3">
+                        <input type="hidden" name="productId" th:value="${product.id}" />
+                        <div class="d-flex align-items-center mb-2" style="gap:10px;">
+                            <label class="mb-0 font-weight-bold">Số lượng:</label>
+                            <input type="number" name="quantity" value="1" min="1" class="form-control" style="width:80px;" />
+                        </div>
+                        <div>
+                            <button type="submit" th:disabled="${product.soLuongTon != null and product.soLuongTon == 0}" class="btn btn-warning font-weight-bold px-4" th:text="${product.soLuongTon != null and product.soLuongTon == 0} ? 'HẾT HÀNG' : 'Thêm vào giỏ hàng'">Thêm vào giỏ hàng <i class="fa fa-shopping-cart ml-1"></i></button>
+                        </div>
+                    </form>
             </div>
         </div>
     </div>

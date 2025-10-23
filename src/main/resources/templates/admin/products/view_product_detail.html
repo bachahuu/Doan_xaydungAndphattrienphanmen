@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="content">
+    <div class="container">
+        <h4 class="mb-3" th:text="${product.tenSanPham}">Tên Sản Phẩm</h4>
+        <div class="row">
+            <div class="col-md-5 text-center">
+                <img th:src="@{'/images/' + ${product.hinhAnh}}" class="img-fluid rounded" style="max-height: 250px; object-fit: cover;" alt="Hình ảnh sản phẩm"/>
+            </div>
+            <div class="col-md-7">
+                <table class="table table-borderless table-sm">
+                    <tr>
+                        <th style="width: 45%;">Mã SP:</th>
+                        <td th:text="${product.maSanPham}"></td>
+                    </tr>
+                    <tr>
+                        <th>Giá:</th>
+                        <td th:text="${#numbers.formatDecimal(product.gia, 0, 'POINT', 0, 'COMMA')} + ' VNĐ'"></td>
+                    </tr>
+                    <tr>
+                        <th>Tồn Kho:</th>
+                        <td th:text="${product.soLuongTon}"></td>
+                    </tr>
+                    <tr>
+                        <th>Danh Mục:</th>
+                        <td th:text="${product.danhMuc != null ? product.danhMuc.tenDanhMuc : 'N/A'}"></td>
+                    </tr>
+                    <tr>
+                        <th>Nhà Cung Cấp:</th>
+                        <td th:text="${product.nhaCungCap != null ? product.nhaCungCap.tenNCC : 'N/A'}"></td>
+                    </tr>
+                    <tr>
+                        <th>Ngày Nhập:</th>
+                        <td th:text="${product.ngayNhap != null ? #temporals.format(product.ngayNhap, 'dd-MM-yyyy HH:mm') : '-'}"></td>
+                    </tr>
+                    <tr>
+                        <th>Hạn Sử Dụng:</th>
+                        <td th:text="${product.hanSuDung != null ? #temporals.format(product.hanSuDung, 'dd-MM-yyyy HH:mm') : '-'}"></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        
+        <div class="mt-3">
+            <strong>Mô Tả Chi Tiết:</strong>
+            <p th:text="${product.moTa}" style="white-space: pre-wrap; font-style: italic;"></p>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+    </div>
+</div>
+</html>

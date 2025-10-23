@@ -60,14 +60,15 @@
                     <div th:each="sp : ${sanPhamList}" class="menu_card">
                         <div class="menu_img">
                             <img th:src="@{'/images/' + ${sp.hinhAnh}}" th:alt="${sp.tenSanPham}" />
+                            <div th:if="${sp.khuyenMai != null and sp.khuyenMai.giaTri != null}" class="badge-discount">SALE</div>
+                            <div th:if="${sp.soLuongTon != null and sp.soLuongTon == 0}" class="badge-soldout">HẾT HÀNG</div>
                         </div>
                         <div class="menu_info">
                             <h2 th:text="${sp.tenSanPham}"></h2>
                             <p th:text="${sp.moTa}"></p>
                             <h3 th:text="${#numbers.formatInteger(sp.gia, 1, 'COMMA') + ' VNĐ/KG'}"></h3>
-                            <a href="#" class="menu_btn">Order Now</a>
+                            <a th:href="@{'/product/' + ${sp.id}}" class="menu_btn">Xem chi tiết</a>
                         </div>
-                        <div class="card_shopping"><i class="fa-solid fa-cart-shopping"></i></div>
                     </div>
                 </div>
                 <button class="slider-arrow right" id="sliderRight" onclick="slideMenu(1)"><i class="fa-solid fa-chevron-right"></i></button>
@@ -105,8 +106,12 @@
                 }
             });
             </script>
+            <style>
+                .badge-discount { position: absolute; left: 8px; top: 8px; background:#e74c3c; color:#fff; padding:6px 10px; border-radius:6px; font-weight:800; z-index:2; }
+                .badge-soldout { position: absolute; right: 8px; top: 8px; background:#6c757d; color:#fff; padding:6px 10px; border-radius:6px; font-weight:700; z-index:2; }
+                .menu_img { position:relative; }
+            </style>
         </div>
     </div>
 </body>
 </html>
-

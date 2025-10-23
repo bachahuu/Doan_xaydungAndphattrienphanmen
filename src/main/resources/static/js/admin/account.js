@@ -68,7 +68,7 @@ $(document).ready(function() {
     });
 
     // Xử lý sự kiện xóa tài khoản
-    $('.btn-danger').on('click', function() {
+    $('.btn-danger-ac').on('click', function() {
         console.log('Delete button clicked');
         var accountId = $(this).data('account-id');
         if (confirm('Bạn có chắc muốn xóa tài khoản này?')) {

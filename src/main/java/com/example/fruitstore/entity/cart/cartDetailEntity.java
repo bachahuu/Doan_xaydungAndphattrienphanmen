@@ -22,7 +22,7 @@ public class cartDetailEntity {
     // mỗi chi tiết giỏ hàng gắn với 1 sản phẩm
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "sanPhamId")
-    @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+    @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler", "nhaCungCap", "danhMuc", "khuyenMai" })
     private SanPham sanPham;
     @Column(name = "soLuong")
     private Integer soLuong;

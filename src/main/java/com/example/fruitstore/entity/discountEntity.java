@@ -43,6 +43,6 @@ public class discountEntity {
     @OneToMany(mappedBy = "discount", fetch = FetchType.LAZY)
     private List<orderEntity> orders;
 
-    @OneToMany(mappedBy = "discount", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "khuyenMai", fetch = FetchType.LAZY)
     private List<SanPham> sanPhams;
 }

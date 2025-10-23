@@ -14,6 +14,7 @@ import com.example.fruitstore.entity.supplierEntity; // Lớp entity cho nhà cu
 import com.example.fruitstore.service.supplierService; // Dịch vụ cho nhà cung cấp
 import com.example.fruitstore.service.order.orderService;
 import com.example.fruitstore.service.CustomerService;
+import com.example.fruitstore.service.DanhMucService;
 import com.example.fruitstore.service.EmployeeService; // Dịch vụ cho nhân viên
 // import com.example.fruitstore.service.phuongThucThanhToanService;
 import com.example.fruitstore.entity.order.orderEntity;
@@ -22,6 +23,12 @@ import com.example.fruitstore.entity.order.orderEntity;
 public class adminDashboard {
     @Autowired
     private orderService orderService;
+
+    @Autowired
+    private DanhMucService danhMucService;
+
+    @Autowired
+    private com.example.fruitstore.service.SanPhamService sanPhamService;
 
     @GetMapping("/admin/orders")
     public String showorder(@RequestParam(value = "keyword", required = false) String keyword,
@@ -34,9 +41,17 @@ public class adminDashboard {
     }
 
     // tìm
-
     @GetMapping("/admin/product")
     public String showproduct(Model model) {
+        // Load product list so the manage_product fragment can render rows when
+        // accessed from the sidebar
+        // (sidebar links point to /admin/product). This mirrors
+        // AdminProductController.manageProducts.
+        try {
+            model.addAttribute("sanPhamList", sanPhamService.getAllSanPham());
+        } catch (Exception ex) {
+            model.addAttribute("sanPhamList", java.util.Collections.emptyList());
+        }
         model.addAttribute("view", "admin/products/manage_product");
         return "admin/layout/main";
     }
@@ -82,4 +97,14 @@ public class adminDashboard {
         return "admin/layout/main";
     }
 
+    @GetMapping("/admin/categories")
+    public String showDanhMucList(Model model) {
+        try {
+            model.addAttribute("danhmucs", danhMucService.getAllDanhMuc());
+        } catch (Exception ex) {
+            model.addAttribute("danhmucs", java.util.Collections.emptyList());
+        }
+        model.addAttribute("view", "admin/products/manage_danhmuc");
+        return "admin/layout/main";
+    }
 }

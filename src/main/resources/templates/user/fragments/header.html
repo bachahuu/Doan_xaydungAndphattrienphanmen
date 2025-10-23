@@ -20,7 +20,64 @@
         <link rel="stylesheet" href="/css/user/news-detail.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+        <style>
+    .search-container {
+        position: relative;
+    }
+    .search-results-dropdown {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 350px;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 0 0 4px 4px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        z-index: 1000;
+        max-height: 400px;
+        overflow-y: auto;
+    }
+    .search-result-item {
+        display: flex;
+        align-items: center;
+        padding: 8px 12px;
+        text-decoration: none;
+        color: #333;
+        border-bottom: 1px solid #eee;
+    }
+    .search-result-item:hover {
+        background-color: #f5f5f5;
+    }
+    .search-result-item img {
+        width: 50px;
+        height: 50px;
+        object-fit: cover;
+        margin-right: 12px;
+        border-radius: 4px;
+    }
+    .search-result-info {
+        display: flex;
+        flex-direction: column;
+    }
+    .search-result-info span {
+        font-weight: 600;
+        font-size: 0.95rem;
+    }
+    .search-result-info small {
+        color: #e74c3c;
+        font-weight: bold;
+    }
+    .search-result-empty {
+        padding: 15px;
+        text-align: center;
+        color: #777;
+        font-style: italic;
+    }
+    </style>
     </head>
+    
     <body>
         <section id="Home" th:fragment="nav">
             <nav>
@@ -37,10 +94,12 @@
                 </ul>
 
                 <div class="search-container">
-                    <form action="/search" method="get">
-                        <input type="text" placeholder="Tìm kiếm..." name="query">
-                        <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+                    <form onsubmit="return false;"> <input type="text" placeholder="Tìm kiếm..." name="query" id="search-input" autocomplete="off">
+                        <button type="button"><i class="fa-solid fa-magnifying-glass"></i></button>
                     </form>
+                    
+                    <div class="search-results-dropdown" id="search-results">
+                        </div>
                 </div>
 
                 <div class="icon">
@@ -68,6 +127,80 @@
                     </div>
                 </div>
             </nav>
+
+            <script>
+        
+            const searchInput = document.getElementById('search-input');
+            const resultsContainer = document.getElementById('search-results');
+            let debounceTimer;
+
+            function debounce(func, delay) {
+                return function() {
+                    const context = this;
+                    const args = arguments;
+                    clearTimeout(debounceTimer);
+                    debounceTimer = setTimeout(() => func.apply(context, args), delay);
+                };
+            }
+
+            const fetchResults = async (query) => {
+                if (query.length < 2) {
+                    resultsContainer.innerHTML = '';
+                    resultsContainer.style.display = 'none';
+                    return;
+                }
+                try {
+                    const response = await fetch(`/api/search/autocomplete?query=${query}`);
+                    if (!response.ok) throw new Error('Network response was not ok');
+                    const products = await response.json();
+                    renderResults(products);
+                } catch (error) {
+                    console.error('Lỗi khi tìm kiếm:', error);
+                    resultsContainer.innerHTML = '<div class="search-result-empty">Lỗi khi tải kết quả</div>';
+                    resultsContainer.style.display = 'block';
+                }
+            };
+
+            const renderResults = (products) => {
+                resultsContainer.innerHTML = '';
+                if (products.length === 0) {
+                    resultsContainer.innerHTML = '<div class="search-result-empty">Không tìm thấy sản phẩm</div>';
+                } else {
+                    products.forEach(product => {
+                        const price = new Intl.NumberFormat('vi-VN').format(product.gia);
+                        const itemLink = document.createElement('a');
+                        itemLink.href = `/product/${product.id}`;
+                        itemLink.classList.add('search-result-item');
+                        itemLink.innerHTML = `
+                            <img src="/images/${product.hinhAnh || 'default.png'}" alt="${product.tenSanPham}">
+                            <div class="search-result-info">
+                                <span>${product.tenSanPham}</span>
+                                <small>${price} VNĐ</small>
+                            </div>
+                        `;
+                        resultsContainer.appendChild(itemLink);
+                    });
+                }
+                resultsContainer.style.display = 'block';
+            };
+
+            searchInput.addEventListener('input', debounce((e) => {
+                fetchResults(e.target.value.trim());
+            }, 300));
+
+            document.addEventListener('click', function(e) {
+                // Phải kiểm tra searchInput có tồn tại không
+                if (searchInput && !searchInput.contains(e.target) && !resultsContainer.contains(e.target)) {
+                    resultsContainer.style.display = 'none';
+                }
+            });
+
+            searchInput.addEventListener('focus', () => {
+                if (resultsContainer.innerHTML.trim() !== '') {
+                    resultsContainer.style.display = 'block';
+                }
+            });
+        </script>
            
         </section>
     </body>
