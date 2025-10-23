@@ -15,7 +15,7 @@ import com.example.fruitstore.service.supplierService; // Dịch vụ cho nhà c
 import com.example.fruitstore.service.order.orderService;
 import com.example.fruitstore.service.CustomerService;
 import com.example.fruitstore.service.EmployeeService; // Dịch vụ cho nhân viên
-import com.example.fruitstore.service.phuongThucThanhToanService;
+// import com.example.fruitstore.service.phuongThucThanhToanService;
 import com.example.fruitstore.entity.order.orderEntity;
 
 @Controller
@@ -75,4 +75,11 @@ public class adminDashboard {
         model.addAttribute("view", "admin/products/manage_customer");
         return "admin/layout/main";
     }
+
+    @GetMapping("/admin/report")
+    public String showReportPage(Model model) {
+        model.addAttribute("view", "admin/products/report");
+        return "admin/layout/main";
+    }
+
 }

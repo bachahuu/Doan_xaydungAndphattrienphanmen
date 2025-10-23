@@ -27,7 +27,7 @@
                             <li>
                                 <a href="/order-history">
                                     <i class="fa-solid fa-receipt"></i>
-                                    <span>Lịch sử đơn hàng</span>
+                                    <span>Lịch sử mua hàng</span>
                                 </a>
                             </li>
                             <li>
@@ -40,48 +40,50 @@
                     </nav>
                 </aside>
 
-                <main class="profile-content">
-                    <div class="content-header">
-                        <h1>Chỉnh sửa hồ sơ</h1>
-                        <!-- <p>Quản lý thông tin cá nhân của bạn để bảo mật tài khoản.</p> -->
+                <!-- Main content -->
+            <main class="profile-content flex-fill">
+                <div class="content-header mb-4">
+                    <h1 class="h4">Chỉnh sửa hồ sơ</h1>
+                </div>
+
+                <!-- Thông báo lỗi hoặc thành công -->
+                <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+                <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
+
+                <form th:action="@{/my-account/update}" method="post" th:object="${customer}">
+                    <input type="hidden" th:field="*{id}" />
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="tenKhachHang" class="form-label">Tên khách hàng</label>
+                            <input type="text" class="form-control" id="tenKhachHang"
+                                   th:field="*{tenKhachHang}" placeholder="Nhập tên của bạn" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="email"
+                                   th:field="*{email}" placeholder="Nhập email của bạn" required>
+                        </div>
                     </div>
 
-                    <form th:action="@{/my-account/update}" method="post" th:object="${customer}">
-                        <input type="hidden"  />
+                    <div class="mb-3">
+                        <label for="soDienThoai" class="form-label">Số điện thoại</label>
+                        <input type="text" class="form-control" id="soDienThoai"
+                               th:field="*{soDienThoai}" placeholder="Số điện thoại của bạn" required>
+                    </div>
 
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label for="ho" class="form-label">Họ</label>
-                                <input type="text" class="form-control" id="ho"  placeholder="Nhập họ của bạn">
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="ten" class="form-label">Tên</label>
-                                <input type="text" class="form-control" id="ten"  placeholder=" Tên của bạn">
-                            </div>
-                        </div>
+                    <div class="mb-4">
+                        <label for="diaChi" class="form-label">Địa chỉ</label>
+                        <textarea class="form-control" id="diaChi" rows="3"
+                                  th:field="*{diaChi}" placeholder="Nhập địa chỉ của bạn"></textarea>
+                    </div>
 
-                        <div class="mb-3">
-                            <label for="email" class="form-label">Email</label>
-                            <input type="email" class="form-control" id="email"  placeholder=" Email của bạn">
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="soDienThoai" class="form-label">Số điện thoại</label>
-                            <input type="text" class="form-control" id="soDienThoai"  placeholder="Số điện thoại">
-                        </div>
-
-                        <div class="mb-4">
-                            <label for="diaChi" class="form-label">Địa chỉ</label>
-                            <textarea class="form-control" id="diaChi" rows="3"  placeholder=" Địa chỉ của bạn"></textarea>
-                        </div>
-
-                        <div class="form-actions">
-                            <button type="button" class="btn btn-secondary me-2">Hủy</button>
-                            <button type="submit" class="btn btn-warning">Lưu thay đổi</button>
-                        </div>
-                    </form>
-                </main>
-
+                    <div class="form-actions">
+                        <a href="/my-account" class="btn btn-secondary me-2">Hủy</a>
+                        <button type="submit" class="btn btn-warning">Lưu thay đổi</button>
+                    </div>
+                </form>
+            </main>
             </div>
         </div>
     </div>
