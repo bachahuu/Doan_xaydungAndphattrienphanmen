@@ -48,22 +48,11 @@ public class loginController {
             }
         }
         if (user instanceof com.example.fruitstore.entity.loginCustomerEntity) {
-            // loginCustomerEntity customer = (loginCustomerEntity) user;
+            loginCustomerEntity customer = (loginCustomerEntity) user;
 
-            // System.out.println("Setting session attribute for customer: " +
-            // customer.getUsername());
-            // session.setAttribute("customer", customer);
-            loginCustomerEntity account = (loginCustomerEntity) user;
-
-            // 🟩 Tìm CustomerEntity tương ứng qua taiKhoanId
-            com.example.fruitstore.entity.CustomerEntity customerEntity = customerRepository.findAll().stream()
-                    .filter(c -> Integer.valueOf(account.getId()).equals(c.getTaiKhoanId()))
-                    .findFirst()
-                    .orElse(null);
-
-            // 🟦 Lưu cả hai vào session
-            session.setAttribute("account", account);
-            session.setAttribute("customerEntity", customerEntity);
+            System.out.println("Setting session attribute for customer: " +
+            customer.getUsername());
+            session.setAttribute("customer", customer);
             return new ModelAndView("redirect:/home-static");
         }
         return new ModelAndView("redirect:/home-static");
@@ -94,11 +83,21 @@ public class loginController {
 
     @GetMapping("/my-account")
     public ModelAndView showMyAccount(HttpSession session) {
-        com.example.fruitstore.entity.CustomerEntity customerEntity = (com.example.fruitstore.entity.CustomerEntity) session
-                .getAttribute("customerEntity");
+        // Lấy loginCustomerEntity từ session (giữ nguyên type đúng)
+        loginCustomerEntity loginCustomer = (loginCustomerEntity) session.getAttribute("customer");
+
+        if (loginCustomer == null) {
+            return new ModelAndView("redirect:/login");
+        }
+
+        // Fetch CustomerEntity từ database dựa trên taiKhoanId
+        com.example.fruitstore.entity.CustomerEntity customerEntity = customerRepository.findByTaiKhoanId(loginCustomer.getId());
 
         if (customerEntity == null) {
-            return new ModelAndView("redirect:/login");
+            // Handle trường hợp không tìm thấy (tùy ý, ví dụ redirect hoặc error)
+            ModelAndView mav = new ModelAndView("redirect:/login");
+            mav.addObject("error", "Không tìm thấy thông tin khách hàng!");
+            return mav;
         }
 
         ModelAndView mav = new ModelAndView("user/layout/main");
@@ -123,11 +122,22 @@ public class loginController {
             @ModelAttribute("customer") com.example.fruitstore.entity.CustomerEntity updatedCustomer,
             HttpSession session) {
 
-        com.example.fruitstore.entity.CustomerEntity existing = (com.example.fruitstore.entity.CustomerEntity) session
-                .getAttribute("customerEntity");
+        // Lấy loginCustomerEntity từ session (giữ nguyên type đúng)
+        loginCustomerEntity loginCustomer = (loginCustomerEntity) session.getAttribute("customer");
+
+        if (loginCustomer == null) {
+            return new ModelAndView("redirect:/login");
+        }
+
+        // Fetch CustomerEntity từ database dựa trên taiKhoanId
+        com.example.fruitstore.entity.CustomerEntity existing = customerRepository.findByTaiKhoanId(loginCustomer.getId());
 
         if (existing == null) {
-            return new ModelAndView("redirect:/login");
+            // Handle trường hợp không tìm thấy
+            ModelAndView mav = new ModelAndView("user/layout/main");
+            mav.addObject("view", "user/products/my-account");
+            mav.addObject("error", "Không tìm thấy thông tin khách hàng!");
+            return mav;
         }
 
         ModelAndView mav = new ModelAndView("user/layout/main");
@@ -153,6 +163,7 @@ public class loginController {
         existing.setDiaChi(updatedCustomer.getDiaChi());
 
         customerRepository.save(existing);
+        // Lưu CustomerEntity vào session với key riêng để tránh conflict (nếu cần cache)
         session.setAttribute("customerEntity", existing);
 
         mav.addObject("customer", existing);
